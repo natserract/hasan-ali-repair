@@ -1,0 +1,152 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = "native"
+}
+
+model User {
+  id       Int     @id @default(autoincrement())
+  uuid     String? @default(uuid())
+  name     String
+  password String
+  email    String  @unique
+
+  // => Roles: as a admin or customer
+  user_type String
+
+  created_at DateTime? @default(now())
+  updated_at DateTime?
+
+  phone_number String?
+  address      String?
+
+  Customer Customer[]
+
+  @@map("users")
+}
+
+model Vehicle {
+  id Int @id @default(autoincrement())
+
+  // => Is a plat number, like: DK 1..
+  serialNum Int     @unique
+  year      Int
+  details   String?
+
+  created_by Int
+  updated_by Int
+
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
+
+  Service Service[]
+  @@map("vehicle")
+}
+
+model Schedule {
+  id        Int      @id @default(autoincrement())
+  time_from DateTime
+  time_to   DateTime
+
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
+
+  service_id Int
+  service    Service @relation(fields: [service_id], references: [id])
+
+  Customer Customer[]
+
+  @@unique([service_id])
+  @@map("schedule")
+}
+
+model Mechanic {
+  id        Int     @id @default(autoincrement())
+  person_id Int     @unique
+  name      String
+  is_active Boolean @default(false)
+  address   String?
+
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
+
+  Service   Service[]
+  PartsUsed PartUsed[]
+
+  @@map("mechanic")
+}
+
+model Service {
+  id      Int      @id @default(autoincrement())
+  uuid    String?  @default(uuid())
+  status  String   @default(value: "pending")
+  message String?
+  price   Decimal?
+
+  created_by Int
+  updated_by Int
+
+  vehicle_id Int
+  vehicle    Vehicle @relation(fields: [vehicle_id], references: [id])
+
+  mechanic_id Int
+  mechanic    Mechanic @relation(fields: [mechanic_id], references: [id])
+
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
+
+  Customer  Customer[]
+  PartsUsed PartUsed[]
+  Schedule  Schedule[]
+
+  @@map("services")
+}
+
+// => In
+model Part {
+  id          Int       @id @default(autoincrement())
+  part_number Int       @unique
+  in_date     DateTime? @default(now())
+  qty         Int
+  price       Decimal
+  description String?
+
+  PartsUsed PartUsed[]
+  @@map("parts")
+}
+
+// => Out
+model PartUsed {
+  id Int @id @default(autoincrement())
+
+  part_id Int
+  parts   Part @relation(fields: [part_id], references: [id])
+
+  mechanic_id Int
+  mechanic    Mechanic @relation(fields: [mechanic_id], references: [id])
+
+  service_id Int
+  service    Service @relation(fields: [service_id], references: [id])
+
+  @@map("parts_used")
+}
+
+model Customer {
+  id Int @id @default(autoincrement())
+
+  user_id Int
+  user    User @relation(fields: [user_id], references: [id])
+
+  service_id Int
+  service    Service @relation(fields: [service_id], references: [id])
+
+  schedule_id Int
+  schedule    Schedule @relation(fields: [schedule_id], references: [id])
+
+  @@unique([service_id, schedule_id])
+  @@map("customer")
+}
