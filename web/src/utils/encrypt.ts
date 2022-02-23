@@ -22,3 +22,15 @@ export const decryptData = (data: string) => {
     throw Error(error)
   }
 }
+
+export const hashedPassword = (text: string) => {
+  const salt = CryptoJS.lib.WordArray.random(128 / 8).toString()
+  const hashPassword = encryptData(text);
+  const decryptPassword = decryptData(hashPassword);
+
+  return {
+    hashPassword,
+    salt,
+    decryptPassword
+  }
+}

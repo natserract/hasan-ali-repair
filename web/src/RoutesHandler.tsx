@@ -5,8 +5,11 @@ import NotFoundPage from 'src/pages/NotFoundPage'
 import Login from 'src/pages/Authorization/LoginPage'
 import Register from 'src/pages/Authorization/RegisterPage'
 import Layout from 'src/layouts/layout'
+import { useAuth } from '@redwoodjs/auth'
 
 const RoutesHandler = () => {
+  const { isAuthenticated } = useAuth();
+
   return (
     <Router history={browserHistory}>
       <Switch>
@@ -15,8 +18,8 @@ const RoutesHandler = () => {
           exact
           path="/app"
           render={() => <Redirect to="/app/dashboard" />} />
-        <PrivateRoute isAuthenticated={true} path="/app" component={Layout} />
-        <PublicRoute isAuthenticated={true} path="/login" component={Login} />
+        <PrivateRoute isAuthenticated={isAuthenticated} path="/app" component={Layout} />
+        <PublicRoute isAuthenticated={isAuthenticated} path="/login" component={Login} />
         <Route path="/register" component={Register} />
         <RouteHook component={NotFoundPage} path="*" onEnter={console.log} />
       </Switch>

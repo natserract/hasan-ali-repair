@@ -1,13 +1,6 @@
 import { ApolloError } from '@apollo/client'
 import { GraphQLError } from 'graphql'
 
-export function extractError(error: null): null
-export function extractError(error: Error): Error
-export function extractError(error: ApolloError): GraphQLError
-export function extractError(error: GraphQLError): GraphQLError
-export function extractError(
-  error: null | Error | ApolloError | GraphQLError
-): null | Error | GraphQLError
 export function extractError(
   error: null | Error | ApolloError | GraphQLError
 ): null | Error | GraphQLError {

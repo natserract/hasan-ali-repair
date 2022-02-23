@@ -1,34 +1,24 @@
+import { AuthProvider } from '@redwoodjs/auth'
+
 import { FatalErrorBoundary, RedwoodProvider } from '@redwoodjs/web'
 import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
-import { AuthProvider } from '@redwoodjs/auth'
 import FatalErrorPage from 'src/pages/FatalErrorPage'
-import * as firebaseAuth from '@firebase/auth'
-import { firebaseConfig } from './config/firebase'
-import { initializeApp, getApp, getApps } from 'firebase/app'
 import { ThemeProvider } from "@material-ui/styles";
 import Themes from "./themes";
 import { CssBaseline } from "@material-ui/core";
 import RoutesHandler from './RoutesHandler';
 
+import { dbAuth } from '@redwoodjs/auth/dist/authClients/dbAuth';
+import { createAuthClient } from '@redwoodjs/auth/dist/authClients';
+import './scaffold.css'
 import './index.css'
 
-const firebaseApp = ((config) => {
-  const apps = getApps()
-  if (!apps.length) {
-    initializeApp(config)
-  }
-  return getApp()
-})(firebaseConfig)
-
-const firebaseClient = {
-  firebaseAuth,
-  firebaseApp,
-}
+const authClient = createAuthClient({}, "dbAuth")
 
 const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
     <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
-      <AuthProvider client={firebaseClient} type="firebase">
+      <AuthProvider type="dbAuth">
         <RedwoodApolloProvider>
           <ThemeProvider theme={Themes.default}>
             <CssBaseline />

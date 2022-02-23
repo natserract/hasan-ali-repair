@@ -9,11 +9,17 @@ generator client {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  uuid     String? @default(uuid())
-  name     String
-  password String
-  email    String  @unique
+  id    Int     @id @default(autoincrement())
+  uuid  String? @default(uuid())
+  name  String
+  // password String
+  email String  @unique
+
+  // dbAuth
+  hashedPassword      String    @default("")
+  salt                String    @default("")
+  resetToken          String?
+  resetTokenExpiresAt DateTime?
 
   // => Roles: as a admin or customer
   user_type String
