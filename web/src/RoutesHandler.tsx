@@ -20,7 +20,7 @@ const RoutesHandler = () => {
           render={() => <Redirect to="/app/dashboard" />} />
         <PrivateRoute isAuthenticated={isAuthenticated} path="/app" component={Layout} />
         <PublicRoute isAuthenticated={isAuthenticated} path="/login" component={Login} />
-        <Route path="/register" component={Register} />
+        <PublicRoute isAuthenticated={isAuthenticated} path="/register" component={Register} />
         <RouteHook component={NotFoundPage} path="*" onEnter={console.log} />
       </Switch>
     </Router>

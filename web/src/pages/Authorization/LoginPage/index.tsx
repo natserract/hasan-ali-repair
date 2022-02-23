@@ -1,22 +1,11 @@
-import React, { useEffect, useState, useRef } from "react";
-import {
-  Grid,
-  CircularProgress,
-  Typography,
-  Button,
-  Tabs,
-  Tab,
-  // TextField,
-  Fade,
-} from "@material-ui/core";
-import classnames from "classnames";
+import React, { useEffect, useRef } from "react";
 import useStyles from "./styles";
 import { useAuth } from '@redwoodjs/auth'
 import { MetaTags } from '@redwoodjs/web'
 import {
   Form,
   Label,
-  TextField,
+  EmailField,
   PasswordField,
   Submit,
   FieldError,
@@ -27,25 +16,23 @@ import { browserHistory } from "src/utils/history";
 
 const LoginPage = () => {
   const classes = useStyles();
-  const { isAuthenticated, logIn } = useAuth()
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [activeTabId, setActiveTabId] = useState(0);
-  const [nameValue, setNameValue] = useState("");
-  const [loginValue, setLoginValue] = useState("admin@flatlogic.com");
-  const [passwordValue, setPasswordValue] = useState("password");
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      browserHistory.push('/app/dashboard')
-    }
-  }, [isAuthenticated])
+  const { logIn, reauthenticate } = useAuth()
 
   const usernameRef = useRef<HTMLInputElement>()
   useEffect(() => {
     usernameRef.current?.focus()
   }, [])
+
+  const onSubmit = async (data) => {
+    const response = await logIn({
+      username: data.email,
+      password: data.password
+    })
+
+    if (response.error) {
+      toast.error(response.error)
+    }
+  }
 
   return (
     <>
@@ -61,28 +48,26 @@ const LoginPage = () => {
 
             <div className="rw-segment-main">
               <div className="rw-form-wrapper">
-                <Form onSubmit={console.log} className="rw-form-wrapper">
+                <Form onSubmit={onSubmit} className="rw-form-wrapper">
                   <Label
-                    name="username"
+                    name="email"
                     className="rw-label"
                     errorClassName="rw-label rw-label-error"
                   >
-                    Username
+                    Email
                   </Label>
-                  <TextField
-                    name="username"
+                  <EmailField
+                    name="email"
                     className="rw-input"
                     errorClassName="rw-input rw-input-error"
-                    ref={usernameRef}
                     validation={{
                       required: {
                         value: true,
-                        message: 'Username is required',
+                        message: 'Email is required',
                       },
                     }}
                   />
-
-                  <FieldError name="username" className="rw-field-error" />
+                  <FieldError name="email" className="rw-field-error" />
 
                   <Label
                     name="password"
@@ -126,15 +111,8 @@ const LoginPage = () => {
             <div className="rw-login-link__item">
               <span>Don&apos;t have an account?</span>{' '}
               <Link to="/register" className="rw-link">
-                Sign up!
+                Sign up
               </Link>
-            </div>
-
-            <div className="rw-login-link__item">
-              <span style={{ padding: "0 5px" }}>or maybe you</span>
-              <Link to="/register" className="rw-link">
-                Forgot Password
-            </Link>
             </div>
           </div>
         </div>

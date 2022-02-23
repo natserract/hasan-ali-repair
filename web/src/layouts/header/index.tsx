@@ -24,6 +24,8 @@ import useStyles from "./styles";
 import { Badge, Typography, Button } from "src/layouts/wrappers";
 import Notification from "src/components/notification";
 import UserAvatar from "src/components/user-avatar";
+import { useAuth } from "@redwoodjs/auth";
+import { browserHistory } from "src/utils/history";
 
 // TODO
 const toggleSidebar = (p: any) => console.log
@@ -87,6 +89,8 @@ const notifications = [
 
 const Header = () => {
   const classes = useStyles();
+
+  const { logOut } = useAuth()
 
   const [mailMenu, setMailMenu] = useState(null);
   const [isMailsUnread, setIsMailsUnread] = useState(true);
@@ -318,8 +322,7 @@ const Header = () => {
             <Typography
               className={classes.profileMenuLink}
               color="primary"
-              // onClick={() => signOut(userDispatch, props.history)}
-              onClick={console.log}
+              onClick={() => logOut()}
             >
               Sign Out
             </Typography>

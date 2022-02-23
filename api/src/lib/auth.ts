@@ -1,6 +1,7 @@
-import { AuthenticationError, ForbiddenError } from '@redwoodjs/graphql-server'
+import { AuthenticationError, ForbiddenError, getAsyncStoreInstance } from '@redwoodjs/graphql-server'
 import { db } from './db'
-
+import { dbAuthSession, getAuthenticationContext } from '@redwoodjs/api'
+import { getSession } from '@redwoodjs/api/dist/functions/dbAuth/shared'
 
 /**
  * The session object sent in as the first argument to getCurrentUser() will
@@ -19,13 +20,24 @@ import { db } from './db'
  * fields to the `select` object below once you've decided they are safe to be
  * seen if someone were to open the Web Inspector in their browser.
  */
-export const getCurrentUser = async (session) => {
-  return await db.user.findUnique({
+export const getCurrentUser = async (session, { token, type }) => {
+  console.log('token', token, type)
+
+  const user = await db.user.findUnique({
     where: { id: session.id },
-    select: { id: true },
+    select: { id: true }
   })
+
+  return user
 }
 
+const getContextUserAsync = async () => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(context?.currentUser)
+    }, 100)
+  })
+}
 /**
  * The user is authenticated if there is a currentUser in the context
  *
@@ -85,11 +97,15 @@ export const hasRole = ({ roles }: { roles: AllowedRoles }): boolean => {
  * @see https://github.com/redwoodjs/redwood/tree/main/packages/auth for examples
  */
 export const requireAuth = ({ roles }: { roles: AllowedRoles }) => {
+  setTimeout(() => {
+    console.log('context', context.currentUser)
+  }, 100)
+
   if (!isAuthenticated()) {
-    throw new AuthenticationError("You don't have permission to do that.")
+    // throw new AuthenticationError("You don't have permission to do that.")
   }
 
-  if (!hasRole({ roles })) {
-    throw new ForbiddenError("You don't have access to do that.")
-  }
+  // if (!hasRole({ roles })) {
+  //   throw new ForbiddenError("You don't have access to do that.")
+  // }
 }

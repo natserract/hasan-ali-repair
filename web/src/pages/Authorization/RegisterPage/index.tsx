@@ -22,13 +22,6 @@ import { browserHistory } from "src/utils/history"
 
 const RegisterPage = () => {
   const classes = useStyles();
-  const { isAuthenticated } = useAuth()
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      browserHistory.push('/app/dashboard')
-    }
-  }, [isAuthenticated])
 
   const nameRef = useRef<HTMLInputElement>()
   useEffect(() => {
@@ -37,22 +30,25 @@ const RegisterPage = () => {
 
   const [registerUserFunc] = useMutation(REGISTERPAGE_CREATEUSERMUTATION)
 
-
   const onSubmit = async (data) => {
     const { name, password, email, address, phone_number } = data
     const hashed = hashedPassword(password);
 
     try {
+      const defaultAttributes = {
+        name,
+        user_type: "customer",
+        address,
+        phone_number,
+      }
+
       const response = await registerUserFunc({
         variables: {
           input: {
-            name,
             email,
-            user_type: "customer",
             hashedPassword: hashed.hashPassword,
             salt: hashed.salt,
-            address,
-            phone_number,
+            ...defaultAttributes,
           }
         }
       })
@@ -61,6 +57,10 @@ const RegisterPage = () => {
         toast.error(JSON.stringify(response.errors))
       } else {
         toast.success("Register success. You must login first.")
+
+        setTimeout(() => {
+          browserHistory.push("/login")
+        }, 1000)
       }
     } catch (error) {
       toast.error(extractError(error).message)
@@ -186,7 +186,7 @@ const RegisterPage = () => {
             <div className="rw-login-link__item">
               <span>Already have an account?</span>{' '}
               <Link to="/login" className="rw-link">
-                Log in!
+                Log in
             </Link>
             </div>
           </div>

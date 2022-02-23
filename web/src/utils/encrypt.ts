@@ -25,12 +25,12 @@ export const decryptData = (data: string) => {
 
 export const hashedPassword = (text: string) => {
   const salt = CryptoJS.lib.WordArray.random(128 / 8).toString()
-  const hashPassword = encryptData(text);
-  const decryptPassword = decryptData(hashPassword);
+  const hashPassword = CryptoJS.PBKDF2(text, salt, {
+    keySize: 256 / 32
+  }).toString()
 
   return {
     hashPassword,
     salt,
-    decryptPassword
   }
 }
