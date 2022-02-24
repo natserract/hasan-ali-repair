@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Drawer, IconButton, List } from "@material-ui/core";
 import {
   Home as HomeIcon,
@@ -27,79 +27,63 @@ import {
   useLayoutDispatch,
   toggleSidebar,
 } from 'src/store/layout'
+import { useResource } from "src/libs/gql-router/resource/hooks";
+import { toCamelCase } from "src/utils/string";
 
-const structure = [
-  { id: 0, label: "Dashboard", link: "/app/dashboard", icon: <HomeIcon /> },
-  {
-    id: 1,
-    label: "Typography",
-    link: "/app/typography",
-    icon: <TypographyIcon />,
-  },
-  { id: 2, label: "Tables", link: "/app/tables", icon: <TableIcon /> },
-  {
-    id: 3,
-    label: "Notifications",
-    link: "/app/notifications",
-    icon: <NotificationsIcon />,
-  },
-  {
-    id: 4,
-    label: "UI Elements",
-    link: "/app/ui",
-    icon: <UIElementsIcon />,
-    children: [
-      { label: "Icons", link: "/app/ui/icons" },
-      { label: "Charts", link: "/app/ui/charts" },
-      { label: "Maps", link: "/app/ui/maps" },
-    ],
-  },
+type LinkType = {
+  id?: number;
+  label?: string;
+  link?: string;
+  type?: string;
+  icon?: React.ReactNode
+}
+
+const defaultLinks = [
   { id: 5, type: "divider" },
   { id: 6, type: "title", label: "HELP" },
   { id: 7, label: "Library", link: "https://flatlogic.com/templates", icon: <LibraryIcon /> },
   { id: 8, label: "Support", link: "https://flatlogic.com/forum", icon: <SupportIcon /> },
   { id: 9, label: "FAQ", link: "https://flatlogic.com/forum", icon: <FAQIcon /> },
-  { id: 10, type: "divider" },
-  { id: 11, type: "title", label: "PROJECTS" },
-  {
-    id: 12,
-    label: "My recent",
-    link: "",
-    icon: <Dot size="small" color="warning" />,
-  },
-  {
-    id: 13,
-    label: "Starred",
-    link: "",
-    icon: <Dot size="small" color="primary" />,
-  },
-  {
-    id: 14,
-    label: "Background",
-    link: "",
-    icon: <Dot size="small" color="secondary" />,
-  },
 ];
 
 const Sidebar = () => {
   const classes = useStyles();
 
-  var theme = useTheme() as typeof Theme;
+  const theme = useTheme() as typeof Theme;
 
   // global
-  var { isSidebarOpened } = useLayoutState();
-  var layoutDispatch = useLayoutDispatch();
+  const { isSidebarOpened } = useLayoutState();
+  const layoutDispatch = useLayoutDispatch();
+  const { resources } = useResource()
 
   // local
-  var [isPermanent, setPermanent] = useState(true);
+  const [isPermanent, setPermanent] = useState(true);
 
-  useEffect(function() {
+  useEffect(function () {
     window.addEventListener("resize", handleWindowWidthChange);
     handleWindowWidthChange();
     return function cleanup() {
       window.removeEventListener("resize", handleWindowWidthChange);
     };
   });
+
+  const dynamicMenuRef = useRef<LinkType[]>([])
+  const [dynamicMenu, setDynamicMenu] = useState<LinkType[]>([])
+
+  useEffect(() => {
+    resources.map((value, id) => {
+      dynamicMenuRef.current.push({
+        id,
+        label: toCamelCase(value.name),
+        link: `/app/${value.name}`,
+        icon: <React.Fragment children={value?.icon || null} />
+      })
+    })
+
+    setDynamicMenu(
+      dynamicMenuRef.current.concat(defaultLinks)
+    )
+  }, [resources])
 
   return (
     <Drawer
@@ -119,19 +103,14 @@ const Sidebar = () => {
       <div className={classes.toolbar} />
       <div className={classes.mobileBackButton}>
         <IconButton onClick={() => toggleSidebar(layoutDispatch)}>
-          <ArrowBackIcon
-            classes={{
-              // root: classNames(classes.headerIcon, classes.headerIconCollapse),
-            }}
-          />
+          <ArrowBackIcon />
         </IconButton>
       </div>
 
-      {/* className={classes.sidebarList} */}
       <List>
-        {structure.map(link => (
+        {dynamicMenu && dynamicMenu.map((link, id) => (
           <SidebarLink
-            key={link.id}
+            key={id}
             location={location}
             isSidebarOpened={isSidebarOpened}
             {...link}
@@ -141,7 +120,6 @@ const Sidebar = () => {
     </Drawer>
   );
 
-  // ##################################################################
   function handleWindowWidthChange() {
     var windowWidth = window.innerWidth;
     var breakpointWidth = theme.breakpoints.values.md;

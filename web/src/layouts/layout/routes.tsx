@@ -7,7 +7,6 @@ import {
   withRouter,
 } from "react-router-dom";
 import { IResource } from "src/libs/gql-router/resource/types";
-import { RouteHook } from 'src/routes'
 import NotFoundPage from 'src/pages/NotFoundPage'
 
 type RouteHandlerInput = IResource
@@ -84,8 +83,6 @@ const RoutesHandler = () => {
           component={route.component}
         />
       ))}
-
-      <RouteHook component={NotFoundPage} path="*" onEnter={console.log} />
     </Switch>
   )
 }
