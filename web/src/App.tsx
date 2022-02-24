@@ -7,24 +7,20 @@ import { ThemeProvider } from "@material-ui/styles";
 import Themes from "./themes";
 import { CssBaseline } from "@material-ui/core";
 import RoutesHandler from './RoutesHandler';
+import { AuthClient, AuthMiddleware } from 'src/libs/auth';
 
-import { dbAuth } from '@redwoodjs/auth/dist/authClients/dbAuth';
-import { createAuthClient } from '@redwoodjs/auth/dist/authClients';
 import './scaffold.css'
 import './index.css'
-import { GqlWrapper } from './libs/GqlWrapper';
 
 const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
     <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
-      <AuthProvider type="dbAuth">
-        <RedwoodApolloProvider>
-          <GqlWrapper>
-            <ThemeProvider theme={Themes.default}>
-              <CssBaseline />
-              <RoutesHandler />
-            </ThemeProvider>
-          </GqlWrapper>
+      <AuthProvider client={AuthClient} type="custom">
+        <RedwoodApolloProvider graphQLClientConfig={AuthMiddleware()}>
+          <ThemeProvider theme={Themes.default}>
+            <CssBaseline />
+            <RoutesHandler />
+          </ThemeProvider>
         </RedwoodApolloProvider>
       </AuthProvider>
     </RedwoodProvider>
