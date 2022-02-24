@@ -27,12 +27,11 @@ import UserAvatar from "src/components/user-avatar";
 import { useAuth } from "@redwoodjs/auth";
 import { browserHistory } from "src/utils/history";
 
-// TODO
-const toggleSidebar = (p: any) => console.log
-const layoutState = {
-  isSidebarOpened: false
-}
-const layoutDispatch = null;
+import {
+  useLayoutState,
+  useLayoutDispatch,
+  toggleSidebar,
+} from 'src/store/layout'
 
 const messages = [
   {
@@ -91,6 +90,9 @@ const Header = () => {
   const classes = useStyles();
 
   const { logOut } = useAuth()
+
+  const layoutState = useLayoutState();
+  const layoutDispatch = useLayoutDispatch();
 
   const [mailMenu, setMailMenu] = useState(null);
   const [isMailsUnread, setIsMailsUnread] = useState(true);

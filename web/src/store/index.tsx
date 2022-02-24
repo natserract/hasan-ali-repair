@@ -1,6 +1,7 @@
 import { createElement } from 'react'
 import { UserContextProvider } from './user/context'
+import { LayoutProvider } from './layout'
 
-export const GqlWrapper: React.FC<{}> = ({ children }) => {
-  return createElement(UserContextProvider, null, children)
+export const ContextProvider: React.FC<{}> = ({ children }) => {
+  return createElement(LayoutProvider, null, children)
 }

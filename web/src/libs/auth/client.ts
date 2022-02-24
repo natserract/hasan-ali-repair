@@ -1,6 +1,6 @@
 import axios from 'axios'
 import jwt from 'jsonwebtoken'
-import { API_URL } from 'src/config/endpoint'
+import { API_URL } from 'src/constant/endpoint'
 import { verifyToken } from './utils'
 
 const storageKey = "AUTHORIZATION"

@@ -1,5 +1,5 @@
 import { HttpLink, ApolloLink, concat } from '@apollo/client'
-import { GRAPHQL_URL, API_URL } from 'src/config/endpoint'
+import { GRAPHQL_URL, API_URL } from 'src/constant/endpoint'
 import jwt from 'jsonwebtoken'
 import axios from 'axios'
 

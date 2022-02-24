@@ -10,6 +10,7 @@ import RoutesHandler from './RoutesHandler';
 import { AuthClient, AuthMiddleware } from 'src/libs/auth';
 import { GqlRouter } from 'src/libs/gql-router'
 import resources from './resources';
+import { ContextProvider } from 'src/store'
 
 import './scaffold.css'
 import './index.css'
@@ -20,10 +21,12 @@ const App = () => (
       <AuthProvider client={AuthClient} type="custom">
         <RedwoodApolloProvider graphQLClientConfig={AuthMiddleware()}>
           <GqlRouter resources={resources}>
-            <ThemeProvider theme={Themes.default}>
-              <CssBaseline />
-              <RoutesHandler />
-            </ThemeProvider>
+            <ContextProvider>
+              <ThemeProvider theme={Themes.default}>
+                <CssBaseline />
+                <RoutesHandler />
+              </ThemeProvider>
+            </ContextProvider>
           </GqlRouter>
         </RedwoodApolloProvider>
       </AuthProvider>
