@@ -8,6 +8,8 @@ import Themes from "./themes";
 import { CssBaseline } from "@material-ui/core";
 import RoutesHandler from './RoutesHandler';
 import { AuthClient, AuthMiddleware } from 'src/libs/auth';
+import { GqlRouter } from 'src/libs/gql-router'
+import resources from './resources';
 
 import './scaffold.css'
 import './index.css'
@@ -17,10 +19,12 @@ const App = () => (
     <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
       <AuthProvider client={AuthClient} type="custom">
         <RedwoodApolloProvider graphQLClientConfig={AuthMiddleware()}>
-          <ThemeProvider theme={Themes.default}>
-            <CssBaseline />
-            <RoutesHandler />
-          </ThemeProvider>
+          <GqlRouter resources={resources}>
+            <ThemeProvider theme={Themes.default}>
+              <CssBaseline />
+              <RoutesHandler />
+            </ThemeProvider>
+          </GqlRouter>
         </RedwoodApolloProvider>
       </AuthProvider>
     </RedwoodProvider>

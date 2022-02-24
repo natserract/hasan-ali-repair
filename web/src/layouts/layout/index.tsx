@@ -1,13 +1,5 @@
 import useStyles from "./styles";
-import {
-  Route,
-  Switch,
-  Redirect,
-  withRouter,
-} from "react-router-dom";
-import DashboardPage from "src/pages/DashboardPage";
-import { RouteHook } from 'src/routes'
-import NotFoundPage from 'src/pages/NotFoundPage'
+import { withRouter } from "react-router-dom";
 import classnames from "classnames";
 import { Box, IconButton, Link } from '@material-ui/core'
 import FacebookIcon from '@material-ui/icons/Facebook';
@@ -15,6 +7,9 @@ import TwitterIcon from '@material-ui/icons/Twitter';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import Header from "src/layouts/header";
 import Sidebar from "src/layouts/sidebar";
+import { useResource } from "src/libs/gql-router/resource/hooks";
+import React, { useEffect } from "react";
+import RoutesHandler from "./routes";
 
 const Layout: React.FC<{}> = (props) => {
   const classes = useStyles();
@@ -29,10 +24,7 @@ const Layout: React.FC<{}> = (props) => {
         })}
       >
         <div className={classes.fakeToolbar} />
-        <Switch>
-          <Route path="/app/dashboard" component={DashboardPage} />
-          <RouteHook component={NotFoundPage} path="*" onEnter={console.log} />
-        </Switch>
+        <RoutesHandler />
 
         <Box
           mt={5}
