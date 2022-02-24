@@ -8,6 +8,7 @@ const verifyToken = (token) => {
   try {
     // Returns if the token is both valid and not expired
     const data = jwt.verify(token, process.env.TOKEN_SIGN_KEY)
+
     return { valid: true, expired: false, data }
   } catch (err) {
     // Returns if the token is valid but expired

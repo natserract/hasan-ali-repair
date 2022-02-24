@@ -1,6 +1,7 @@
 import axios from 'axios'
 import jwt from 'jsonwebtoken'
 import { API_URL } from 'src/config/endpoint'
+import { verifyToken } from './utils'
 
 const storageKey = "AUTHORIZATION"
 
@@ -69,6 +70,12 @@ const AuthClient = {
       throw Error('Invalid AccessToken')
     }
     return token
+  },
+  getCurrentUser: async () => {
+    const item = localStorage.getItem(storageKey);
+    const token = JSON.parse(item || JSON.stringify({})).accessToken
+
+    return await verifyToken(token);
   },
   getUserMetadata: () => {
     return JSON.parse(localStorage.getItem(storageKey) || JSON.stringify({}))

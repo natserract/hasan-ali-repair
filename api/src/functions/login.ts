@@ -27,6 +27,7 @@ export const handler = async (event, context) => {
 
   // Deconstruct User Data
   const {
+    id,
     name,
     address,
     phone_number,
@@ -47,6 +48,7 @@ export const handler = async (event, context) => {
   // Generates new pair of tokens
   const accessToken = jwt.sign(
     {
+      id,
       email,
       name,
       address,
@@ -60,6 +62,7 @@ export const handler = async (event, context) => {
   )
   const refreshToken = jwt.sign(
     {
+      id,
       email,
       name,
       address,

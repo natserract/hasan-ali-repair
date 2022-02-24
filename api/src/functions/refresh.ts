@@ -30,6 +30,7 @@ export const handler = async (event, context) => {
 
   // Verifies if refresh token isnt expired. Throws if it is
   const [err, {
+    id,
     email,
     name,
     address,
@@ -49,6 +50,7 @@ export const handler = async (event, context) => {
   // Generates new pair of tokens
   const accessToken = jwt.sign(
     {
+      id,
       email,
       name,
       address,
@@ -62,6 +64,7 @@ export const handler = async (event, context) => {
   )
   const newRefreshToken = jwt.sign(
     {
+      id,
       email,
       name,
       address,
