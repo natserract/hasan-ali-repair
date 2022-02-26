@@ -5,6 +5,7 @@ import {
   LibraryBooks as LibraryIcon,
   HelpOutline as FAQIcon,
   ArrowBack as ArrowBackIcon,
+  List as ListIcon,
 } from '@material-ui/icons'
 import { useTheme } from '@material-ui/styles'
 import { withRouter } from 'react-router-dom'
@@ -94,6 +95,8 @@ const Sidebar = () => {
         } else if (user_type === 'customer') {
           return clientTypes.includes(item.name)
         }
+
+        return true
       })
 
       currentResources.map((value, id) => {
@@ -101,7 +104,7 @@ const Sidebar = () => {
           id,
           label: toCamelCase(value.name),
           link: `/app/${value.name}`,
-          icon: <React.Fragment children={value?.icon || null} />,
+          icon: <React.Fragment children={value?.icon || <ListIcon />} />,
         })
       })
 
