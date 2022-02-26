@@ -7,7 +7,6 @@ import {
   Menu,
   MenuItem,
   Fab,
-  Link,
 } from '@material-ui/core'
 import {
   Menu as MenuIcon,
@@ -17,15 +16,16 @@ import {
   Search as SearchIcon,
   Send as SendIcon,
   ArrowBack as ArrowBackIcon,
+  MenuOpen as MenuOpenIcon,
+  ClearAll as ClearAllIcon,
 } from '@material-ui/icons'
 import classNames from 'classnames'
 import useStyles from './styles'
 
-import { Badge, Typography, Button } from 'src/layouts/wrappers'
+import { Badge, Typography } from 'src/layouts/wrappers'
 import Notification from 'src/components/notification'
 import UserAvatar from 'src/components/user-avatar'
 import { useAuth } from '@redwoodjs/auth'
-import { browserHistory } from 'src/utils/history'
 
 import {
   useLayoutState,
@@ -91,7 +91,6 @@ const Header = () => {
   const classes = useStyles()
 
   const { logOut } = useAuth()
-
   const layoutState = useLayoutState()
   const layoutDispatch = useLayoutDispatch()
 
@@ -114,7 +113,7 @@ const Header = () => {
           )}
         >
           {layoutState.isSidebarOpened ? (
-            <ArrowBackIcon
+            <ClearAllIcon
               classes={{
                 root: classNames(
                   classes.headerIcon,
@@ -133,7 +132,8 @@ const Header = () => {
             />
           )}
         </IconButton>
-        <Typography variant="h6" weight="medium" className={classes.logotype}>
+
+        <Typography variant="h4" weight="medium" className={classes.logotype}>
           {APP.name}
         </Typography>
         <div className={classes.grow} />
@@ -201,6 +201,9 @@ const Header = () => {
           onClick={(e) => setProfileMenu(e.currentTarget)}
         >
           <AccountIcon classes={{ root: classes.headerIcon }} />
+          <Typography variant="body2">
+            Hi, <b>Alfin Surya</b>
+          </Typography>
         </IconButton>
         <Menu
           id="mail-menu"

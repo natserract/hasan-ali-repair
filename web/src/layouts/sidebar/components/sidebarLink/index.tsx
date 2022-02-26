@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 import {
   Collapse,
   Divider,
@@ -7,16 +7,17 @@ import {
   ListItemIcon,
   ListItemText,
   Typography,
-} from "@material-ui/core";
-import { Inbox as InboxIcon } from "@material-ui/icons";
-import { Link } from "react-router-dom";
-import classnames from "classnames"
+} from '@material-ui/core'
+import { Inbox as InboxIcon } from '@material-ui/icons'
+import { Link } from 'react-router-dom'
+import classnames from 'classnames'
+import pluralize from 'pluralize'
 
 // styles
-import useStyles from "./styles";
+import useStyles from './styles'
 
 // components
-import Dot from "../dot";
+import Dot from '../dot'
 
 type SidebarLinkProps = {
   [k: string]: any
@@ -32,15 +33,27 @@ export default function SidebarLink({
   nested,
   type,
 }: SidebarLinkProps) {
-  const classes = useStyles();
+  const classes = useStyles()
 
   // local
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
+
+  const transformPathName =
+    '/' +
+    String(
+      location.pathname
+        .split('/')
+        .filter((v, i) => v && i <= 2)
+        .join('/')
+    )
+  const plurize = pluralize(transformPathName)
   const isLinkActive =
     link &&
-    (location.pathname === link || location.pathname.indexOf(link) !== -1);
+    (location.pathname === link ||
+      location.pathname.indexOf(link) !== -1 ||
+      plurize == link)
 
-  if (type === "title")
+  if (type === 'title')
     return (
       <Typography
         className={classnames(classes.linkText, classes.sectionTitle, {
@@ -49,9 +62,9 @@ export default function SidebarLink({
       >
         {label}
       </Typography>
-    );
+    )
 
-  if (type === "divider") return <Divider className={classes.divider} />;
+  if (type === 'divider') return <Divider className={classes.divider} />
   if (link && link.includes('http')) {
     return (
       <ListItem
@@ -66,22 +79,22 @@ export default function SidebarLink({
         disableRipple
       >
         <a className={classes.externalLink} href={link}>
-        <ListItemIcon
-          className={classnames(classes.linkIcon, {
-            [classes.linkIconActive]: isLinkActive,
-          })}
-        >
-          {nested ? <Dot color={isLinkActive && "primary"} /> : icon}
-        </ListItemIcon>
-        <ListItemText
-          classes={{
-            primary: classnames(classes.linkText, {
-              [classes.linkTextActive]: isLinkActive,
-              [classes.linkTextHidden]: !isSidebarOpened,
-            }),
-          }}
-          primary={label}
-        />
+          <ListItemIcon
+            className={classnames(classes.linkIcon, {
+              [classes.linkIconActive]: isLinkActive,
+            })}
+          >
+            {nested ? <Dot color={isLinkActive && 'primary'} /> : icon}
+          </ListItemIcon>
+          <ListItemText
+            classes={{
+              primary: classnames(classes.linkText, {
+                [classes.linkTextActive]: isLinkActive,
+                [classes.linkTextHidden]: !isSidebarOpened,
+              }),
+            }}
+            primary={label}
+          />
         </a>
       </ListItem>
     )
@@ -106,7 +119,7 @@ export default function SidebarLink({
             [classes.linkIconActive]: isLinkActive,
           })}
         >
-          {nested ? <Dot color={isLinkActive && "primary"} /> : icon}
+          {nested ? <Dot color={isLinkActive && 'primary'} /> : icon}
         </ListItemIcon>
         <ListItemText
           classes={{
@@ -118,7 +131,7 @@ export default function SidebarLink({
           primary={label}
         />
       </ListItem>
-    );
+    )
 
   return (
     <>
@@ -155,7 +168,7 @@ export default function SidebarLink({
           className={classes.nestedList}
         >
           <List component="div" disablePadding>
-            {children.map(childrenLink => (
+            {children.map((childrenLink) => (
               <SidebarLink
                 key={childrenLink && childrenLink.link}
                 location={location}
@@ -169,12 +182,12 @@ export default function SidebarLink({
         </Collapse>
       )}
     </>
-  );
+  )
 
   function toggleCollapse(e) {
     if (isSidebarOpened) {
-      e.preventDefault();
-      setIsOpen(!isOpen);
+      e.preventDefault()
+      setIsOpen(!isOpen)
     }
   }
 }

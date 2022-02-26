@@ -1,3 +1,4 @@
+import React from 'react'
 import { useAuth } from '@redwoodjs/auth'
 import { useEffect } from 'react'
 import { AuthClient } from 'src/libs/auth'
@@ -10,10 +11,7 @@ import {
   Legend,
   Line,
   LineChart,
-  Pie,
-  PieChart,
   ResponsiveContainer,
-  Sector,
   Tooltip,
   XAxis,
   YAxis,
@@ -83,7 +81,6 @@ const DashboardPage = () => {
   return (
     <React.Fragment>
       <MetaTags title="Dashboard" description="Dashboard page" />
-
       <Typography
         component="h1"
         variant="h2"
@@ -91,9 +88,8 @@ const DashboardPage = () => {
         children="Latest Reports"
         gutterBottom
       />
-
-      <Link to="/app/users">Go To Users</Link>
-
+      If you clients please visit this, expect to be not found!
+      <Link to="/app/user/view/0">Go To User Detail</Link>
       <Grid item xs={12} md={8}>
         <Widget title="Simple Line Chart" noBodyPadding>
           <ResponsiveContainer width="100%" height={350}>

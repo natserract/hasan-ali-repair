@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from "react";
-import useStyles from "./styles";
+import React, { useEffect, useRef } from 'react'
+import useStyles from './styles'
 import { useAuth } from '@redwoodjs/auth'
 import { MetaTags } from '@redwoodjs/web'
 import {
@@ -11,11 +11,11 @@ import {
   FieldError,
 } from '@redwoodjs/forms'
 import { toast, Toaster } from '@redwoodjs/web/toast'
-import { Link } from "react-router-dom";
-import { browserHistory } from "src/utils/history";
+import { Link } from 'react-router-dom'
+import { browserHistory } from 'src/utils/history'
 
 const LoginPage = () => {
-  const classes = useStyles();
+  const classes = useStyles()
   const { logIn, reauthenticate } = useAuth()
 
   const usernameRef = useRef<HTMLInputElement>()
@@ -24,13 +24,17 @@ const LoginPage = () => {
   }, [])
 
   const onSubmit = async (data) => {
-    const response = await logIn({
-      email: data.email,
-      password: data.password
-    })
+    try {
+      const response = await logIn({
+        email: data.email,
+        password: data.password,
+      })
 
-    if (response.error) {
-      toast.error(response.error)
+      if (response.error) {
+        toast.error(response.error)
+      }
+    } catch (error) {
+      toast.error(error.message)
     }
   }
 
@@ -90,10 +94,7 @@ const LoginPage = () => {
                   />
 
                   <div className="rw-forgot-link">
-                    <Link
-                      to="/"
-                      className="rw-forgot-link"
-                    >
+                    <Link to="/" className="rw-forgot-link">
                       Forgot Password?
                     </Link>
                   </div>

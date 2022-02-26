@@ -1,5 +1,3 @@
-import { IResource } from './libs/gql-router/resource/types'
-
 // Icons
 import {
   Home as HomeIcon,
@@ -17,8 +15,12 @@ import ServicesPage from './pages/ServicesPage/ServicesPage'
 import VehiclesPage from './pages/VehiclesPage/VehiclesPage'
 import PartsPage from './pages/PartsPage/PartsPage'
 import MechanicsPage from './pages/MechanicsPage/MechanicsPage'
+import EditUserPage from './pages/UsersPage/pages/EditUserPage/EditUserPage'
+import CreateUserPage from './pages/UsersPage/pages/CreateUserPage/CreateUserPage'
+import ShowUserPage from './pages/UsersPage/pages/ShowUserPage/ShowUserPage'
+import { IResource } from './libs/gql-router'
 
-const adminTypes = [
+const adminAccess = [
   'dashboard',
   'users',
   'vehicles',
@@ -26,8 +28,7 @@ const adminTypes = [
   'parts',
   'mechanics',
 ]
-
-const clientTypes = ['dashboard', 'books', 'services']
+const clientAccess = ['dashboard', 'books', 'services']
 
 const resources: IResource[] = [
   {
@@ -38,6 +39,9 @@ const resources: IResource[] = [
   {
     name: 'users',
     list: UsersPage,
+    edit: EditUserPage,
+    create: CreateUserPage,
+    show: ShowUserPage,
     icon: <PeopleIcon />,
   },
   {
@@ -61,4 +65,4 @@ const resources: IResource[] = [
     icon: <EmojiPeopleIcon />,
   },
 ]
-export { resources, adminTypes, clientTypes }
+export { resources, adminAccess as adminTypes, clientAccess as clientTypes }

@@ -15,3 +15,11 @@ https://github.com/3nvy/rw-jwt-auth-example/tree/master/api/src
 - Books
 - Services
 - Manage account (#d)
+
+
+<App
+  access={{
+    admin: [],
+    client: []
+  }}
+/>

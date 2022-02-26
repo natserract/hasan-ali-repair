@@ -23,11 +23,9 @@ import {
   useLayoutDispatch,
   toggleSidebar,
 } from 'src/store/layout'
-import { useResource } from 'src/libs/gql-router/resource/hooks'
+import { useResource } from 'src/libs/gql-router/contexts/resource'
 import { toCamelCase } from 'src/utils/string'
 import { adminTypes, clientTypes } from 'src/resources'
-import { IResourceItem } from 'src/libs/gql-router/resource/types'
-import { useAuth } from '@redwoodjs/auth'
 
 type LinkType = {
   id?: number
@@ -69,7 +67,6 @@ const Sidebar = () => {
   const { isSidebarOpened } = useLayoutState()
   const layoutDispatch = useLayoutDispatch()
   const { resources } = useResource()
-  const { currentUser } = useAuth()
 
   // local
   const [isPermanent, setPermanent] = useState(true)
@@ -104,6 +101,7 @@ const Sidebar = () => {
           id,
           label: toCamelCase(value.name),
           link: `/app/${value.name}`,
+          // eslint-disable-next-line react/no-children-prop
           icon: <React.Fragment children={value?.icon || <ListIcon />} />,
         })
       })

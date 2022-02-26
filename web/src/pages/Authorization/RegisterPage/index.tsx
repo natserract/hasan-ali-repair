@@ -49,7 +49,7 @@ const RegisterPage = () => {
         }, 1000)
       }
     } catch (error) {
-      toast.error(extractError(error).message)
+      toast.error(error.message)
     }
   }
 

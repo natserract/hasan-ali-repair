@@ -1,24 +1,24 @@
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import Theme from 'src/themes/default'
-import { alpha } from "@material-ui/core/styles/colorManipulator";
+import { alpha } from '@material-ui/core/styles/colorManipulator'
 
-const styles = makeStyles(
-  (theme: typeof Theme) => createStyles({
+const styles = makeStyles((theme: typeof Theme) =>
+  createStyles({
     logotype: {
-      color: "white",
+      color: 'white',
       marginLeft: theme.spacing(2.5),
       marginRight: theme.spacing(2.5),
       fontWeight: 500,
       fontSize: 18,
-      whiteSpace: "nowrap",
-      [theme.breakpoints.down("xs")]: {
-        display: "none",
+      whiteSpace: 'nowrap',
+      [theme.breakpoints.down('xs')]: {
+        display: 'none',
       },
     },
     appBar: {
-      width: "100vw",
+      width: '100vw',
       zIndex: theme.zIndex.drawer + 1,
-      transition: theme.transitions.create(["margin"], {
+      transition: theme.transitions.create(['margin'], {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
@@ -28,69 +28,69 @@ const styles = makeStyles(
       paddingRight: theme.spacing(2),
     },
     hide: {
-      display: "none",
+      display: 'none',
     },
     grow: {
       flexGrow: 1,
     },
     search: {
-      position: "relative",
+      position: 'relative',
       borderRadius: 25,
       paddingLeft: theme.spacing(2.5),
       width: 36,
       backgroundColor: alpha(theme.palette.common.black, 0),
-      transition: theme.transitions.create(["background-color", "width"]),
-      "&:hover": {
-        cursor: "pointer",
+      transition: theme.transitions.create(['background-color', 'width']),
+      '&:hover': {
+        cursor: 'pointer',
         backgroundColor: alpha(theme.palette.common.black, 0.08),
       },
     },
     searchFocused: {
       backgroundColor: alpha(theme.palette.common.black, 0.08),
-      width: "100%",
-      [theme.breakpoints.up("md")]: {
+      width: '100%',
+      [theme.breakpoints.up('md')]: {
         width: 250,
       },
     },
     searchIcon: {
       width: 36,
       right: 0,
-      height: "100%",
-      position: "absolute",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      transition: theme.transitions.create("right"),
-      "&:hover": {
-        cursor: "pointer",
+      height: '100%',
+      position: 'absolute',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      transition: theme.transitions.create('right'),
+      '&:hover': {
+        cursor: 'pointer',
       },
     },
     searchIconOpened: {
       right: theme.spacing(1.25),
     },
     inputRoot: {
-      color: "inherit",
-      width: "100%",
+      color: 'inherit',
+      width: '100%',
     },
     inputInput: {
       height: 36,
       padding: 0,
       paddingRight: 36 + theme.spacing(1.25),
-      width: "100%",
+      width: '100%',
     },
     messageContent: {
-      display: "flex",
-      flexDirection: "column",
+      display: 'flex',
+      flexDirection: 'column',
     },
     headerMenu: {
       marginTop: theme.spacing(7),
     },
     headerMenuList: {
-      display: "flex",
-      flexDirection: "column",
+      display: 'flex',
+      flexDirection: 'column',
     },
     headerMenuItem: {
-      "&:hover, &:focus": {
+      '&:hover, &:focus': {
         backgroundColor: theme.palette.background.light,
         // color: "white",
       },
@@ -98,30 +98,39 @@ const styles = makeStyles(
     headerMenuButton: {
       marginLeft: theme.spacing(2),
       padding: theme.spacing(0.5),
+
+      '&:hover': {
+        background: 'transparent',
+      },
     },
     headerMenuButtonSandwich: {
       marginLeft: 9,
-      [theme.breakpoints.down("sm")]: {
-        marginLeft: 0
+      [theme.breakpoints.down('sm')]: {
+        marginLeft: 0,
       },
       padding: theme.spacing(0.5),
     },
     headerMenuButtonCollapse: {
       marginRight: theme.spacing(2),
+
+      '&:hover': {
+        background: 'transparent',
+      },
     },
     headerIcon: {
       fontSize: 28,
-      color: "rgba(255, 255, 255, 0.35)",
+      color: 'rgba(255, 255, 255, 0.35)',
+      marginRight: 5,
     },
     headerIconCollapse: {
-      color: "white",
+      color: 'white',
     },
     profileMenu: {
       minWidth: 265,
     },
     profileMenuUser: {
-      display: "flex",
-      flexDirection: "column",
+      display: 'flex',
+      flexDirection: 'column',
       padding: theme.spacing(2),
     },
     profileMenuItem: {
@@ -132,49 +141,49 @@ const styles = makeStyles(
       color: theme.palette.text.hint,
       '&:hover': {
         color: theme.palette.primary.main,
-      }
+      },
     },
     profileMenuLink: {
       fontSize: 16,
-      textDecoration: "none",
-      "&:hover": {
-        cursor: "pointer",
+      textDecoration: 'none',
+      '&:hover': {
+        cursor: 'pointer',
       },
     },
     messageNotification: {
-      height: "auto",
-      display: "flex",
-      alignItems: "center",
-      "&:hover, &:focus": {
+      height: 'auto',
+      display: 'flex',
+      alignItems: 'center',
+      '&:hover, &:focus': {
         backgroundColor: theme.palette.background.light,
       },
     },
     messageNotificationSide: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
       marginRight: theme.spacing(2),
     },
     messageNotificationBodySide: {
-      alignItems: "flex-start",
+      alignItems: 'flex-start',
       marginRight: 0,
     },
     sendMessageButton: {
       margin: theme.spacing(4),
       marginTop: theme.spacing(2),
       marginBottom: theme.spacing(2),
-      textTransform: "none",
+      textTransform: 'none',
     },
     sendButtonIcon: {
       marginLeft: theme.spacing(2),
     },
     purchaseBtn: {
       [theme.breakpoints.down('sm')]: {
-        display: 'none'
+        display: 'none',
       },
-      marginRight: theme.spacing(3)
-    }
+      marginRight: theme.spacing(3),
+    },
   })
-);
+)
 
 export default styles
