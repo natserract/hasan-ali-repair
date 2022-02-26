@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import React, { useRef } from 'react'
 import {
   Form,
   Label,
@@ -10,56 +10,42 @@ import {
   TelField,
 } from '@redwoodjs/forms'
 import { useAuth } from '@redwoodjs/auth'
-import { MetaTags, useMutation } from '@redwoodjs/web'
+import { MetaTags } from '@redwoodjs/web'
 import { toast, Toaster } from '@redwoodjs/web/toast'
 import { useEffect } from 'react'
-import { Link } from "react-router-dom";
-import { REGISTERPAGE_CREATEUSERMUTATION } from './mutation'
-import useStyles from "./styles";
-import { hashedPassword } from 'src/utils/encrypt'
+import { Link } from 'react-router-dom'
+import useStyles from './styles'
 import { extractError } from 'src/utils/errors'
-import { browserHistory } from "src/utils/history"
+import { browserHistory } from 'src/utils/history'
 
 const RegisterPage = () => {
-  const classes = useStyles();
+  const classes = useStyles()
 
   const nameRef = useRef<HTMLInputElement>()
   useEffect(() => {
     nameRef.current?.focus()
   }, [])
 
-  const [registerUserFunc] = useMutation(REGISTERPAGE_CREATEUSERMUTATION)
+  const { signUp } = useAuth()
 
   const onSubmit = async (data) => {
     const { name, password, email, address, phone_number } = data
-    const hashed = hashedPassword(password);
 
     try {
-      const defaultAttributes = {
+      const response = await signUp({
         name,
-        user_type: "customer",
+        email,
+        password,
+        user_type: 'customer',
         address,
         phone_number,
-      }
-
-      const response = await registerUserFunc({
-        variables: {
-          input: {
-            email,
-            hashedPassword: hashed.hashPassword,
-            salt: hashed.salt,
-            ...defaultAttributes,
-          }
-        }
       })
 
-      if (response.errors) {
-        toast.error(JSON.stringify(response.errors))
-      } else {
-        toast.success("Register success. You must login first.")
+      if (response) {
+        toast.success('Register success. You must login first.')
 
         setTimeout(() => {
-          browserHistory.push("/login")
+          browserHistory.push('/login')
         }, 1000)
       }
     } catch (error) {
@@ -187,7 +173,7 @@ const RegisterPage = () => {
               <span>Already have an account?</span>{' '}
               <Link to="/login" className="rw-link">
                 Log in
-            </Link>
+              </Link>
             </div>
           </div>
         </div>

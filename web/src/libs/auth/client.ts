@@ -1,9 +1,9 @@
 import axios from 'axios'
 import jwt from 'jsonwebtoken'
 import { API_URL } from 'src/constant/endpoint'
+import { storageKey } from './config'
+import { CurrentUser } from './hooks'
 import { verifyToken } from './utils'
-
-const storageKey = "AUTHORIZATION"
 
 const AuthClient = {
   type: 'custom',
@@ -13,7 +13,7 @@ const AuthClient = {
         .get(`${API_URL}/login`, {
           params: {
             email,
-            password
+            password,
           },
         })
         .then(({ data: { data } }) => {
@@ -23,14 +23,7 @@ const AuthClient = {
         .catch(reject)
     })
   },
-  signup: ({
-    name,
-    email,
-    password,
-    user_type,
-    address,
-    phone_number
-  }) => {
+  signup: ({ name, email, password, user_type, address, phone_number }) => {
     return new Promise((resolve, reject) => {
       axios
         .post(`${API_URL}/signup`, {
@@ -39,7 +32,7 @@ const AuthClient = {
           password,
           user_type,
           address,
-          phone_number
+          phone_number,
         })
         .then(({ data: { data } }) => {
           localStorage.setItem(storageKey, JSON.stringify(data))
@@ -49,19 +42,19 @@ const AuthClient = {
     })
   },
   logout: () => {
-    const item = localStorage.getItem(storageKey);
+    const item = localStorage.getItem(storageKey)
     const token = JSON.parse(item || JSON.stringify({})).accessToken
 
     return axios
       .put(`${API_URL}/logout`, {
-        token
+        token,
       })
       .finally(() => {
         localStorage.removeItem(storageKey)
       })
   },
   getToken: () => {
-    const item = localStorage.getItem(storageKey);
+    const item = localStorage.getItem(storageKey)
     const token = JSON.parse(item || JSON.stringify({})).accessToken
 
     const decoded = jwt.decode(token)
@@ -71,17 +64,15 @@ const AuthClient = {
     }
     return token
   },
-  getCurrentUser: async () => {
-    const item = localStorage.getItem(storageKey);
+  getCurrentUser: async (): Promise<CurrentUser> => {
+    const item = localStorage.getItem(storageKey)
     const token = JSON.parse(item || JSON.stringify({})).accessToken
 
-    return await verifyToken(token);
+    return (await verifyToken(token)) as CurrentUser
   },
   getUserMetadata: () => {
     return JSON.parse(localStorage.getItem(storageKey) || JSON.stringify({}))
   },
 }
 
-export {
-  AuthClient,
-}
+export { AuthClient }

@@ -1,10 +1,8 @@
 import { db } from 'src/lib/db'
-import { DbAuthHandler } from '@redwoodjs/api'
 import jwt from 'jsonwebtoken'
-import { comparePassword, useHashedPassword } from 'src/utils/encrypt'
-import * as CryptoJS from 'crypto-js'
+import { comparePassword } from 'src/utils/encrypt'
 
-export const handler = async (event, context) => {
+export const handler = async (event) => {
   // Get user data from request body
   const { email, password } = event.queryStringParameters
   console.log('event.queryStringParameters', event.queryStringParameters)
@@ -13,8 +11,8 @@ export const handler = async (event, context) => {
     where: {
       email,
     },
-  });
-  console.log('Auth', user);
+  })
+  console.log('Auth', user)
 
   // Throws if user cant be found with given credentials
   if (!user)
@@ -26,17 +24,13 @@ export const handler = async (event, context) => {
     }
 
   // Deconstruct User Data
-  const {
-    id,
-    name,
-    address,
-    phone_number,
-    user_type,
-    salt,
-  } = user
+  const { id, name, address, phone_number, user_type, salt } = user
 
   // Check if passwords match. Throws if they dont
-  const match = comparePassword({ salt, text: password }, user['hashedPassword'])
+  const match = comparePassword(
+    { salt, text: password },
+    user['hashedPassword']
+  )
   if (!match)
     return {
       statusCode: 400,

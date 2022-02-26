@@ -1,9 +1,19 @@
-import { useEffect, useState } from "react";
-import { AuthClient } from "src/libs/auth";
+import { useEffect, useState } from 'react'
+import { AuthClient } from 'src/libs/auth'
+
+export type CurrentUser = {
+  id: number
+  address: string
+  email: string
+  phone_number: string
+  user_type: 'admin' | 'customer'
+  exp?: number
+  iat?: number
+}
 
 export const useAuthState = () => {
   const [state, setState] = useState({
-    currentUser: {},
+    currentUser: {} as CurrentUser,
     isSuccess: false,
     isError: false,
   })
@@ -12,15 +22,15 @@ export const useAuthState = () => {
   useEffect(() => {
     AuthClient.getCurrentUser()
       .then((user) => {
-        setState(state => ({
+        setState((state) => ({
           ...state,
           isSuccess: true,
           isError: false,
-          currentUser: user
+          currentUser: user,
         }))
       })
-      .catch(error => {
-        setState(state => ({
+      .catch((error) => {
+        setState((state) => ({
           ...state,
           isError: true,
         }))

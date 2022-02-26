@@ -2,32 +2,20 @@ import { db } from 'src/lib/db'
 import { useHashedPassword } from 'src/utils/encrypt'
 import { AuthenticationError } from '@redwoodjs/graphql-server'
 
-export const handler = async (event, context) => {
+export const handler = async (event) => {
   // Get user from request body
-  const {
-    name,
-    email,
-    password,
-    user_type,
-    address,
-    phone_number,
-  } = JSON.parse(event.body)
-  console.log("event body", event.body)
+  const { name, email, password, user_type, address, phone_number } =
+    JSON.parse(event.body)
 
   // Encrypt password
   const encryptedPassword = useHashedPassword(password)
 
-  if (
-    name &&
-    email &&
-    password &&
-    user_type
-  ) {
+  if (name && email && password && user_type) {
     const user = await db.user.findUnique({
       where: {
-        email
-      }
-    });
+        email,
+      },
+    })
 
     if (user) {
       return {
@@ -47,7 +35,7 @@ export const handler = async (event, context) => {
         user_type,
         address,
         phone_number,
-      }
+      },
     })
     console.log('newUser', newUser)
 
@@ -63,6 +51,6 @@ export const handler = async (event, context) => {
       }),
     }
   } else {
-    throw new AuthenticationError("Some missing field!")
+    throw new AuthenticationError('Some missing field!')
   }
 }

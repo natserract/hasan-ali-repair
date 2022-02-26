@@ -1,18 +1,18 @@
-import useStyles from "./styles";
-import { withRouter } from "react-router-dom";
-import classnames from "classnames";
+import useStyles from './styles'
+import { withRouter } from 'react-router-dom'
+import classnames from 'classnames'
 import { Box, IconButton, Link } from '@material-ui/core'
-import FacebookIcon from '@material-ui/icons/Facebook';
-import TwitterIcon from '@material-ui/icons/Twitter';
-import GitHubIcon from '@material-ui/icons/GitHub';
-import Header from "src/layouts/header";
-import Sidebar from "src/layouts/sidebar";
-import { useResource } from "src/libs/gql-router/resource/hooks";
-import React, { useEffect } from "react";
-import RoutesHandler from "./routes";
+import FacebookIcon from '@material-ui/icons/Facebook'
+import TwitterIcon from '@material-ui/icons/Twitter'
+import GitHubIcon from '@material-ui/icons/GitHub'
+import Header from 'src/layouts/header'
+import Sidebar from 'src/layouts/sidebar'
+import { useResource } from 'src/libs/gql-router/resource/hooks'
+import React, { useEffect } from 'react'
+import RoutesHandler from './routes'
 
 const Layout: React.FC<{}> = (props) => {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <div className={classes.root}>
@@ -29,9 +29,9 @@ const Layout: React.FC<{}> = (props) => {
 
           <Box
             mt={5}
-            width={"100%"}
-            display={"flex"}
-            alignItems={"center"}
+            width={'100%'}
+            display={'flex'}
+            alignItems={'center'}
             justifyContent="space-between"
           >
             <div>
@@ -42,7 +42,7 @@ const Layout: React.FC<{}> = (props) => {
                 className={classes.link}
               >
                 Flatlogic
-                </Link>
+              </Link>
               <Link
                 color={'primary'}
                 href={'https://flatlogic.com/about'}
@@ -50,7 +50,7 @@ const Layout: React.FC<{}> = (props) => {
                 className={classes.link}
               >
                 About Us
-                </Link>
+              </Link>
               <Link
                 color={'primary'}
                 href={'https://flatlogic.com/blog'}
@@ -58,7 +58,7 @@ const Layout: React.FC<{}> = (props) => {
                 className={classes.link}
               >
                 Blog
-                </Link>
+              </Link>
             </div>
             <div>
               <Link
@@ -66,32 +66,17 @@ const Layout: React.FC<{}> = (props) => {
                 target={'_blank'}
               >
                 <IconButton aria-label="facebook">
-                  <FacebookIcon
-                    htmlColor="#6E6E6E99"
-                  />
+                  <FacebookIcon htmlColor="#6E6E6E99" />
                 </IconButton>
               </Link>
-              <Link
-                href={'https://twitter.com/flatlogic'}
-                target={'_blank'}
-              >
+              <Link href={'https://twitter.com/flatlogic'} target={'_blank'}>
                 <IconButton aria-label="twitter">
-                  <TwitterIcon
-                    htmlColor="#6E6E6E99"
-                  />
+                  <TwitterIcon htmlColor="#6E6E6E99" />
                 </IconButton>
               </Link>
-              <Link
-                href={'https://github.com/flatlogic'}
-                target={'_blank'}
-              >
-                <IconButton
-                  aria-label="github"
-                  style={{ marginRight: -12 }}
-                >
-                  <GitHubIcon
-                    htmlColor="#6E6E6E99"
-                  />
+              <Link href={'https://github.com/flatlogic'} target={'_blank'}>
+                <IconButton aria-label="github" style={{ marginRight: -12 }}>
+                  <GitHubIcon htmlColor="#6E6E6E99" />
                 </IconButton>
               </Link>
             </div>

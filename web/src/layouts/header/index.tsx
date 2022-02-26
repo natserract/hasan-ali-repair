@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 import {
   AppBar,
   Toolbar,
@@ -7,8 +7,8 @@ import {
   Menu,
   MenuItem,
   Fab,
-  Link
-} from "@material-ui/core";
+  Link,
+} from '@material-ui/core'
 import {
   Menu as MenuIcon,
   MailOutline as MailIcon,
@@ -17,89 +17,90 @@ import {
   Search as SearchIcon,
   Send as SendIcon,
   ArrowBack as ArrowBackIcon,
-} from "@material-ui/icons";
-import classNames from "classnames";
-import useStyles from "./styles";
+} from '@material-ui/icons'
+import classNames from 'classnames'
+import useStyles from './styles'
 
-import { Badge, Typography, Button } from "src/layouts/wrappers";
-import Notification from "src/components/notification";
-import UserAvatar from "src/components/user-avatar";
-import { useAuth } from "@redwoodjs/auth";
-import { browserHistory } from "src/utils/history";
+import { Badge, Typography, Button } from 'src/layouts/wrappers'
+import Notification from 'src/components/notification'
+import UserAvatar from 'src/components/user-avatar'
+import { useAuth } from '@redwoodjs/auth'
+import { browserHistory } from 'src/utils/history'
 
 import {
   useLayoutState,
   useLayoutDispatch,
   toggleSidebar,
 } from 'src/store/layout'
+import { APP } from 'src/constant/app'
 
 const messages = [
   {
     id: 0,
-    variant: "warning",
-    name: "Jane Hew",
-    message: "Hey! How is it going?",
-    time: "9:32",
+    variant: 'warning',
+    name: 'Jane Hew',
+    message: 'Hey! How is it going?',
+    time: '9:32',
   },
   {
     id: 1,
-    variant: "success",
-    name: "Lloyd Brown",
-    message: "Check out my new Dashboard",
-    time: "9:18",
+    variant: 'success',
+    name: 'Lloyd Brown',
+    message: 'Check out my new Dashboard',
+    time: '9:18',
   },
   {
     id: 2,
-    variant: "primary",
-    name: "Mark Winstein",
-    message: "I want rearrange the appointment",
-    time: "9:15",
+    variant: 'primary',
+    name: 'Mark Winstein',
+    message: 'I want rearrange the appointment',
+    time: '9:15',
   },
   {
     id: 3,
-    variant: "secondary",
-    name: "Liana Dutti",
-    message: "Good news from sale department",
-    time: "9:09",
+    variant: 'secondary',
+    name: 'Liana Dutti',
+    message: 'Good news from sale department',
+    time: '9:09',
   },
-];
+]
 
 const notifications = [
-  { id: 0, color: "warning", message: "Check out this awesome ticket" },
+  { id: 0, color: 'warning', message: 'Check out this awesome ticket' },
   {
     id: 1,
-    color: "success",
-    type: "info",
-    message: "What is the best way to get ...",
+    color: 'success',
+    type: 'info',
+    message: 'What is the best way to get ...',
   },
   {
     id: 2,
-    color: "secondary",
-    type: "notification",
-    message: "This is just a simple notification",
+    color: 'secondary',
+    type: 'notification',
+    message: 'This is just a simple notification',
   },
   {
     id: 3,
-    color: "primary",
-    type: "e-commerce",
-    message: "12 new orders has arrived today",
+    color: 'primary',
+    type: 'e-commerce',
+    message: '12 new orders has arrived today',
   },
-];
+]
 
 const Header = () => {
-  const classes = useStyles();
+  const classes = useStyles()
 
   const { logOut } = useAuth()
 
-  const layoutState = useLayoutState();
-  const layoutDispatch = useLayoutDispatch();
+  const layoutState = useLayoutState()
+  const layoutDispatch = useLayoutDispatch()
 
-  const [mailMenu, setMailMenu] = useState(null);
-  const [isMailsUnread, setIsMailsUnread] = useState(true);
-  const [notificationsMenu, setNotificationsMenu] = useState(null);
-  const [isNotificationsUnread, setIsNotificationsUnread] = useState(true);
-  const [profileMenu, setProfileMenu] = useState(null);
-  const [isSearchOpen, setSearchOpen] = useState(false);
+  const [mailMenu, setMailMenu] = useState(null)
+  const [isMailsUnread, setIsMailsUnread] = useState(true)
+  const [notificationsMenu, setNotificationsMenu] = useState(null)
+  const [isNotificationsUnread, setIsNotificationsUnread] = useState(true)
+  const [profileMenu, setProfileMenu] = useState(null)
+  const [isSearchOpen, setSearchOpen] = useState(false)
 
   return (
     <AppBar position="fixed" className={classes.appBar}>
@@ -109,7 +110,7 @@ const Header = () => {
           onClick={() => toggleSidebar(layoutDispatch)}
           className={classNames(
             classes.headerMenuButtonSandwich,
-            classes.headerMenuButtonCollapse,
+            classes.headerMenuButtonCollapse
           )}
         >
           {layoutState.isSidebarOpened ? (
@@ -117,7 +118,7 @@ const Header = () => {
               classes={{
                 root: classNames(
                   classes.headerIcon,
-                  classes.headerIconCollapse,
+                  classes.headerIconCollapse
                 ),
               }}
             />
@@ -126,14 +127,14 @@ const Header = () => {
               classes={{
                 root: classNames(
                   classes.headerIcon,
-                  classes.headerIconCollapse,
+                  classes.headerIconCollapse
                 ),
               }}
             />
           )}
         </IconButton>
         <Typography variant="h6" weight="medium" className={classes.logotype}>
-          React Material Admin
+          {APP.name}
         </Typography>
         <div className={classes.grow} />
 
@@ -162,9 +163,9 @@ const Header = () => {
           color="inherit"
           aria-haspopup="true"
           aria-controls="mail-menu"
-          onClick={e => {
-            setNotificationsMenu(e.currentTarget);
-            setIsNotificationsUnread(false);
+          onClick={(e) => {
+            setNotificationsMenu(e.currentTarget)
+            setIsNotificationsUnread(false)
           }}
           className={classes.headerMenuButton}
         >
@@ -179,9 +180,9 @@ const Header = () => {
           color="inherit"
           aria-haspopup="true"
           aria-controls="mail-menu"
-          onClick={e => {
-            setMailMenu(e.currentTarget);
-            setIsMailsUnread(false);
+          onClick={(e) => {
+            setMailMenu(e.currentTarget)
+            setIsMailsUnread(false)
           }}
           className={classes.headerMenuButton}
         >
@@ -197,7 +198,7 @@ const Header = () => {
           color="inherit"
           className={classes.headerMenuButton}
           aria-controls="profile-menu"
-          onClick={e => setProfileMenu(e.currentTarget)}
+          onClick={(e) => setProfileMenu(e.currentTarget)}
         >
           <AccountIcon classes={{ root: classes.headerIcon }} />
         </IconButton>
@@ -223,7 +224,7 @@ const Header = () => {
               {messages.length} New Messages
             </Typography>
           </div>
-          {messages.map(message => (
+          {messages.map((message) => (
             <MenuItem key={message.id} className={classes.messageNotification}>
               <div className={classes.messageNotificationSide}>
                 <UserAvatar color={message.variant} name={message.name} />
@@ -234,7 +235,7 @@ const Header = () => {
               <div
                 className={classNames(
                   classes.messageNotificationSide,
-                  classes.messageNotificationBodySide,
+                  classes.messageNotificationBodySide
                 )}
               >
                 <Typography weight="medium" gutterBottom>
@@ -264,7 +265,7 @@ const Header = () => {
           className={classes.headerMenu}
           disableAutoFocusItem
         >
-          {notifications.map(notification => (
+          {notifications.map((notification) => (
             <MenuItem
               key={notification.id}
               onClick={() => setNotificationsMenu(null)}
@@ -299,7 +300,7 @@ const Header = () => {
           <MenuItem
             className={classNames(
               classes.profileMenuItem,
-              classes.headerMenuItem,
+              classes.headerMenuItem
             )}
           >
             <AccountIcon className={classes.profileMenuIcon} /> Profile
@@ -307,7 +308,7 @@ const Header = () => {
           <MenuItem
             className={classNames(
               classes.profileMenuItem,
-              classes.headerMenuItem,
+              classes.headerMenuItem
             )}
           >
             <AccountIcon className={classes.profileMenuIcon} /> Tasks
@@ -315,7 +316,7 @@ const Header = () => {
           <MenuItem
             className={classNames(
               classes.profileMenuItem,
-              classes.headerMenuItem,
+              classes.headerMenuItem
             )}
           >
             <AccountIcon className={classes.profileMenuIcon} /> Messages

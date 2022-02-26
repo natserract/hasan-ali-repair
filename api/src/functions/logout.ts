@@ -16,11 +16,11 @@ const verifyToken = (token) =>
     }
   })
 
-export const handler = async (event, context) => {
+export const handler = async (event) => {
   const { token } = JSON.parse(event.body)
 
   // Removes refresh token from user db entry, if provided token is valid
-  const verifyUser = await verifyToken(token) as Prisma.UserCreateInput
+  const verifyUser = (await verifyToken(token)) as Prisma.UserCreateInput
   if (verifyUser) {
     await db.user.update({
       data: { refreshToken: null },
@@ -28,16 +28,14 @@ export const handler = async (event, context) => {
     })
   }
 
-  const now = new Date();
+  const now = new Date()
 
   // Expires token on cookies
   return {
     statusCode: 200,
     // Expire auth coockie headers
     headers: {
-      'set-cookie': [
-        `refreshToken=; Path=/; expires=${now.toUTCString()};`,
-      ],
+      'set-cookie': [`refreshToken=; Path=/; expires=${now.toUTCString()};`],
     },
   }
 }

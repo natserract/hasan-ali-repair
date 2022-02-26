@@ -8,7 +8,7 @@ import Layout from 'src/layouts/layout'
 import { useAuth } from '@redwoodjs/auth'
 
 const RoutesHandler = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth()
 
   return (
     <Router history={browserHistory}>
@@ -17,14 +17,27 @@ const RoutesHandler = () => {
         <Route
           exact
           path="/app"
-          render={() => <Redirect to="/app/dashboard" />} />
-        <PrivateRoute isAuthenticated={isAuthenticated} path="/app" component={Layout} />
-        <PublicRoute isAuthenticated={isAuthenticated} path="/login" component={Login} />
-        <PublicRoute isAuthenticated={isAuthenticated} path="/register" component={Register} />
+          render={() => <Redirect to="/app/dashboard" />}
+        />
+        <PrivateRoute
+          isAuthenticated={isAuthenticated}
+          path="/app"
+          component={Layout}
+        />
+        <PublicRoute
+          isAuthenticated={isAuthenticated}
+          path="/login"
+          component={Login}
+        />
+        <PublicRoute
+          isAuthenticated={isAuthenticated}
+          path="/register"
+          component={Register}
+        />
         <RouteHook component={NotFoundPage} path="*" onEnter={console.log} />
       </Switch>
     </Router>
   )
 }
 
-export default RoutesHandler;
+export default RoutesHandler
