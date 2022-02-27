@@ -1,16 +1,46 @@
-import { useCallback, useContext } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
+import { useAccess } from '../access'
 import { ResourceContext } from './context'
 import { IResourceContext, IResourceItem } from './types'
 
 type UseResourceType = {
   resources: IResourceContext['resources']
+  currentResources: IResourceContext['resources'] | undefined
 }
 
 export const useResource = (): UseResourceType => {
-  const context = useContext(ResourceContext)
+  const { resources } = useContext(ResourceContext)
+  const { currentRole, access } = useAccess()
+
+  const [currentResources, setCurrentResources] = useState<typeof resources>()
+
+  useEffect(() => {
+    if (currentRole) {
+      const isAccessEmpty = !access || !Object.values(access).length
+      let currentResources = resources
+
+      if (!isAccessEmpty) {
+        currentResources = resources.filter((item) => {
+          let entries: string[] = []
+          Object.entries(access).forEach(([key, values]) => {
+            if (key == currentRole) {
+              entries = values as string[]
+            }
+          })
+
+          return entries.includes(item.name)
+        })
+      }
+
+      if (currentResources.length) {
+        setCurrentResources(currentResources)
+      }
+    }
+  }, [access, currentRole, resources])
 
   return {
-    resources: context.resources,
+    resources,
+    currentResources,
   }
 }
 

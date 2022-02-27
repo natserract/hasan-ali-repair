@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { IResource, useResource } from "../resource"
 import pluralize from 'pluralize'
 import { Route, Switch } from 'react-router-dom'
-import { useAccess } from ".."
 import { RouteHook } from "../../components/routes"
 import DefaultNotFoundPage from "../../pages/notfound"
 
@@ -17,8 +16,7 @@ type RouteComponentProps = {
 const RouteComponent: React.FC<RouteComponentProps> = ({
   notFoundPage: NotFoundPage,
 }) => {
-  const { resources } = useResource()
-  const { currentRole, access } = useAccess()
+  const { currentResources } = useResource()
 
   const routesRef = useRef([])
   const [routesList, setRoutesList] = useState([])
@@ -124,23 +122,11 @@ const RouteComponent: React.FC<RouteComponentProps> = ({
   }, [])
 
   useEffect(() => {
-    if (currentRole) {
-      const currentResources = resources.filter((item) => {
-        let entries: string[] = []
-        Object.entries(access).forEach(([key, values]) => {
-          if (key == currentRole) {
-            entries = values as string[]
-          }
-        })
-
-        return entries.includes(item.name)
-      })
-
-      if (currentResources.length) {
-        currentResources.map((resource) => RouteHandler(resource))
-      }
+    if (currentResources) {
+      currentResources.map((resource) => RouteHandler(resource))
+      console.log('currentResources', currentResources)
     }
-  }, [RouteHandler, access, currentRole, resources])
+  }, [RouteHandler, currentResources])
 
   return (
     <Switch>

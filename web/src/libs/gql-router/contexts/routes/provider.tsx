@@ -49,11 +49,13 @@ const RoutesProvider: React.FC<RoutesProviderProps> = (props) => {
     <Router history={history ?? browserHistory}>
       <Switch>
         <Route exact path="/" render={() => <Redirect to={routePath} />} />
-        <Route
-          exact
-          path={basePath}
-          render={() => <Redirect to="/app/dashboard" />}
-        />
+        {basePath && (
+          <Route
+            exact
+            path={basePath}
+            render={() => <Redirect to={routePath} />}
+          />
+        )}
 
         <PrivateRoute
           isAuthenticated={isAuthenticated}

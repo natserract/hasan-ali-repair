@@ -11,7 +11,6 @@ import { useTheme } from '@material-ui/styles'
 import { withRouter } from 'react-router-dom'
 import classNames from 'classnames'
 import Theme from 'src/themes/default'
-import { AuthClient } from 'src/libs/auth/client'
 
 import useStyles from './styles'
 
@@ -25,7 +24,6 @@ import {
 } from 'src/store/layout'
 import { useResource } from 'src/libs/gql-router/contexts/resource'
 import { toCamelCase } from 'src/utils/string'
-import { adminTypes, clientTypes } from 'src/resources'
 
 type LinkType = {
   id?: number
@@ -66,7 +64,7 @@ const Sidebar = () => {
   // global
   const { isSidebarOpened } = useLayoutState()
   const layoutDispatch = useLayoutDispatch()
-  const { resources } = useResource()
+  const { currentResources } = useResource()
 
   // local
   const [isPermanent, setPermanent] = useState(true)
@@ -82,20 +80,8 @@ const Sidebar = () => {
   const dynamicMenuRef = useRef<LinkType[]>([])
   const [dynamicMenu, setDynamicMenu] = useState<LinkType[]>([])
 
-  const handleMenu = () => {
-    const onFetch = async () => {
-      const { user_type } = await AuthClient.getCurrentUser()
-
-      const currentResources = resources.filter((item) => {
-        if (user_type === 'admin') {
-          return adminTypes.includes(item.name)
-        } else if (user_type === 'customer') {
-          return clientTypes.includes(item.name)
-        }
-
-        return true
-      })
-
+  useEffect(() => {
+    if (currentResources) {
       currentResources.map((value, id) => {
         dynamicMenuRef.current.push({
           id,
@@ -105,14 +91,9 @@ const Sidebar = () => {
           icon: <React.Fragment children={value?.icon || <ListIcon />} />,
         })
       })
-
       setDynamicMenu(dynamicMenuRef.current.concat(defaultLinks))
     }
-
-    onFetch()
-  }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(handleMenu, [])
+  }, [currentResources])
 
   return (
     <Drawer
