@@ -18,7 +18,7 @@ import MechanicsPage from './pages/MechanicsPage/MechanicsPage'
 import EditUserPage from './pages/UsersPage/pages/EditUserPage/EditUserPage'
 import CreateUserPage from './pages/UsersPage/pages/CreateUserPage/CreateUserPage'
 import ShowUserPage from './pages/UsersPage/pages/ShowUserPage/ShowUserPage'
-import { IResource } from './libs/gql-router'
+import { IResourceItem } from './libs/gql-router'
 
 const adminAccess = [
   'dashboard',
@@ -27,10 +27,11 @@ const adminAccess = [
   'services',
   'parts',
   'mechanics',
+  'register',
 ]
-const clientAccess = ['dashboard', 'books', 'services']
+const clientAccess = ['dashboard', 'register', 'books', 'services']
 
-const resources: IResource[] = [
+const resources: IResourceItem[] = [
   {
     name: 'dashboard',
     pure: DashboardPage,

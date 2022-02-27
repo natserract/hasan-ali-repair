@@ -44,3 +44,10 @@ export interface AuthContextInterface {
   hasError: boolean
   error?: Error
 }
+
+export type RoutesProps = {
+  path: string
+  component: React.ComponentType
+  exact?: boolean
+  [k: string]: any
+}

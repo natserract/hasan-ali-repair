@@ -20,6 +20,7 @@ export function GqlRouter<T>({
   children,
   resources,
   access,
+  routes,
   useAuth,
   basePath,
   customRouteComponent,
@@ -39,6 +40,7 @@ export function GqlRouter<T>({
           loginPage={loginPage}
           notFoundPage={notFoundPage}
           history={history}
+          routes={routes}
         >
           {children}
         </RoutesProvider>

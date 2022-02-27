@@ -83,13 +83,21 @@ const Sidebar = () => {
   useEffect(() => {
     if (currentResources) {
       currentResources.map((value, id) => {
-        dynamicMenuRef.current.push({
-          id,
-          label: toCamelCase(value.name),
-          link: `/app/${value.name}`,
-          // eslint-disable-next-line react/no-children-prop
-          icon: <React.Fragment children={value?.icon || <ListIcon />} />,
-        })
+        // If it's pure component and,
+        // Have a custom route we will not show in sidebar menu
+        const isPure = !!value?.pure
+        const isCustomRoute = !!value?.route
+        const isCommon = isPure && isCustomRoute
+
+        if (!isCommon) {
+          dynamicMenuRef.current.push({
+            id,
+            label: toCamelCase(value.name),
+            link: `/app/${value.name}`,
+            // eslint-disable-next-line react/no-children-prop
+            icon: <React.Fragment children={value?.icon || <ListIcon />} />,
+          })
+        }
       })
       setDynamicMenu(dynamicMenuRef.current.concat(defaultLinks))
     }

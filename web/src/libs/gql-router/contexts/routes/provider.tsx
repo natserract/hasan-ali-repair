@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React from 'react'
 import { Router, Route, Switch, Redirect } from 'react-router-dom'
-import { AuthContextInterface } from '../../types/share'
+import { AuthContextInterface, RoutesProps } from '../../types/share'
 import { PublicRoute, PrivateRoute, RouteHook } from '../../components/routes'
 import RouteComponent from './routeComponent'
 import { useResource } from '..'
@@ -24,6 +24,7 @@ export type RoutesProviderProps = {
   loginPage?: React.ComponentType<{}>
   notFoundPage?: React.ComponentType<{}>
   history?: History
+  routes?: RoutesProps[]
 }
 
 const RoutesProvider: React.FC<RoutesProviderProps> = (props) => {
@@ -35,6 +36,7 @@ const RoutesProvider: React.FC<RoutesProviderProps> = (props) => {
     customRouteComponent: CustomRouteComponent,
     notFoundPage: NotFoundPage,
     history,
+    routes,
   } = props
 
   const { isAuthenticated } = useAuth()
@@ -42,6 +44,36 @@ const RoutesProvider: React.FC<RoutesProviderProps> = (props) => {
 
   const mainRoute = resources[0]?.name || 'dashboard'
   const routePath = (basePath + '/' ?? '/') + mainRoute
+
+  const ComponentInner = () => {
+    if (!Layout) return DefaultLayout
+
+    return (
+      <Layout>
+        <RouteComponent
+          basePath={basePath}
+          notFoundPage={NotFoundPage ?? DefaultNotFoundPage}
+        />
+      </Layout>
+    )
+  }
+
+  const renderAdditionalRoutes = () => {
+    if (!routes && !routes.length) return <React.Fragment />
+
+    return routes.map((route, i) => {
+      const Component = route.component
+
+      return (
+        <Route
+          key={i}
+          exact={route.exact}
+          path={route.path}
+          component={Component}
+        />
+      )
+    })
+  }
 
   if (CustomRouteComponent) return <CustomRouteComponent />
 
@@ -60,17 +92,7 @@ const RoutesProvider: React.FC<RoutesProviderProps> = (props) => {
         <PrivateRoute
           isAuthenticated={isAuthenticated}
           path={basePath ?? routePath}
-          component={
-            Layout
-              ? () => (
-                  <Layout>
-                    <RouteComponent
-                      notFoundPage={NotFoundPage ?? DefaultNotFoundPage}
-                    />
-                  </Layout>
-                )
-              : DefaultLayout
-          }
+          component={ComponentInner}
         />
 
         <PublicRoute
@@ -78,6 +100,8 @@ const RoutesProvider: React.FC<RoutesProviderProps> = (props) => {
           path="/login"
           component={LoginPage ?? DefaultLoginPage}
         />
+
+        {renderAdditionalRoutes()}
 
         <RouteHook
           component={NotFoundPage ?? DefaultNotFoundPage}
@@ -90,11 +114,3 @@ const RoutesProvider: React.FC<RoutesProviderProps> = (props) => {
 }
 
 export default RoutesProvider
-
-{
-  /* <PublicRoute
-  isAuthenticated={isAuthenticated}
-  path="/register"
-  component={Register}
-/> */
-}

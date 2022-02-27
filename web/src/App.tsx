@@ -1,5 +1,4 @@
 /* eslint-disable react/no-children-prop */
-/* eslint-disable prettier/prettier */
 import React from 'react'
 import { FatalErrorBoundary, RedwoodProvider } from '@redwoodjs/web'
 import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
@@ -18,11 +17,20 @@ import './scaffold.css'
 import './index.css'
 import LoginPage from './pages/Authorization/LoginPage'
 import NotFoundPage from './pages/NotFoundPage'
+import RegisterPage from './pages/Authorization/RegisterPage'
 
 const access = {
   admin: adminTypes,
   customer: clientTypes,
 }
+
+const additionalRoutes = [
+  {
+    path: '/register',
+    exact: true,
+    component: RegisterPage,
+  },
+]
 
 const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
@@ -37,6 +45,7 @@ const App = () => (
                 basePath="/app"
                 access={access}
                 resources={resources}
+                routes={additionalRoutes}
                 useAuth={useAuth}
                 layout={Layout}
                 loginPage={LoginPage}

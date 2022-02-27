@@ -1,19 +1,20 @@
 /* eslint-disable react/no-children-prop */
-/* eslint-disable prettier/prettier */
-import { useCallback, useEffect, useRef, useState } from "react"
-import { IResource, useResource } from "../resource"
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { IResourceItem, useResource } from '../resource'
 import pluralize from 'pluralize'
 import { Route, Switch } from 'react-router-dom'
-import { RouteHook } from "../../components/routes"
-import DefaultNotFoundPage from "../../pages/notfound"
+import { RouteHook } from '../../components/routes'
+import DefaultNotFoundPage from '../../pages/notfound'
 
-type RouteHandlerInput = IResource
+type RouteHandlerInput = IResourceItem
 
 type RouteComponentProps = {
-  notFoundPage?: React.ComponentType<{}>;
+  basePath?: string
+  notFoundPage?: React.ComponentType<{}>
 }
 
 const RouteComponent: React.FC<RouteComponentProps> = ({
+  basePath,
   notFoundPage: NotFoundPage,
 }) => {
   const { currentResources } = useResource()
@@ -22,109 +23,120 @@ const RouteComponent: React.FC<RouteComponentProps> = ({
   const [routesList, setRoutesList] = useState([])
   const [isMenuReady, setIsMenuReady] = useState(false)
 
-  const RouteHandler = useCallback((input: RouteHandlerInput) => {
-    const {
-      create,
-      edit,
-      list,
-      pure,
-      show,
-      route,
-      name,
-      canCreate,
-      canDelete,
-      canEdit,
-      canShow,
-    } = input
+  const RouteHandler = useCallback(
+    (input: RouteHandlerInput) => {
+      const {
+        create,
+        edit,
+        list,
+        pure,
+        show,
+        route,
+        name,
+        canCreate,
+        canDelete,
+        canEdit,
+        canShow,
+      } = input
 
-    const PureComponent = pure
-    const ListComponent = list
-    const CreateComponent = create
-    const EditComponent = edit
-    const ShowComponent = show
+      const PureComponent = pure
+      const ListComponent = list
+      const CreateComponent = create
+      const EditComponent = edit
+      const ShowComponent = show
 
-    const pluralizeName = pluralize(name, 1)
+      const routePath = basePath ?? ''
+      const pluralizeName = pluralize(name, 1)
 
-    if (ListComponent) {
-      routesRef.current.push({
-        exact: true,
-        path: route ?? `/app/${name}`,
-        component: () => (
-          <ListComponent
-            name={name}
-            canCreate={canCreate}
-            canDelete={canDelete}
-            canEdit={canEdit}
-            canShow={canShow}
-          />
-        ),
-      })
-    }
+      if (ListComponent) {
+        routesRef.current.push({
+          exact: true,
+          path: route ?? `${routePath}/${name}`,
+          component: () => (
+            <ListComponent
+              resourceName={name}
+              canCreate={canCreate}
+              canDelete={canDelete}
+              canEdit={canEdit}
+              canShow={canShow}
+            />
+          ),
+        })
+      }
 
-    if (CreateComponent) {
-      routesRef.current.push({
-        exact: true,
-        path: route ?? `/app/${pluralizeName}/create`,
-        component: () => (
-          <CreateComponent
-            name={name}
-            canCreate={canCreate}
-            canDelete={canDelete}
-            canEdit={canEdit}
-            canShow={canShow}
-          />
-        ),
-      })
-    }
+      if (CreateComponent) {
+        routesRef.current.push({
+          exact: true,
+          path: route ?? `${routePath}/${pluralizeName}/create`,
+          component: () => (
+            <CreateComponent
+              resourceName={name}
+              canCreate={canCreate}
+              canDelete={canDelete}
+              canEdit={canEdit}
+              canShow={canShow}
+            />
+          ),
+        })
+      }
 
-    if (EditComponent) {
-      routesRef.current.push({
-        exact: true,
-        path: route ?? `/app/${pluralizeName}/edit`,
-        component: () => (
-          <EditComponent
-            name={pluralizeName}
-            canCreate={canCreate}
-            canDelete={canDelete}
-            canEdit={canEdit}
-            canShow={canShow}
-          />
-        ),
-      })
-    }
+      if (EditComponent) {
+        routesRef.current.push({
+          exact: true,
+          path: route ?? `${routePath}/${pluralizeName}/edit/:id`,
+          component: () => (
+            <EditComponent
+              resourceName={pluralizeName}
+              canCreate={canCreate}
+              canDelete={canDelete}
+              canEdit={canEdit}
+              canShow={canShow}
+            />
+          ),
+        })
+      }
 
-    if (ShowComponent) {
-      routesRef.current.push({
-        exact: true,
-        path: route ?? `/app/${pluralizeName}/view/:id`,
-        component: () => (
-          <ShowComponent
-            name={name}
-            canCreate={canCreate}
-            canDelete={canDelete}
-            canEdit={canEdit}
-            canShow={canShow}
-          />
-        ),
-      })
-    }
+      if (ShowComponent) {
+        routesRef.current.push({
+          exact: true,
+          path: route ?? `${routePath}/${pluralizeName}/view/:id`,
+          component: () => (
+            <ShowComponent
+              resourceName={name}
+              canCreate={canCreate}
+              canDelete={canDelete}
+              canEdit={canEdit}
+              canShow={canShow}
+            />
+          ),
+        })
+      }
 
-    if (PureComponent) {
-      routesRef.current.push({
-        exact: true,
-        path: route ?? `/app/${name}`,
-        component: () => <PureComponent name={name} />,
-      })
-    }
+      if (PureComponent) {
+        routesRef.current.push({
+          exact: true,
+          path: route ?? `${routePath}/${name}`,
+          component: () => (
+            <PureComponent
+              resourceName={name}
+              canCreate={canCreate}
+              canDelete={canDelete}
+              canEdit={canEdit}
+              canShow={canShow}
+            />
+          ),
+        })
+      }
 
-    setRoutesList(routesRef.current)
-    setIsMenuReady(true)
-  }, [])
+      setRoutesList(routesRef.current)
+      setIsMenuReady(true)
+    },
+    [basePath]
+  )
 
   useEffect(() => {
     if (currentResources) {
       currentResources.map((resource) => RouteHandler(resource))
-      console.log('currentResources', currentResources)
     }
   }, [RouteHandler, currentResources])
 
@@ -142,7 +154,11 @@ const RouteComponent: React.FC<RouteComponentProps> = ({
       })}
 
       {isMenuReady && (
-        <RouteHook component={NotFoundPage ?? DefaultNotFoundPage} path="*" onEnter={console.log} />
+        <RouteHook
+          component={NotFoundPage ?? DefaultNotFoundPage}
+          path="*"
+          onEnter={console.log}
+        />
       )}
     </Switch>
   )
