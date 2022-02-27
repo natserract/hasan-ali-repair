@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { MetaTags } from '@redwoodjs/web'
 import DataTable from 'mui-datatables'
 import { Grid } from '@material-ui/core'
 import Button from 'src/components/button'
+import useStyles from './styles'
+import { useNavigate } from 'src/libs/gql-router/hooks'
 
 const datatableData = [
   ['Joe James', 'Example Inc.', 'Yonkers', 'NY'],
@@ -24,10 +26,6 @@ const datatableData = [
   ['Gaston Festus', 'Example Inc.', 'Tampa', 'FL'],
 ]
 
-// styles
-import useStyles from './styles'
-import { browserHistory } from 'src/utils/history'
-
 const options = {
   filter: true,
   filterType: 'dropdown',
@@ -35,7 +33,7 @@ const options = {
     <React.Fragment>
       <Button
         variant="outlined"
-        onClick={() => browserHistory.push('/app/user/create')}
+        onClick={() => useNavigate().push('/app/user/create')}
         disableElevation
       >
         Create
@@ -46,9 +44,10 @@ const options = {
 
 const UsersPage = (props) => {
   const classes = useStyles()
+  const navigate = useNavigate()
 
   const handleNavigate = (route: string) => {
-    browserHistory.push(route)
+    navigate.push(route)
   }
 
   const columns = [

@@ -26,6 +26,7 @@ export function GqlRouter<T>({
   layout,
   loginPage,
   notFoundPage,
+  history,
 }: GqlRouterProps<T>) {
   return (
     <AccessControlContextProvider access={access}>
@@ -37,8 +38,8 @@ export function GqlRouter<T>({
           layout={layout}
           loginPage={loginPage}
           notFoundPage={notFoundPage}
+          history={history}
         >
-          <h2>Red</h2>
           {children}
         </RoutesProvider>
       </ResourceContextProvider>

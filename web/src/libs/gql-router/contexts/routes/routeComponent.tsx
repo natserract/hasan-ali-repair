@@ -24,9 +24,7 @@ const RouteComponent: React.FC<RouteComponentProps> = ({
   const [routesList, setRoutesList] = useState([])
   const [isMenuReady, setIsMenuReady] = useState(false)
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const RouteHandler = (input: RouteHandlerInput) => {
-    console.log('input', input)
+  const RouteHandler = useCallback((input: RouteHandlerInput) => {
     const {
       create,
       edit,
@@ -123,7 +121,7 @@ const RouteComponent: React.FC<RouteComponentProps> = ({
 
     setRoutesList(routesRef.current)
     setIsMenuReady(true)
-  }
+  }, [])
 
   useEffect(() => {
     if (currentRole) {
@@ -144,17 +142,18 @@ const RouteComponent: React.FC<RouteComponentProps> = ({
     }
   }, [RouteHandler, access, currentRole, resources])
 
-  console.log('routesList', routesList)
   return (
     <Switch>
-      {routesList.map((route, i) => (
-        <Route
-          key={i}
-          exact={route.exact}
-          path={route.path}
-          component={route.component}
-        />
-      ))}
+      {routesList.map((route, i) => {
+        return (
+          <Route
+            key={i}
+            exact={route.exact}
+            path={route.path}
+            component={route.component}
+          />
+        )
+      })}
 
       {isMenuReady && (
         <RouteHook component={NotFoundPage ?? DefaultNotFoundPage} path="*" onEnter={console.log} />

@@ -2,13 +2,11 @@ import { useCallback, useContext } from 'react'
 import { ResourceContext } from './context'
 import { IResourceContext, IResourceItem } from './types'
 
-export type UseResourceType = {
-  (): {
-    resources: IResourceContext['resources']
-  }
+type UseResourceType = {
+  resources: IResourceContext['resources']
 }
 
-export const useResource: UseResourceType = () => {
+export const useResource = (): UseResourceType => {
   const context = useContext(ResourceContext)
 
   return {

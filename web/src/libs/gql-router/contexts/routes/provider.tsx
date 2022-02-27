@@ -3,10 +3,10 @@
 import React from 'react'
 import { Router, Route, Switch, Redirect } from 'react-router-dom'
 import { AuthContextInterface } from '../../types/share'
-import { browserHistory } from '../../utils/history'
 import { PublicRoute, PrivateRoute, RouteHook } from '../../components/routes'
 import RouteComponent from './routeComponent'
 import { useResource } from '..'
+import { History } from 'history'
 
 // Default pages
 import DefaultNotFoundPage from '../../pages/notfound'
@@ -14,6 +14,7 @@ import DefaultLoginPage from '../../pages/login'
 
 // Default layout
 import DefaultLayout from '../layouts'
+import { browserHistory } from '../../utils/history'
 
 export type RoutesProviderProps = {
   useAuth: () => AuthContextInterface
@@ -22,6 +23,7 @@ export type RoutesProviderProps = {
   customRouteComponent?: () => JSX.Element
   loginPage?: React.ComponentType<{}>
   notFoundPage?: React.ComponentType<{}>
+  history?: History
 }
 
 const RoutesProvider: React.FC<RoutesProviderProps> = (props) => {
@@ -32,6 +34,7 @@ const RoutesProvider: React.FC<RoutesProviderProps> = (props) => {
     loginPage: LoginPage,
     customRouteComponent: CustomRouteComponent,
     notFoundPage: NotFoundPage,
+    history,
   } = props
 
   const { isAuthenticated } = useAuth()
@@ -43,7 +46,7 @@ const RoutesProvider: React.FC<RoutesProviderProps> = (props) => {
   if (CustomRouteComponent) return <CustomRouteComponent />
 
   return (
-    <Router history={browserHistory}>
+    <Router history={history ?? browserHistory}>
       <Switch>
         <Route exact path="/" render={() => <Redirect to={routePath} />} />
         <Route

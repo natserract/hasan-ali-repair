@@ -90,6 +90,7 @@ const DashboardPage = () => {
       />
       If you clients please visit this, expect to be not found!
       <Link to="/app/user/view/0">Go To User Detail</Link>
+      <Link to="/app/user/create">Go To Create</Link>
       <Grid item xs={12} md={8}>
         <Widget title="Simple Line Chart" noBodyPadding>
           <ResponsiveContainer width="100%" height={350}>
