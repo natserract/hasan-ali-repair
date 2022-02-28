@@ -24,7 +24,7 @@ const styles = makeStyles((theme: typeof Theme) =>
       }),
     },
     toolbar: {
-      paddingLeft: theme.spacing(2),
+      paddingLeft: theme.spacing(4),
       paddingRight: theme.spacing(2),
     },
     hide: {

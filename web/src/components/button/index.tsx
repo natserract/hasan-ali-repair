@@ -11,7 +11,8 @@ type ButtonProps = {
   variant: string
   [k: string]: any
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-} & React.HTMLAttributes<any>
+} & React.HTMLAttributes<any> &
+  React.ButtonHTMLAttributes<any>
 
 const Button: React.FC<Partial<ButtonProps>> = ({
   children,

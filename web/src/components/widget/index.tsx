@@ -1,29 +1,33 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 import {
   Paper,
   IconButton,
   Menu,
   MenuItem,
   Typography,
-} from "@material-ui/core";
-import { MoreVert as MoreIcon } from "@material-ui/icons";
-import classnames from "classnames";
+} from '@material-ui/core'
+import {
+  MoreVert as MoreIcon,
+  ArrowBack as ArrowBackIcon,
+} from '@material-ui/icons'
+import classnames from 'classnames'
 
 // styles
-import useStyles from "./styles";
+import useStyles from './styles'
+import { useNavigate } from 'src/libs/gql-router'
 
 type WidgetProps = {
-  title: string,
-  noBodyPadding: boolean,
-  bodyClass: string,
-  disableWidgetMenu: boolean,
-  header: React.ReactNode,
-  noHeaderPadding: boolean,
-  headerClass: string,
-  style: React.CSSProperties,
-  noWidgetShadow: boolean,
-  children: React.ReactNode,
-};
+  title: string
+  noBodyPadding: boolean
+  bodyClass: string
+  disableWidgetMenu: boolean
+  header: React.ReactNode
+  noHeaderPadding: boolean
+  headerClass: string
+  style: React.CSSProperties
+  noWidgetShadow: boolean
+  children: React.ReactNode
+}
 
 export default function Widget({
   children,
@@ -36,30 +40,45 @@ export default function Widget({
   headerClass,
   style,
   noWidgetShadow,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ...props
 }: Partial<WidgetProps>) {
-  var classes = useStyles();
+  const classes = useStyles()
+
+  const navigate = useNavigate()
 
   // local
-  var [moreButtonRef, setMoreButtonRef] = useState(null);
-  var [isMoreMenuOpen, setMoreMenuOpen] = useState(false);
+  const [moreButtonRef, setMoreButtonRef] = useState(null)
+  const [isMoreMenuOpen, setMoreMenuOpen] = useState(false)
 
   return (
-    <div className={classes.widgetWrapper} style={style && {...style}}>
-      <Paper className={classes.paper} classes={{ root: classnames(classes.widgetRoot, {
-        [classes.noWidgetShadow]: noWidgetShadow
-        }) }}>
-        <div className={classnames(classes.widgetHeader, {
-          [classes.noPadding]: noHeaderPadding,
-          [headerClass]: headerClass
-        })}>
+    <div className={classes.widgetWrapper} style={style && { ...style }}>
+      <Paper
+        className={classes.paper}
+        classes={{
+          root: classnames(classes.widgetRoot, {
+            [classes.noWidgetShadow]: noWidgetShadow,
+          }),
+        }}
+      >
+        <div
+          className={classnames(classes.widgetHeader, {
+            [classes.noPadding]: noHeaderPadding,
+            [headerClass]: headerClass,
+          })}
+        >
           {header ? (
             header
           ) : (
             <React.Fragment>
-              <Typography variant="h5" color="textSecondary" noWrap>
-                {title}
-              </Typography>
+              <div className={classes.headerTitle}>
+                <IconButton onClick={() => navigate.goBack()}>
+                  <ArrowBackIcon />
+                </IconButton>
+                <Typography variant="h5" noWrap>
+                  {title}
+                </Typography>
+              </div>
               {!disableWidgetMenu && (
                 <IconButton
                   color="primary"
@@ -105,5 +124,5 @@ export default function Widget({
         </MenuItem>
       </Menu>
     </div>
-  );
+  )
 }

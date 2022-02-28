@@ -1,10 +1,15 @@
 import React from 'react'
 import { MetaTags } from '@redwoodjs/web'
 import DataTable from 'mui-datatables'
-import { Grid } from '@material-ui/core'
+import { Grid, IconButton, Tooltip } from '@material-ui/core'
 import Button from 'src/components/button'
 import useStyles from './styles'
 import { useNavigate } from 'src/libs/gql-router/hooks'
+import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined'
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined'
+import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
 
 const datatableData = [
   ['Joe James', 'Example Inc.', 'Yonkers', 'NY'],
@@ -46,6 +51,16 @@ const UsersPage = (props) => {
   const classes = useStyles()
   const navigate = useNavigate()
 
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
   const handleNavigate = (route: string) => {
     navigate.push(route)
   }
@@ -85,27 +100,75 @@ const UsersPage = (props) => {
 
           return (
             <Grid container className={classes.actionButtonContainer}>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => handleNavigate(`/app/user/view/${idx}`)}
+              <Tooltip title="View">
+                <IconButton
+                  color="primary"
+                  onClick={() => handleNavigate(`/app/user/view/${idx}`)}
+                >
+                  <VisibilityOutlinedIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Edit">
+                <IconButton
+                  color="primary"
+                  onClick={() => handleNavigate(`/app/user/edit/${idx}`)}
+                >
+                  <EditOutlinedIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Delete">
+                <IconButton
+                  color="secondary"
+                  aria-haspopup="true"
+                  onClick={handleClick}
+                >
+                  <DeleteOutlineOutlinedIcon />
+                </IconButton>
+              </Tooltip>
+
+              <Menu
+                id="delete-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
               >
-                View
-              </Button>
-              <Button
-                variant="contained"
-                color="warning"
-                onClick={() => handleNavigate('/app/user/edit')}
-              >
-                Edit
-              </Button>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={() => console.log('deleted!')}
-              >
-                Delete
-              </Button>
+                <MenuItem onClick={handleClose}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    Are you sure want to delete?
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        marginTop: 10,
+                      }}
+                    >
+                      <Button
+                        variant="outlined"
+                        onClick={() => console.log('YES')}
+                        disableElevation
+                        style={{ marginRight: 7 }}
+                      >
+                        Yes
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        onClick={handleClose}
+                        disableElevation
+                      >
+                        No
+                      </Button>
+                    </div>
+                  </div>
+                </MenuItem>
+              </Menu>
             </Grid>
           )
         },
