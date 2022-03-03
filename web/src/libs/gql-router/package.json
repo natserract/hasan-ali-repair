@@ -1,0 +1,25 @@
+{
+  "name": "@functrees/zend",
+  "description": "Smart Routers",
+  "version": "1.0.0",
+  "author": "opensource@functress.com",
+  "keywords": [
+    "functrees",
+    "routers",
+    "react-router",
+    "opensource"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "apollographql/react-apollo"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "clean": ""
+  },
+  "dependencies": {},
+  "publishConfig": {
+    "access": "public"
+  }
+}

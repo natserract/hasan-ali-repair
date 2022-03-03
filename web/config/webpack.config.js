@@ -1,5 +1,5 @@
-const webpack = require('webpack');
-const Dotenv = require('dotenv-webpack');
+const webpack = require('webpack')
+const Dotenv = require('dotenv-webpack')
 
 /** @returns {import('webpack').Configuration} Webpack Configuration */
 
@@ -9,8 +9,8 @@ module.exports = (config, { mode }) => {
   }
 
   config.resolve.fallback = {
-    "crypto": require.resolve("crypto-browserify"),
-    "stream": require.resolve("stream-browserify")
+    crypto: require.resolve('crypto-browserify'),
+    stream: require.resolve('stream-browserify'),
   }
 
   // Add custom rules for your project
@@ -18,9 +18,11 @@ module.exports = (config, { mode }) => {
 
   // Add custom plugins for your project
   config.plugins.push(new Dotenv())
-  config.plugins.push(new webpack.ProvidePlugin({
-    process: 'process/browser',
-  }))
+  config.plugins.push(
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+    })
+  )
 
   return config
 }

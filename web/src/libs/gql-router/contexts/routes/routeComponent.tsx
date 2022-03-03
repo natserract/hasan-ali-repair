@@ -10,12 +10,12 @@ type RouteHandlerInput = IResourceItem
 
 type RouteComponentProps = {
   basePath?: string
-  notFoundPage?: React.ComponentType<{}>
+  NotFoundPage?: React.ComponentType<{}>
 }
 
 const RouteComponent: React.FC<RouteComponentProps> = ({
   basePath: routePath,
-  notFoundPage: NotFoundPage,
+  NotFoundPage,
 }) => {
   const { currentResources } = useResource()
 

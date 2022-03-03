@@ -18,7 +18,7 @@ import './index.css'
 import LoginPage from './pages/Authorization/LoginPage'
 import NotFoundPage from './pages/NotFoundPage'
 import RegisterPage from './pages/Authorization/RegisterPage'
-// import ForgotPasswordPage from './pages/Authorization/ForgotPasswordPage/ForgotPasswordPage'
+import ForgotPasswordPage from './pages/Authorization/ForgotPasswordPage/ForgotPasswordPage'
 
 const access = {
   admin: adminTypes,
@@ -31,10 +31,11 @@ const additionalRoutes = [
     exact: true,
     component: RegisterPage,
   },
-  // {
-  //   path: '/forgot-password',
-  //   component: ForgotPasswordPage,
-  // },
+  {
+    path: '/forgot-password',
+    exact: true,
+    component: ForgotPasswordPage,
+  },
 ]
 
 const App = () => (
@@ -52,9 +53,9 @@ const App = () => (
                 resources={resources}
                 routes={additionalRoutes}
                 useAuth={useAuth}
-                layout={Layout}
-                loginPage={LoginPage}
-                notFoundPage={NotFoundPage}
+                Layout={Layout}
+                LoginPage={LoginPage}
+                NotFoundPage={NotFoundPage}
               />
             </ThemeProvider>
           </AppProvider>

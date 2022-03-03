@@ -94,7 +94,7 @@ const LoginPage = () => {
                   />
 
                   <div className="rw-forgot-link">
-                    <Link to="/" className="rw-forgot-link">
+                    <Link to="/forgot-password" className="rw-forgot-link">
                       Forgot Password?
                     </Link>
                   </div>

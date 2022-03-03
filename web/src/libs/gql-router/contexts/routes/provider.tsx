@@ -18,11 +18,13 @@ import { browserHistory } from '../../utils/history'
 
 export type RoutesProviderProps = {
   useAuth: () => AuthContextInterface
-  layout: React.ComponentType<{}>
+  Layout: React.ComponentType<{
+    children: React.ReactNode
+  }>
   basePath?: string
   customRouteComponent?: () => JSX.Element
-  loginPage?: React.ComponentType<{}>
-  notFoundPage?: React.ComponentType<{}>
+  LoginPage?: React.ComponentType<{}>
+  NotFoundPage?: React.ComponentType<{}>
   history?: History
   routes?: RoutesProps[]
 }
@@ -31,20 +33,18 @@ const RoutesProvider: React.FC<RoutesProviderProps> = (props) => {
   const {
     basePath,
     useAuth,
-    layout: Layout,
-    loginPage: LoginPage,
+    Layout,
+    LoginPage,
     customRouteComponent: CustomRouteComponent,
-    notFoundPage: NotFoundPage,
+    NotFoundPage,
     history,
     routes,
   } = props
 
   const { isAuthenticated } = useAuth()
-  const { currentResources } = useResource()
+  const { resources } = useResource()
 
-  if (!currentResources) return <React.Fragment />
-
-  const rootResource = currentResources[0]?.name
+  const rootResource = resources[0]?.name
   const routePath = basePath ?? ``
 
   const ComponentInner = () => {
@@ -54,7 +54,7 @@ const RoutesProvider: React.FC<RoutesProviderProps> = (props) => {
       <Layout>
         <RouteComponent
           basePath={basePath ?? routePath}
-          notFoundPage={NotFoundPage ?? DefaultNotFoundPage}
+          NotFoundPage={NotFoundPage ?? DefaultNotFoundPage}
         />
       </Layout>
     )

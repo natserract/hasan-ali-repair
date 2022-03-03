@@ -25,9 +25,9 @@ export function GqlRouter<T>(props: GqlRouterProps<T>) {
     useAuth,
     basePath,
     customRouteComponent,
-    layout,
-    loginPage,
-    notFoundPage,
+    Layout,
+    LoginPage,
+    NotFoundPage,
     history,
   } = props
 
@@ -38,9 +38,9 @@ export function GqlRouter<T>(props: GqlRouterProps<T>) {
           useAuth={useAuth}
           basePath={basePath}
           customRouteComponent={customRouteComponent}
-          layout={layout}
-          loginPage={loginPage}
-          notFoundPage={notFoundPage}
+          Layout={Layout}
+          LoginPage={LoginPage}
+          NotFoundPage={NotFoundPage}
           history={history}
           routes={routes}
           // eslint-disable-next-line react/no-children-prop

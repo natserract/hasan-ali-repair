@@ -29,9 +29,9 @@ const adminAccess = [
   'parts',
   'mechanics',
   'register',
-  'profile',
+  'profiles',
 ]
-const clientAccess = ['dashboard', 'register', 'books', 'services', 'profile']
+const clientAccess = ['dashboard', 'register', 'books', 'services', 'profiles']
 
 const resources: IResourceItem[] = [
   {
@@ -68,9 +68,9 @@ const resources: IResourceItem[] = [
     icon: <EmojiPeopleIcon />,
   },
   {
-    name: 'profile',
+    name: 'profiles',
+    route: '/app/profile',
     pure: ProfilePage,
-    isOuter: true,
   },
 ]
 export { resources, adminAccess as adminTypes, clientAccess as clientTypes }

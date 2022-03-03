@@ -17,10 +17,10 @@ export const useResource = (): UseResourceType => {
   useEffect(() => {
     if (currentRole) {
       const isAccessEmpty = !access || !Object.values(access).length
-      let currentResources = resources
+      let newResources = resources
 
       if (!isAccessEmpty) {
-        currentResources = resources.filter((item) => {
+        newResources = resources.filter((item) => {
           let entries: string[] = []
           Object.entries(access).forEach(([key, values]) => {
             if (key == currentRole) {
@@ -31,9 +31,10 @@ export const useResource = (): UseResourceType => {
           return entries.includes(item.name)
         })
       }
+      console.log('resources', resources)
 
-      if (currentResources.length) {
-        setCurrentResources(currentResources)
+      if (newResources.length) {
+        setCurrentResources(newResources)
       }
     }
   }, [access, currentRole, resources])
