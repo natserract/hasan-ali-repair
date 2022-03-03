@@ -3,7 +3,6 @@ import jwt from 'jsonwebtoken'
 import { API_URL } from 'src/constant/endpoint'
 import { storageKey } from './config'
 import { CurrentUser } from './hooks'
-import { verifyToken } from './utils'
 
 const AuthClient = {
   type: 'custom',
@@ -50,6 +49,7 @@ const AuthClient = {
         token,
       })
       .finally(() => {
+        // sessionStorage.removeItem(storageKey)
         localStorage.removeItem(storageKey)
       })
   },
@@ -64,11 +64,12 @@ const AuthClient = {
     }
     return token
   },
-  getCurrentUser: async (): Promise<CurrentUser> => {
+  getCurrentUser: (): CurrentUser => {
     const item = localStorage.getItem(storageKey)
     const token = JSON.parse(item || JSON.stringify({})).accessToken
 
-    return (await verifyToken(token)) as CurrentUser
+    const data = jwt.decode(token) as CurrentUser
+    return data
   },
   getUserMetadata: () => {
     return JSON.parse(localStorage.getItem(storageKey) || JSON.stringify({}))

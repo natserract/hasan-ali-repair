@@ -3,7 +3,7 @@
 import React from 'react'
 import { Router, Route, Switch, Redirect } from 'react-router-dom'
 import { AuthContextInterface, RoutesProps } from '../../types/share'
-import { PublicRoute, PrivateRoute, RouteHook } from '../../components/routes'
+import { PublicRoute, PrivateRoute, RouteHook } from '../../helpers/routes'
 import RouteComponent from './routeComponent'
 import { useResource } from '..'
 import { History } from 'history'
@@ -13,7 +13,7 @@ import DefaultNotFoundPage from '../../pages/notfound'
 import DefaultLoginPage from '../../pages/login'
 
 // Default layout
-import DefaultLayout from '../layouts'
+import DefaultLayout from '../../layouts'
 import { browserHistory } from '../../utils/history'
 
 export type RoutesProviderProps = {
@@ -40,10 +40,12 @@ const RoutesProvider: React.FC<RoutesProviderProps> = (props) => {
   } = props
 
   const { isAuthenticated } = useAuth()
-  const { resources } = useResource()
+  const { currentResources } = useResource()
 
-  const mainRoute = resources[0]?.name || 'dashboard'
-  const routePath = (basePath + '/' ?? '/') + mainRoute
+  if (!currentResources) return <React.Fragment />
+
+  const rootResource = currentResources[0]?.name
+  const routePath = basePath ?? ``
 
   const ComponentInner = () => {
     if (!Layout) return DefaultLayout
@@ -51,7 +53,7 @@ const RoutesProvider: React.FC<RoutesProviderProps> = (props) => {
     return (
       <Layout>
         <RouteComponent
-          basePath={basePath}
+          basePath={basePath ?? routePath}
           notFoundPage={NotFoundPage ?? DefaultNotFoundPage}
         />
       </Layout>
@@ -80,12 +82,20 @@ const RoutesProvider: React.FC<RoutesProviderProps> = (props) => {
   return (
     <Router history={history ?? browserHistory}>
       <Switch>
-        <Route exact path="/" render={() => <Redirect to={routePath} />} />
+        <Route
+          exact
+          path="/"
+          render={() => (
+            <Redirect
+              to={basePath ? `${basePath}/${rootResource}` : `/${rootResource}`}
+            />
+          )}
+        />
         {basePath && (
           <Route
             exact
             path={basePath}
-            render={() => <Redirect to={routePath} />}
+            render={() => <Redirect to={`${basePath}/${rootResource}`} />}
           />
         )}
 

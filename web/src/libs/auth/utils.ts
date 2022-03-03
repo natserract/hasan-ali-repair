@@ -11,6 +11,4 @@ const verifyToken = (token) => {
   })
 }
 
-export {
-  verifyToken
-}
+export { verifyToken }

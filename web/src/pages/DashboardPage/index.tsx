@@ -20,7 +20,6 @@ import useTheme from '@material-ui/styles/useTheme'
 import { Grid, Typography } from '@material-ui/core'
 import Widget from 'src/components/widget'
 import { MetaTags } from '@redwoodjs/web'
-import { Link } from 'react-router-dom'
 
 const lineChartData = [
   {
@@ -85,7 +84,8 @@ const DashboardPage = () => {
         component="h1"
         variant="h2"
         color="textPrimary"
-        children="Latest Reports"
+        // eslint-disable-next-line react/no-children-prop
+        children="Latest Reports This Month"
         gutterBottom
       />
 

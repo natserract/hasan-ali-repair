@@ -22,6 +22,7 @@ export function getExceptionFromError(
   const graphqlError: GraphQLError = extractError(error)
   const exception =
     graphqlError && graphqlError.extensions && graphqlError.extensions.exception
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   return exception || graphqlError || error
 }

@@ -1,14 +1,10 @@
 import { AuthenticationError, ForbiddenError } from '@redwoodjs/graphql-server'
-import { db } from './db'
-import { dbAuthSession, getAuthenticationContext } from '@redwoodjs/api'
-import { getSession } from '@redwoodjs/api/dist/functions/dbAuth/shared'
 import jwt from 'jsonwebtoken'
 
 const verifyToken = (token) => {
   try {
     // Returns if the token is both valid and not expired
     const data = jwt.verify(token, process.env.TOKEN_SIGN_KEY)
-
     return { valid: true, expired: false, data }
   } catch (err) {
     // Returns if the token is valid but expired
@@ -17,7 +13,7 @@ const verifyToken = (token) => {
         valid: true,
         expired: true,
         data: jwt.decode(token, {
-          complete: true
+          complete: true,
         }),
       }
 
@@ -26,11 +22,13 @@ const verifyToken = (token) => {
   }
 }
 
-export const getCurrentUser = async (token) => {
-  const { valid, expired, data } = verifyToken(token)
+export const getCurrentUser = async (_p, headers) => {
+  const userToken = headers?.token
+  const { valid, expired, data } = verifyToken(userToken)
+
   if (!valid) throw Error('Invalid Token Provided')
 
-  if (data && typeof data !== "string") {
+  if (data && typeof data !== 'string') {
     return {
       ...data,
       expired,
@@ -41,8 +39,10 @@ export const getCurrentUser = async (token) => {
   }
 }
 
-export const requireAuth = ({ roles }: { roles: AllowedRoles }) => {
-  if (!context.currentUser || context.currentUser.expired) {
+export const requireAuth = async (_headers, token) => {
+  const { valid, data } = verifyToken(token)
+
+  if (!valid || !data) {
     throw new AuthenticationError("You don't have permission to do that.")
   }
 
@@ -51,6 +51,10 @@ export const requireAuth = ({ roles }: { roles: AllowedRoles }) => {
   //   typeof role === 'string' &&
   //   !context.currentUser.roles?.includes(role)
   // ) {
+  //   throw new ForbiddenError("You don't have access to do that.")
+  // }
+
+  // if (!hasRole({ roles })) {
   //   throw new ForbiddenError("You don't have access to do that.")
   // }
 
@@ -63,27 +67,11 @@ export const requireAuth = ({ roles }: { roles: AllowedRoles }) => {
   // }
 }
 
-// const getContextUserAsync = async () => {
-//   return new Promise((resolve) => {
-//     setTimeout(() => {
-//       resolve(context?.currentUser)
-//     }, 100)
-//   })
-// }
-
-/**
- * The user is authenticated if there is a currentUser in the context
- *
- * @returns {boolean} - If the currentUser is authenticated
- */
-// export const isAuthenticated = (): boolean => {
-//   return !!context.currentUser
-// }
-
 /**
  * When checking role membership, roles can be a single value, a list, or none.
  * You can use Prisma enums too (if you're using them for roles), just import your enum type from `@prisma/client`
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type AllowedRoles = string | string[] | undefined
 
 /**
@@ -113,32 +101,4 @@ type AllowedRoles = string | string[] | undefined
 //   }
 
 //   return true
-// }
-
-/**
- * Use requireAuth in your services to check that a user is logged in,
- * whether or not they are assigned a role, and optionally raise an
- * error if they're not.
- *
- * @param roles: AllowedRoles - When checking role membership, these roles grant access.
- *
- * @returns - If the currentUser is authenticated (and assigned one of the given roles)
- *
- * @throws {AuthenticationError} - If the currentUser is not authenticated
- * @throws {ForbiddenError} If the currentUser is not allowed due to role permissions
- *
- * @see https://github.com/redwoodjs/redwood/tree/main/packages/auth for examples
- */
-// export const requireAuth = ({ roles }: { roles: AllowedRoles }) => {
-//   setTimeout(() => {
-//     console.log('context', context.currentUser)
-//   }, 100)
-
-//   if (!isAuthenticated()) {
-//     // throw new AuthenticationError("You don't have permission to do that.")
-//   }
-
-//   // if (!hasRole({ roles })) {
-//   //   throw new ForbiddenError("You don't have access to do that.")
-//   // }
 // }

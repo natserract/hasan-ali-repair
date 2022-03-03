@@ -1,7 +1,8 @@
 import { db } from 'src/lib/db'
 import jwt from 'jsonwebtoken'
-import type { Prisma } from '@prisma/client'
 import to from 'await-to-js'
+
+const EXPIRES_TIME = 1000
 
 /**
  * Verifies if token is valid
@@ -17,29 +18,24 @@ const verifyToken = (token) =>
     }
   })
 
-export const handler = async (event, context) => {
+export const handler = async (event) => {
   // Gets refresh token from headers. Throws if non available
   const { refreshToken } = (event.headers.cookie || '')
     .split(';')
     .reduce((acc, el) => {
       const [k, v] = el.split('=')
-      acc[k] = v
+      const key = k.trim()
+      acc[key] = v
       return acc
     }, {})
   if (!refreshToken) return { statusCode: 400 }
 
   // Verifies if refresh token isnt expired. Throws if it is
-  const [err, {
-    id,
-    email,
-    name,
-    address,
-    phone_number,
-    user_type,
-    exp } = {} as any] = await to(
-      verifyToken(refreshToken)
-    )
-  if (err || exp * 1000 < Date.now()) return { statusCode: 400 }
+  const [
+    err,
+    { id, email, name, address, phone_number, user_type, exp } = {} as any,
+  ] = await to(verifyToken(refreshToken))
+  if (err || exp * EXPIRES_TIME < Date.now()) return { statusCode: 400 }
 
   // Compares refreshToken with the one stored on the db. Throws if they dont match
   const { refreshToken: dbRefreshToken } = await db.user.findUnique({

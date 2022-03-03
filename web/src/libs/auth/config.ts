@@ -1,1 +1,1 @@
-export const storageKey = 'AUTHORIZATION'
+export const storageKey = 'APP'

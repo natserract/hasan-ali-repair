@@ -11,12 +11,27 @@ export const schema = gql`
   """
   directive @requireAuth(roles: [String]) on FIELD_DEFINITION
 `
+// DONT REMOVE THIS
+// const validate = ({ directiveArgs }, token) => {
+//   const { roles } = directiveArgs
+//   applicationRequireAuth({ roles })
+// }
 
-const validate = ({ directiveArgs }) => {
-  const { roles } = directiveArgs
-  applicationRequireAuth({ roles })
-}
+const requireAuth = createValidatorDirective(
+  schema,
+  ({ context: userContext }) => {
+    const { event } = userContext
+    const headers = event.headers
+    const authorization = headers.authorization
 
-const requireAuth = createValidatorDirective(schema, validate)
+    const tokenizes = Array.from(authorization.split(' '))
+    if (tokenizes.length) {
+      const token = tokenizes[1]
+      if (token) {
+        applicationRequireAuth(headers, token)
+      }
+    }
+  }
+)
 
 export default requireAuth

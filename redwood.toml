@@ -18,7 +18,8 @@
     'FIREBASE_APP_ID',
     'TOKEN_SIGN_KEY',
     'APP_HOST',
-    'APP_PORT'
+    'APP_WEB_PORT',
+    'APP_API_PORT'
   ] # any ENV vars that should be available to the web side, see https://redwoodjs.com/docs/environment-variables#web
 [api]
   port = 8911

@@ -37,15 +37,15 @@ const Layout: React.FC<{}> = (props) => {
           <div>
             <Link
               color={'primary'}
-              href={'https://flatlogic.com/'}
+              href={'https://functrees.com/'}
               target={'_blank'}
               className={classes.link}
             >
-              Flatlogic
+              Functrees
             </Link>
             <Link
               color={'primary'}
-              href={'https://flatlogic.com/about'}
+              href={'https://functrees.com/about'}
               target={'_blank'}
               className={classes.link}
             >
@@ -53,7 +53,7 @@ const Layout: React.FC<{}> = (props) => {
             </Link>
             <Link
               color={'primary'}
-              href={'https://flatlogic.com/blog'}
+              href={'https://functrees.com/blog'}
               target={'_blank'}
               className={classes.link}
             >
@@ -61,17 +61,17 @@ const Layout: React.FC<{}> = (props) => {
             </Link>
           </div>
           <div>
-            <Link href={'https://www.facebook.com/flatlogic'} target={'_blank'}>
+            <Link href={'https://www.facebook.com/functrees'} target={'_blank'}>
               <IconButton aria-label="facebook">
                 <FacebookIcon htmlColor="#6E6E6E99" />
               </IconButton>
             </Link>
-            <Link href={'https://twitter.com/flatlogic'} target={'_blank'}>
+            <Link href={'https://twitter.com/functrees'} target={'_blank'}>
               <IconButton aria-label="twitter">
                 <TwitterIcon htmlColor="#6E6E6E99" />
               </IconButton>
             </Link>
-            <Link href={'https://github.com/flatlogic'} target={'_blank'}>
+            <Link href={'https://github.com/functrees'} target={'_blank'}>
               <IconButton aria-label="github" style={{ marginRight: -12 }}>
                 <GitHubIcon htmlColor="#6E6E6E99" />
               </IconButton>

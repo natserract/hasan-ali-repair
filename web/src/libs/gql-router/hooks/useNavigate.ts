@@ -1,12 +1,12 @@
 import { browserHistory } from '../utils/history'
 import { History } from 'history'
 
-type KeyHistory = Pick<
+type UseNavigateReturn = Pick<
   History,
   'go' | 'goBack' | 'push' | 'replace' | 'createHref'
 >
 
-const useNavigate = (): KeyHistory => {
+const useNavigate = (): UseNavigateReturn => {
   return {
     push: browserHistory.push,
     go: browserHistory.go,

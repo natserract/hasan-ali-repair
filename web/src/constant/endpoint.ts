@@ -1,7 +1,9 @@
+const rwApiUrl = global.RWJS_API_URL
+const _rwGraphqlUrl = global.RWJS_API_GRAPHQL_URL
 
-const rwApiUrl = global.RWJS_API_URL;
-const appHost = process.env.APP_HOST;
-const appPort = process.env.APP_PORT;
+const appHost = process.env.APP_HOST
+const appWebPort = process.env.APP_WEB_PORT
+const appApiPort = process.env.APP_API_PORT
 
-export const API_URL = `${appHost}:${appPort}${rwApiUrl}`
-export const GRAPHQL_URL = `${appHost}:${appPort}/graphql`
+export const API_URL = `${appHost}:${appWebPort}${rwApiUrl}`
+export const GRAPHQL_URL = `${appHost}:${appApiPort}/graphql`

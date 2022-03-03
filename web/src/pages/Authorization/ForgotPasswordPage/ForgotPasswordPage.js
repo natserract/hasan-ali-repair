@@ -8,11 +8,11 @@ import { Form, Label, TextField, Submit, FieldError } from '@redwoodjs/forms'
 const ForgotPasswordPage = () => {
   const { isAuthenticated, forgotPassword } = useAuth()
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate(routes.home())
-    }
-  }, [isAuthenticated])
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     navigate(routes.home())
+  //   }
+  // }, [isAuthenticated])
 
   const usernameRef = useRef()
   useEffect(() => {
@@ -31,7 +31,7 @@ const ForgotPasswordPage = () => {
       toast.success(
         'A link to reset your password was sent to ' + response.email
       )
-      navigate(routes.login())
+      // navigate(routes.login())
     }
   }
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import {
   Paper,
   IconButton,
@@ -48,8 +48,8 @@ export default function Widget({
   const navigate = useNavigate()
 
   // local
-  const [moreButtonRef, setMoreButtonRef] = useState(null)
-  const [isMoreMenuOpen, setMoreMenuOpen] = useState(false)
+  const moreButtonRef = useRef(null)
+  const [isMoreMenuOpen, setMoreMenuOpen] = useState(null)
 
   return (
     <div className={classes.widgetWrapper} style={style && { ...style }}>
@@ -85,8 +85,8 @@ export default function Widget({
                   classes={{ root: classes.moreButton }}
                   aria-owns="widget-menu"
                   aria-haspopup="true"
-                  onClick={() => setMoreMenuOpen(true)}
-                  buttonRef={setMoreButtonRef}
+                  onClick={(e) => setMoreMenuOpen(e.currentTarget)}
+                  ref={moreButtonRef}
                 >
                   <MoreIcon />
                 </IconButton>
@@ -105,9 +105,9 @@ export default function Widget({
       </Paper>
       <Menu
         id="widget-menu"
-        open={isMoreMenuOpen}
-        anchorEl={moreButtonRef}
-        onClose={() => setMoreMenuOpen(false)}
+        open={Boolean(isMoreMenuOpen)}
+        anchorEl={isMoreMenuOpen}
+        onClose={() => setMoreMenuOpen(null)}
         disableAutoFocusItem
       >
         <MenuItem>

@@ -18,6 +18,7 @@ import './index.css'
 import LoginPage from './pages/Authorization/LoginPage'
 import NotFoundPage from './pages/NotFoundPage'
 import RegisterPage from './pages/Authorization/RegisterPage'
+// import ForgotPasswordPage from './pages/Authorization/ForgotPasswordPage/ForgotPasswordPage'
 
 const access = {
   admin: adminTypes,
@@ -30,6 +31,10 @@ const additionalRoutes = [
     exact: true,
     component: RegisterPage,
   },
+  // {
+  //   path: '/forgot-password',
+  //   component: ForgotPasswordPage,
+  // },
 ]
 
 const App = () => (

@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { IResourceItem, useResource } from '../resource'
 import pluralize from 'pluralize'
 import { Route, Switch } from 'react-router-dom'
-import { RouteHook } from '../../components/routes'
+import { RouteHook } from '../../helpers/routes'
 import DefaultNotFoundPage from '../../pages/notfound'
 
 type RouteHandlerInput = IResourceItem
@@ -14,7 +14,7 @@ type RouteComponentProps = {
 }
 
 const RouteComponent: React.FC<RouteComponentProps> = ({
-  basePath,
+  basePath: routePath,
   notFoundPage: NotFoundPage,
 }) => {
   const { currentResources } = useResource()
@@ -45,7 +45,6 @@ const RouteComponent: React.FC<RouteComponentProps> = ({
       const EditComponent = edit
       const ShowComponent = show
 
-      const routePath = basePath ?? ''
       const pluralizeName = pluralize(name, 1)
 
       if (ListComponent) {
@@ -131,8 +130,9 @@ const RouteComponent: React.FC<RouteComponentProps> = ({
       setRoutesList(routesRef.current)
       setIsMenuReady(true)
     },
-    [basePath]
+    [routePath]
   )
+  console.log('routesList', routesList)
 
   useEffect(() => {
     if (currentResources) {

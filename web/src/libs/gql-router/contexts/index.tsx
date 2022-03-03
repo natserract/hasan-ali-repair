@@ -16,19 +16,21 @@ type ContextProps<T> = IResourceContext &
   RoutesProviderProps
 type GqlRouterProps<T> = BaseProps & ContextProps<T>
 
-export function GqlRouter<T>({
-  children,
-  resources,
-  access,
-  routes,
-  useAuth,
-  basePath,
-  customRouteComponent,
-  layout,
-  loginPage,
-  notFoundPage,
-  history,
-}: GqlRouterProps<T>) {
+export function GqlRouter<T>(props: GqlRouterProps<T>) {
+  const {
+    children,
+    resources,
+    access,
+    routes,
+    useAuth,
+    basePath,
+    customRouteComponent,
+    layout,
+    loginPage,
+    notFoundPage,
+    history,
+  } = props
+
   return (
     <AccessControlContextProvider access={access}>
       <ResourceContextProvider resources={resources}>
@@ -41,9 +43,9 @@ export function GqlRouter<T>({
           notFoundPage={notFoundPage}
           history={history}
           routes={routes}
-        >
-          {children}
-        </RoutesProvider>
+          // eslint-disable-next-line react/no-children-prop
+          children={children}
+        />
       </ResourceContextProvider>
     </AccessControlContextProvider>
   )

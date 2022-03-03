@@ -1,5 +1,5 @@
-import React from 'react'
-import { MetaTags } from '@redwoodjs/web'
+import React, { useEffect, useState } from 'react'
+import { MetaTags, useQuery } from '@redwoodjs/web'
 import DataTable from 'mui-datatables'
 import { Grid, IconButton, Tooltip } from '@material-ui/core'
 import Button from 'src/components/button'
@@ -10,30 +10,15 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined'
 import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-
-const datatableData = [
-  ['Joe James', 'Example Inc.', 'Yonkers', 'NY'],
-  ['John Walsh', 'Example Inc.', 'Hartford', 'CT'],
-  ['Bob Herm', 'Example Inc.', 'Tampa', 'FL'],
-  ['James Houston', 'Example Inc.', 'Dallas', 'TX'],
-  ['Prabhakar Linwood', 'Example Inc.', 'Hartford', 'CT'],
-  ['Kaui Ignace', 'Example Inc.', 'Yonkers', 'NY'],
-  ['Esperanza Susanne', 'Example Inc.', 'Hartford', 'CT'],
-  ['Christian Birgitte', 'Example Inc.', 'Tampa', 'FL'],
-  ['Meral Elias', 'Example Inc.', 'Hartford', 'CT'],
-  ['Deep Pau', 'Example Inc.', 'Yonkers', 'NY'],
-  ['Sebastiana Hani', 'Example Inc.', 'Dallas', 'TX'],
-  ['Marciano Oihana', 'Example Inc.', 'Yonkers', 'NY'],
-  ['Brigid Ankur', 'Example Inc.', 'Dallas', 'TX'],
-  ['Anna Siranush', 'Example Inc.', 'Yonkers', 'NY'],
-  ['Avram Sylva', 'Example Inc.', 'Hartford', 'CT'],
-  ['Serafima Babatunde', 'Example Inc.', 'Tampa', 'FL'],
-  ['Gaston Festus', 'Example Inc.', 'Tampa', 'FL'],
-]
+import { USERSPAGE_USERS_QUERY } from './query'
+import { parseDate } from 'src/utils/date'
+import LoadingComponent from 'src/components/loading'
 
 const options = {
   filter: true,
   filterType: 'dropdown',
+  responsive: 'simple',
+  enableNestedDataAccess: '.',
   customToolbar: () => (
     <React.Fragment>
       <Button
@@ -47,11 +32,14 @@ const options = {
   ),
 }
 
-const UsersPage = (props) => {
+const UsersPage = () => {
   const classes = useStyles()
   const navigate = useNavigate()
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const { data: usersQueryData } = useQuery(USERSPAGE_USERS_QUERY)
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [usersData, setUsersData] = useState([])
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
@@ -67,27 +55,35 @@ const UsersPage = (props) => {
 
   const columns = [
     {
-      name: 'Name',
+      name: 'name',
+      label: 'Name',
       options: {
         filter: false,
       },
     },
     {
-      name: 'Company',
-      options: {
-        filter: true,
-      },
-    },
-    {
-      name: 'City',
+      name: 'email',
+      label: 'Email',
       options: {
         filter: false,
       },
     },
     {
-      name: 'State',
+      name: 'user_type',
+      label: 'Role',
       options: {
         filter: true,
+      },
+    },
+    {
+      name: 'created_at',
+      label: 'Register At',
+      options: {
+        filter: false,
+        customBodyRender: (tableMeta) => {
+          const date = new Date(tableMeta)
+          return parseDate(date)
+        },
       },
     },
     {
@@ -95,15 +91,16 @@ const UsersPage = (props) => {
       options: {
         filter: false,
         sort: false,
-        customBodyRender: (value, tableMeta, updateValue) => {
-          const idx = tableMeta.rowIndex
+        customBodyRender: (value, tableMeta, _updateValue) => {
+          const rowIdx = tableMeta.rowIndex
+          const dataIdx = tableMeta.tableData[rowIdx].id
 
           return (
             <Grid container className={classes.actionButtonContainer}>
               <Tooltip title="View">
                 <IconButton
                   color="primary"
-                  onClick={() => handleNavigate(`/app/user/view/${idx}`)}
+                  onClick={() => handleNavigate(`/app/user/view/${dataIdx}`)}
                 >
                   <VisibilityOutlinedIcon />
                 </IconButton>
@@ -111,7 +108,7 @@ const UsersPage = (props) => {
               <Tooltip title="Edit">
                 <IconButton
                   color="primary"
-                  onClick={() => handleNavigate(`/app/user/edit/${idx}`)}
+                  onClick={() => handleNavigate(`/app/user/edit/${dataIdx}`)}
                 >
                   <EditOutlinedIcon />
                 </IconButton>
@@ -176,18 +173,31 @@ const UsersPage = (props) => {
     },
   ]
 
+  const fetchUser = () => {
+    if (usersQueryData) {
+      const { users } = usersQueryData
+      setUsersData(users)
+    }
+  }
+
+  useEffect(fetchUser, [usersQueryData])
+
   return (
     <>
       <MetaTags title="Users" description="Users page" />
 
       <Grid container spacing={4}>
         <Grid item xs={12}>
-          <DataTable
-            title="Users"
-            data={datatableData}
-            columns={columns}
-            options={options}
-          />
+          {usersData.length ? (
+            <DataTable
+              title="Users"
+              data={usersData}
+              columns={columns}
+              options={options}
+            />
+          ) : (
+            <LoadingComponent />
+          )}
         </Grid>
       </Grid>
     </>

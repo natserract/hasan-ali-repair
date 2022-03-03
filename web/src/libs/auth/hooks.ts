@@ -3,6 +3,7 @@ import { AuthClient } from 'src/libs/auth'
 
 export type CurrentUser = {
   id: number
+  name: string
   address: string
   email: string
   phone_number: string
@@ -20,21 +21,21 @@ export const useAuthState = () => {
 
   // Fetch current user
   useEffect(() => {
-    AuthClient.getCurrentUser()
-      .then((user) => {
-        setState((state) => ({
-          ...state,
-          isSuccess: true,
-          isError: false,
-          currentUser: user,
-        }))
-      })
-      .catch((error) => {
-        setState((state) => ({
-          ...state,
-          isError: true,
-        }))
-      })
+    const user = AuthClient.getCurrentUser()
+
+    if (user) {
+      setState((state) => ({
+        ...state,
+        isSuccess: true,
+        isError: false,
+        currentUser: user,
+      }))
+    } else {
+      setState((state) => ({
+        ...state,
+        isError: true,
+      }))
+    }
   }, [])
 
   return state

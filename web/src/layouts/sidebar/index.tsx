@@ -85,9 +85,10 @@ const Sidebar = () => {
       currentResources.map((value, id) => {
         // If it's pure component and,
         // Have a custom route we will not show in sidebar menu
+        const isOuter = value?.isOuter == true
         const isPure = !!value?.pure
         const isCustomRoute = !!value?.route
-        const isCommon = isPure && isCustomRoute
+        const isCommon = (isPure && isCustomRoute) || isOuter
 
         if (!isCommon) {
           dynamicMenuRef.current.push({

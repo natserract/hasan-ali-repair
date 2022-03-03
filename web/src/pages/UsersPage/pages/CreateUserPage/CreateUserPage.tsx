@@ -5,16 +5,22 @@ import FormControl from '@material-ui/core/FormControl'
 import useStyles from './styles'
 import Button from 'src/components/button'
 import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined'
+import { Form } from '@redwoodjs/forms'
 
 const CreateUserPage = () => {
   const classes = useStyles()
 
+  const onSubmit = async (event) => {
+    event.preventDefault()
+    console.log('submitted', event)
+  }
+
   return (
     <>
-      <MetaTags title="CreateUser" description="CreateUser page" />
+      <MetaTags title="Create User" description="CreateUser page" />
 
       <Widget title="Create User">
-        <form className={classes.formRoot}>
+        <form onSubmit={onSubmit} className={classes.formRoot}>
           <FormControl>
             <TextField name="name" label="Name" required variant="outlined" />
           </FormControl>

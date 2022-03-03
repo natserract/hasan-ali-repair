@@ -5,7 +5,7 @@ const styles = makeStyles((theme: typeof Theme) =>
   createStyles({
     widgetWrapper: {
       display: 'flex',
-      minHeight: '100%',
+      minHeight: 'auto',
     },
     widgetHeader: {
       padding: theme.spacing(3),
@@ -28,7 +28,7 @@ const styles = makeStyles((theme: typeof Theme) =>
       boxShadow: theme.customShadows.widget,
     },
     widgetBody: {
-      paddingBottom: theme.spacing(3),
+      paddingBottom: theme.spacing(5),
       paddingRight: theme.spacing(7),
       paddingLeft: theme.spacing(9),
     },

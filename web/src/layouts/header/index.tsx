@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState } from 'react'
 import {
   AppBar,
@@ -15,8 +17,6 @@ import {
   Person as AccountIcon,
   Search as SearchIcon,
   Send as SendIcon,
-  ArrowBack as ArrowBackIcon,
-  MenuOpen as MenuOpenIcon,
   ClearAll as ClearAllIcon,
 } from '@material-ui/icons'
 import classNames from 'classnames'
@@ -33,6 +33,9 @@ import {
   toggleSidebar,
 } from 'src/store/layout'
 import { APP } from 'src/constant/app'
+import { useAuthState } from 'src/libs/auth/hooks'
+import { useNavigate } from 'src/libs/gql-router'
+import { Link } from 'react-router-dom'
 
 const messages = [
   {
@@ -91,6 +94,8 @@ const Header = () => {
   const classes = useStyles()
 
   const { logOut } = useAuth()
+  const navigate = useNavigate()
+  const { currentUser } = useAuthState()
   const layoutState = useLayoutState()
   const layoutDispatch = useLayoutDispatch()
 
@@ -99,7 +104,7 @@ const Header = () => {
   const [notificationsMenu, setNotificationsMenu] = useState(null)
   const [isNotificationsUnread, setIsNotificationsUnread] = useState(true)
   const [profileMenu, setProfileMenu] = useState(null)
-  const [isSearchOpen, setSearchOpen] = useState(false)
+  const [isSearchOpen, setSearchOpen] = useState(true)
 
   return (
     <AppBar position="fixed" className={classes.appBar}>
@@ -134,7 +139,7 @@ const Header = () => {
         </IconButton>
 
         <Typography variant="h4" weight="medium" className={classes.logotype}>
-          {APP.name}
+          <Link to="/">{APP.name}</Link>
         </Typography>
         <div className={classes.grow} />
 
@@ -202,7 +207,7 @@ const Header = () => {
         >
           <AccountIcon classes={{ root: classes.headerIcon }} />
           <Typography variant="body2">
-            Hi, <b>Alfin Surya</b>
+            Hi, <b>{currentUser?.name}</b>
           </Typography>
         </IconButton>
         <Menu
@@ -289,15 +294,14 @@ const Header = () => {
         >
           <div className={classes.profileMenuUser}>
             <Typography variant="h4" weight="medium">
-              John Smith
+              {currentUser?.name}
             </Typography>
             <Typography
               className={classes.profileMenuLink}
-              component="a"
-              color="primary"
-              href="https://flatlogic.com"
+              component="span"
+              color="textSecondary"
             >
-              Flalogic.com
+              {currentUser?.email}
             </Typography>
           </div>
           <MenuItem
@@ -305,24 +309,12 @@ const Header = () => {
               classes.profileMenuItem,
               classes.headerMenuItem
             )}
+            onClick={() => {
+              navigate.push('/app/profile')
+              setProfileMenu(null)
+            }}
           >
             <AccountIcon className={classes.profileMenuIcon} /> Profile
-          </MenuItem>
-          <MenuItem
-            className={classNames(
-              classes.profileMenuItem,
-              classes.headerMenuItem
-            )}
-          >
-            <AccountIcon className={classes.profileMenuIcon} /> Tasks
-          </MenuItem>
-          <MenuItem
-            className={classNames(
-              classes.profileMenuItem,
-              classes.headerMenuItem
-            )}
-          >
-            <AccountIcon className={classes.profileMenuIcon} /> Messages
           </MenuItem>
           <div className={classes.profileMenuUser}>
             <Typography

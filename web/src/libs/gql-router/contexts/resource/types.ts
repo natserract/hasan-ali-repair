@@ -13,6 +13,8 @@ export interface IResourceItem extends IResourceComponents {
   canEdit?: boolean
   canShow?: boolean
   canDelete?: boolean
+  // Props for check if page not in sidemenu
+  isOuter?: boolean
 }
 
 export interface IResourceComponentsProps<TCrudData = any> {

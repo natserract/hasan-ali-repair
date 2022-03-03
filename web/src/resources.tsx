@@ -19,6 +19,7 @@ import EditUserPage from './pages/UsersPage/pages/EditUserPage/EditUserPage'
 import CreateUserPage from './pages/UsersPage/pages/CreateUserPage/CreateUserPage'
 import ShowUserPage from './pages/UsersPage/pages/ShowUserPage/ShowUserPage'
 import { IResourceItem } from './libs/gql-router'
+import ProfilePage from './pages/ProfilePage/ProfilePage'
 
 const adminAccess = [
   'dashboard',
@@ -28,8 +29,9 @@ const adminAccess = [
   'parts',
   'mechanics',
   'register',
+  'profile',
 ]
-const clientAccess = ['dashboard', 'register', 'books', 'services']
+const clientAccess = ['dashboard', 'register', 'books', 'services', 'profile']
 
 const resources: IResourceItem[] = [
   {
@@ -64,6 +66,11 @@ const resources: IResourceItem[] = [
     name: 'mechanics',
     list: MechanicsPage,
     icon: <EmojiPeopleIcon />,
+  },
+  {
+    name: 'profile',
+    pure: ProfilePage,
+    isOuter: true,
   },
 ]
 export { resources, adminAccess as adminTypes, clientAccess as clientTypes }

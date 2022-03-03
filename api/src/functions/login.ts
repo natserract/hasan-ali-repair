@@ -12,7 +12,6 @@ export const handler = async (event) => {
       email,
     },
   })
-  console.log('Auth', user)
 
   // Throws if user cant be found with given credentials
   if (!user)

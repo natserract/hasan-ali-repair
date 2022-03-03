@@ -5,14 +5,17 @@ import { alpha } from '@material-ui/core/styles/colorManipulator'
 const styles = makeStyles((theme: typeof Theme) =>
   createStyles({
     logotype: {
-      color: 'white',
-      marginLeft: theme.spacing(2.5),
-      marginRight: theme.spacing(2.5),
-      fontWeight: 500,
-      fontSize: 18,
-      whiteSpace: 'nowrap',
-      [theme.breakpoints.down('xs')]: {
-        display: 'none',
+      '& a': {
+        color: 'white',
+        marginLeft: theme.spacing(2.5),
+        marginRight: theme.spacing(2.5),
+        fontWeight: 500,
+        fontSize: 18,
+        whiteSpace: 'nowrap',
+        [theme.breakpoints.down('xs')]: {
+          display: 'none',
+        },
+        textDecoration: 'none',
       },
     },
     appBar: {
