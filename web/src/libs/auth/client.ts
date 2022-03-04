@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import { API_URL } from 'src/constant/endpoint'
 import { storageKey } from './config'
 import { CurrentUser } from './hooks'
+import { browserHistory } from '../gql-router/utils/history'
 
 const AuthClient = {
   type: 'custom',
@@ -49,7 +50,7 @@ const AuthClient = {
         token,
       })
       .finally(() => {
-        // sessionStorage.removeItem(storageKey)
+        browserHistory.push(window.origin)
         localStorage.removeItem(storageKey)
       })
   },

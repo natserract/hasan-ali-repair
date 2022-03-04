@@ -1,18 +1,34 @@
 import { MetaTags } from '@redwoodjs/web'
 import Widget from 'src/components/widget'
-import TextField from '@material-ui/core/TextField'
 import FormControl from '@material-ui/core/FormControl'
 import useStyles from './styles'
 import Button from 'src/components/button'
 import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined'
-import { Form } from '@redwoodjs/forms'
+import { useForm } from 'react-hook-form'
+import FormInput from 'src/components/form/formInput'
+
+interface CreateUserInput {
+  name: string
+  email: string
+  hashedPassword: string
+  user_type: string
+  phone_number?: string
+  address?: string
+}
 
 const CreateUserPage = () => {
   const classes = useStyles()
 
-  const onSubmit = async (event) => {
-    event.preventDefault()
-    console.log('submitted', event)
+  const {
+    handleSubmit,
+    formState: { errors },
+    control,
+  } = useForm<CreateUserInput>({
+    mode: 'onSubmit',
+  })
+
+  const onSubmit = async (data) => {
+    console.log('submitted', data)
   }
 
   return (
@@ -20,37 +36,51 @@ const CreateUserPage = () => {
       <MetaTags title="Create User" description="CreateUser page" />
 
       <Widget title="Create User">
-        <form onSubmit={onSubmit} className={classes.formRoot}>
+        <form onSubmit={handleSubmit(onSubmit)} className={classes.formRoot}>
           <FormControl>
-            <TextField name="name" label="Name" required variant="outlined" />
+            <FormInput
+              control={control}
+              name="name"
+              label="Name"
+              errorobj={errors}
+              required
+            />
           </FormControl>
           <FormControl>
-            <TextField
+            <FormInput
+              control={control}
               name="email"
-              type="email"
               label="Email"
+              type="email"
+              errorobj={errors}
               required
-              variant="outlined"
             />
           </FormControl>
           <FormControl>
-            <TextField name="address" label="Address" variant="outlined" />
+            <FormInput
+              control={control}
+              name="address"
+              label="Address"
+              errorobj={errors}
+            />
           </FormControl>
           <FormControl>
-            <TextField
+            <FormInput
+              control={control}
               name="phone_number"
-              type="number"
               label="Phone Number"
-              variant="outlined"
+              type="number"
+              errorobj={errors}
             />
           </FormControl>
           <FormControl>
-            <TextField
+            <FormInput
+              control={control}
               name="password"
-              type="password"
               label="Password"
+              type="password"
+              errorobj={errors}
               required
-              variant="outlined"
             />
           </FormControl>
 

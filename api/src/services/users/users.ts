@@ -1,7 +1,9 @@
 import type { Prisma } from '@prisma/client'
 import type { ResolverArgs } from '@redwoodjs/graphql-server'
+import { ValidationError } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'
+import { useHashedPassword } from 'src/utils/encrypt'
 
 export const users = () => {
   return db.user.findMany()
@@ -17,9 +19,33 @@ interface CreateUserArgs {
   input: Prisma.UserCreateInput
 }
 
-export const createUser = ({ input }: CreateUserArgs) => {
+export const createUser = async ({ input }: CreateUserArgs) => {
+  // Email validations
+  const user = await db.user.findUnique({
+    where: {
+      email: input.email,
+    },
+  })
+
+  if (user) {
+    return new ValidationError('Email already exists')
+  }
+
+  // Encrypt password
+  const encryptedPassword = useHashedPassword(input.hashedPassword)
+
+  const userInput = {
+    name: input.name,
+    email: input.email,
+    hashedPassword: encryptedPassword.hashPassword,
+    salt: encryptedPassword.salt,
+    user_type: input.user_type,
+    phone_number: input?.phone_number,
+    address: input?.address,
+  }
+
   return db.user.create({
-    data: input,
+    data: userInput,
   })
 }
 

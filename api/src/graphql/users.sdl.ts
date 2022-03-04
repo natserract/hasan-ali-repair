@@ -21,11 +21,9 @@ export const schema = gql`
   }
 
   input CreateUserInput {
-    uuid: String
     name: String!
     email: String!
     hashedPassword: String!
-    salt: String!
     refreshToken: String
     user_type: String!
     created_at: DateTime
