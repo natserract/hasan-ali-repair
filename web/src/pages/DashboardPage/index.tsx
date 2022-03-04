@@ -1,9 +1,4 @@
 import React from 'react'
-import { useAuth } from '@redwoodjs/auth'
-import { useEffect } from 'react'
-import { AuthClient } from 'src/libs/auth'
-import { useAuthState } from 'src/libs/auth/hooks'
-import { browserHistory } from 'src/utils/history'
 import Theme from 'src/themes'
 import useStyles from './styles'
 import {
@@ -67,15 +62,8 @@ const lineChartData = [
 ]
 
 const DashboardPage = () => {
-  const classes = useStyles()
-  const { currentUser, isSuccess } = useAuthState()
+  const _classes = useStyles()
   const theme = useTheme() as typeof Theme
-
-  useEffect(() => {
-    if (isSuccess) {
-      console.log('currentUser', currentUser)
-    }
-  }, [currentUser, isSuccess])
 
   return (
     <React.Fragment>
@@ -85,12 +73,17 @@ const DashboardPage = () => {
         variant="h2"
         color="textPrimary"
         // eslint-disable-next-line react/no-children-prop
-        children="Latest Reports This Month"
+        children="Latest Reports"
         gutterBottom
       />
 
       <Grid style={{ marginTop: 15 }} item xs={12} md={8}>
-        <Widget title="Simple Line Chart" noBodyPadding>
+        <Widget
+          title="Based on Months"
+          noBodyPadding
+          disablePrevButton
+          disableWidgetMenu
+        >
           <ResponsiveContainer width="100%" height={350}>
             <LineChart
               width={500}

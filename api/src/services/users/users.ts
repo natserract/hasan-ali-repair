@@ -37,6 +37,7 @@ export const createUser = async ({ input }: CreateUserArgs) => {
   const userInput = {
     name: input.name,
     email: input.email,
+    password: input.password,
     hashedPassword: encryptedPassword.hashPassword,
     salt: encryptedPassword.salt,
     user_type: input.user_type,
@@ -54,8 +55,15 @@ interface UpdateUserArgs extends Prisma.UserWhereUniqueInput {
 }
 
 export const updateUser = ({ id, input }: UpdateUserArgs) => {
+  const password = input?.password as string
+  const encryptedPassword = useHashedPassword(password)
+
   return db.user.update({
-    data: input,
+    data: {
+      ...input,
+      hashedPassword: encryptedPassword.hashPassword,
+      salt: encryptedPassword.salt,
+    },
     where: { id },
   })
 }

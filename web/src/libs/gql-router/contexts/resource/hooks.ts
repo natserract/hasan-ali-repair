@@ -31,7 +31,6 @@ export const useResource = (): UseResourceType => {
           return entries.includes(item.name)
         })
       }
-      console.log('resources', resources)
 
       if (newResources.length) {
         setCurrentResources(newResources)

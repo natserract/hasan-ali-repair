@@ -10,10 +10,22 @@ interface FormInputProps {
   errorobj: Record<string, unknown>
   required?: boolean
   errormessage?: string
+  disabled?: boolean
+  defaultValue?: string
 }
 
 const FormInput: React.FC<FormInputProps> = (props): JSX.Element => {
-  const { name, label, control, type, errorobj, required, errormessage } = props
+  const {
+    name,
+    label,
+    control,
+    type,
+    errorobj,
+    required,
+    disabled,
+    errormessage,
+    defaultValue,
+  } = props
 
   let isError = false
   if (errorobj && Object.prototype.hasOwnProperty.call(errorobj, name)) {
@@ -25,7 +37,7 @@ const FormInput: React.FC<FormInputProps> = (props): JSX.Element => {
       name={name}
       rules={{ required: required }}
       control={control}
-      render={({ field }) => (
+      render={({ field: { onChange, ref } }) => (
         <TextField
           type={type}
           label={label}
@@ -33,11 +45,14 @@ const FormInput: React.FC<FormInputProps> = (props): JSX.Element => {
           helperText={required ? errormessage : null}
           fullWidth={true}
           variant="outlined"
+          disabled={disabled}
+          defaultValue={defaultValue}
           InputLabelProps={{
             className: required ? 'required-label' : '',
             required: required || false,
           }}
-          {...field}
+          onChange={onChange}
+          ref={ref}
         />
       )}
       {...props}

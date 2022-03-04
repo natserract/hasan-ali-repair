@@ -21,12 +21,14 @@ type WidgetProps = {
   noBodyPadding: boolean
   bodyClass: string
   disableWidgetMenu: boolean
+  disablePrevButton: boolean
   header: React.ReactNode
   noHeaderPadding: boolean
   headerClass: string
   style: React.CSSProperties
   noWidgetShadow: boolean
   children: React.ReactNode
+  isLoading: boolean
 }
 
 export default function Widget({
@@ -35,11 +37,13 @@ export default function Widget({
   noBodyPadding,
   bodyClass,
   disableWidgetMenu,
+  disablePrevButton,
   header,
   noHeaderPadding,
   headerClass,
   style,
   noWidgetShadow,
+  isLoading,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ...props
 }: Partial<WidgetProps>) {
@@ -52,7 +56,12 @@ export default function Widget({
   const [isMoreMenuOpen, setMoreMenuOpen] = useState(null)
 
   return (
-    <div className={classes.widgetWrapper} style={style && { ...style }}>
+    <div
+      className={`${classes.widgetWrapper} ${
+        isLoading ? classes.widgetWrapperLoading : ''
+      }`}
+      style={style && { ...style }}
+    >
       <Paper
         className={classes.paper}
         classes={{
@@ -72,9 +81,11 @@ export default function Widget({
           ) : (
             <React.Fragment>
               <div className={classes.headerTitle}>
-                <IconButton onClick={() => navigate.goBack()}>
-                  <ArrowBackIcon />
-                </IconButton>
+                {!disablePrevButton && (
+                  <IconButton onClick={() => navigate.goBack()}>
+                    <ArrowBackIcon />
+                  </IconButton>
+                )}
                 <Typography variant="h5" noWrap>
                   {title}
                 </Typography>

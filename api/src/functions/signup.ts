@@ -30,6 +30,7 @@ export const handler = async (event) => {
       data: {
         name,
         email,
+        password,
         hashedPassword: encryptedPassword.hashPassword,
         salt: encryptedPassword.salt,
         user_type,

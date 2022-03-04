@@ -132,7 +132,6 @@ const RouteComponent: React.FC<RouteComponentProps> = ({
     },
     [routePath]
   )
-  console.log('routesList', routesList)
 
   useEffect(() => {
     if (currentResources) {

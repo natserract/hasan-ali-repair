@@ -20,6 +20,8 @@ import NotFoundPage from './pages/NotFoundPage'
 import RegisterPage from './pages/Authorization/RegisterPage'
 import ForgotPasswordPage from './pages/Authorization/ForgotPasswordPage/ForgotPasswordPage'
 
+import { Toaster } from '@redwoodjs/web/toast'
+
 const access = {
   admin: adminTypes,
   customer: clientTypes,
@@ -46,6 +48,7 @@ const App = () => (
           <AppProvider>
             <ThemeProvider theme={Themes.default}>
               <CssBaseline />
+              <Toaster position="top-right" />
 
               <GqlRouter
                 basePath="/app"

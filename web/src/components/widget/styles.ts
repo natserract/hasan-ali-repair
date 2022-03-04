@@ -6,6 +6,25 @@ const styles = makeStyles((theme: typeof Theme) =>
     widgetWrapper: {
       display: 'flex',
       minHeight: 'auto',
+      position: 'relative',
+    },
+    widgetWrapperLoading: {
+      '&:after': {
+        cursor: 'not-allowed',
+        content: `''`,
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        width: '100%',
+        height: '100%',
+        background: 'rgba(255, 255, 255, 0.40)',
+        fontSize: 30,
+        zIndex: 10,
+        textAlign: 'center',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      },
     },
     widgetHeader: {
       padding: theme.spacing(3),

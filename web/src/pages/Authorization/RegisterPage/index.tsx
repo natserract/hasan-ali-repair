@@ -16,10 +16,12 @@ import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import useStyles from './styles'
 import { extractError } from 'src/utils/errors'
-import { browserHistory } from 'src/utils/history'
+import { useNavigate } from 'src/libs/gql-router'
+import { toastPromise } from 'src/utils/info'
 
 const RegisterPage = () => {
-  const classes = useStyles()
+  const _classes = useStyles()
+  const navigate = useNavigate()
 
   const nameRef = useRef<HTMLInputElement>()
   useEffect(() => {
@@ -42,14 +44,16 @@ const RegisterPage = () => {
       })
 
       if (response) {
-        toast.success('Register success. You must login first.')
-
-        setTimeout(() => {
-          browserHistory.push('/login')
-        }, 1000)
+        toastPromise(
+          'Register success. You must login first.',
+          'success',
+          1000
+        ).finally(() => {
+          navigate.push('/login')
+        })
       }
     } catch (error) {
-      toast.error(error.message)
+      toast.error(extractError(error).message)
     }
   }
 

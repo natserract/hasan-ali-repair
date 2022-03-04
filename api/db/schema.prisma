@@ -13,7 +13,9 @@ model User {
   uuid String? @default(uuid())
   name String
 
-  // password String
+  // Somecase we need fetch password (non hashed)
+  password String
+
   email String @unique
 
   // dbAuth

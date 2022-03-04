@@ -6,7 +6,6 @@ import useStyles from './styles'
 import { SHOWUSERPAGE_USERQUERY } from './query'
 import { useParams } from 'src/libs/gql-router/hooks'
 import { CurrentUser } from 'src/types/share'
-import LoadingComponent from 'src/components/loading'
 
 const ShowUserPage = () => {
   const classes = useStyles()
@@ -22,13 +21,11 @@ const ShowUserPage = () => {
   )
   const user = userQueryData?.user as CurrentUser
 
-  if (loadingQueryData) return <LoadingComponent />
-
   return (
     <>
       <MetaTags title="ShowUser" description="ShowUser page" />
 
-      <Widget title="View User">
+      <Widget isLoading={loadingQueryData} title="View User">
         <div className={classes.labelGroup}>
           <Typography variant="h6" component="h4">
             Name

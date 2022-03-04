@@ -6,6 +6,7 @@ export type Access = {
 export type CurrentUser = {
   id: number
   name: string
+  password?: string
   address: string
   email: string
   phone_number: string

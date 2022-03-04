@@ -10,6 +10,11 @@ const styles = makeStyles((theme: typeof Theme) =>
         },
       },
     },
+    menuItemRoot: {
+      '&:hover, &:focus': {
+        backgroundColor: 'transparent',
+      },
+    },
   })
 )
 
