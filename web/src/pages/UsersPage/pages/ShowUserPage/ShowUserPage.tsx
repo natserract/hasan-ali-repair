@@ -8,7 +8,7 @@ import { useParams } from 'src/libs/gql-router/hooks'
 import { CurrentUser } from 'src/types/share'
 
 const ShowUserPage = () => {
-  const classes = useStyles()
+  const _classes = useStyles()
   const params = useParams()
 
   const { data: userQueryData, loading: loadingQueryData } = useQuery(
@@ -26,39 +26,43 @@ const ShowUserPage = () => {
       <MetaTags title="ShowUser" description="ShowUser page" />
 
       <Widget isLoading={loadingQueryData} title="View User" disableWidgetMenu>
-        <div className={classes.labelGroup}>
-          <Typography variant="h6" component="h4">
-            Name
-          </Typography>
-          <InputLabel color="secondary">{user?.name}</InputLabel>
-        </div>
+        <div className="formGroup">
+          <div className="formGroupItem">
+            <Typography variant="h6" component="h4">
+              Name
+            </Typography>
+            <InputLabel color="secondary">{user?.name}</InputLabel>
+          </div>
 
-        <div className={classes.labelGroup}>
-          <Typography variant="h6" component="h4">
-            Email
-          </Typography>
-          <InputLabel color="secondary">{user?.email}</InputLabel>
-        </div>
+          <div className="formGroupItem">
+            <Typography variant="h6" component="h4">
+              Email
+            </Typography>
+            <InputLabel color="secondary">{user?.email}</InputLabel>
+          </div>
 
-        <div className={classes.labelGroup}>
-          <Typography variant="h6" component="h4">
-            Role
-          </Typography>
-          <InputLabel color="secondary">{user?.user_type}</InputLabel>
-        </div>
+          <div className="formGroupItem">
+            <Typography variant="h6" component="h4">
+              Role
+            </Typography>
+            <InputLabel color="secondary">{user?.user_type}</InputLabel>
+          </div>
 
-        <div className={classes.labelGroup}>
-          <Typography variant="h6" component="h4">
-            Address
-          </Typography>
-          <InputLabel color="secondary">{user?.address || '-'}</InputLabel>
-        </div>
+          <div className="formGroupItem">
+            <Typography variant="h6" component="h4">
+              Address
+            </Typography>
+            <InputLabel color="secondary">{user?.address || '-'}</InputLabel>
+          </div>
 
-        <div className={classes.labelGroup}>
-          <Typography variant="h6" component="h4">
-            Phone Number
-          </Typography>
-          <InputLabel color="secondary">{user?.phone_number || '-'}</InputLabel>
+          <div className="formGroupItem">
+            <Typography variant="h6" component="h4">
+              Phone Number
+            </Typography>
+            <InputLabel color="secondary">
+              {user?.phone_number || '-'}
+            </InputLabel>
+          </div>
         </div>
       </Widget>
     </>

@@ -19,7 +19,7 @@ const ServicesPage = (props) => {
       },
       {
         name: 'customer.user.name',
-        label: 'Name',
+        label: 'Customer Name',
         options: {
           filter: false,
         },
