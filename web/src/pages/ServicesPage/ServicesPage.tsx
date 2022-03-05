@@ -10,6 +10,14 @@ const ServicesPage = (props) => {
   const columns = useMemo(
     () => [
       {
+        name: 'id',
+        label: 'Id',
+        options: {
+          display: false,
+          filter: false,
+        },
+      },
+      {
         name: 'customer.user.name',
         label: 'Name',
         options: {

@@ -163,7 +163,8 @@ const List: React.FC<ListProps> = ({
           sort: false,
           customBodyRender: (value, tableMeta, _updateValue) => {
             const rowIdx = tableMeta.rowIndex
-            const dataIdx = tableMeta.tableData[rowIdx].id
+            const dataIdx =
+              tableMeta.tableData[rowIdx].id || tableMeta.tableData[rowIdx][0]
 
             return (
               <Grid container className={classes.actionButtonContainer}>
