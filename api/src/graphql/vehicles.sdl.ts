@@ -12,8 +12,15 @@ export const schema = gql`
     service: [Service]!
   }
 
+  input VehiclesInput {
+    sort: String
+    filter: String
+    start: Int
+    limit: Int
+  }
+
   type Query {
-    vehicles: [Vehicle!]! @requireAuth
+    vehicles(input: VehiclesInput): [Vehicle!]! @requireAuth
     vehicle(id: Int!): Vehicle @requireAuth
   }
 

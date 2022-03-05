@@ -1,10 +1,30 @@
 import type { Prisma } from '@prisma/client'
 import type { ResolverArgs } from '@redwoodjs/graphql-server'
+import { ITEMS_PER_PAGE } from 'src/constants/config'
 
 import { db } from 'src/lib/db'
+import { InputList } from 'src/types/share'
 
-export const vehicles = () => {
-  return db.vehicle.findMany()
+type VehiclesInput = InputList
+
+export const vehicles = ({ input }: VehiclesInput) => {
+  const orderBy = (input?.sort && JSON.parse(input?.sort)) || undefined
+  const $where = (input?.filter && JSON.parse(input?.filter)) || undefined
+
+  return db.vehicle.findMany({
+    take: input?.limit || ITEMS_PER_PAGE,
+    skip: input?.start || 0,
+    orderBy: {
+      ...(orderBy || {
+        created_at: 'asc',
+      }),
+    },
+    where: {
+      ...($where && {
+        ...$where,
+      }),
+    },
+  })
 }
 
 export const vehicle = ({ id }: Prisma.VehicleWhereUniqueInput) => {

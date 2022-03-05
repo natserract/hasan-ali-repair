@@ -19,8 +19,15 @@ export const schema = gql`
     schedule: [Schedule]!
   }
 
+  input ServicesInput {
+    sort: String
+    filter: String
+    start: Int
+    limit: Int
+  }
+
   type Query {
-    services: [Service!]! @requireAuth
+    services(input: ServicesInput): [Service!]! @skipAuth
     service(id: Int!): Service @requireAuth
   }
 
