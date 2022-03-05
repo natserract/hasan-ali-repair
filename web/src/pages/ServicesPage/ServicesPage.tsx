@@ -1,18 +1,59 @@
-import { Link, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
+import List from 'src/components/common/list'
+import { Grid } from '@material-ui/core'
+import { SERVICESPAGE_SERVICES_QUERY } from './query'
+import { DELETESERVICE_MUTATION } from './mutation'
+import { useMemo } from 'react'
 
-const ServicesPage = () => {
+const ServicesPage = (props) => {
+  const columns = useMemo(
+    () => [
+      {
+        name: 'customer.user.name',
+        label: 'Name',
+        options: {
+          filter: false,
+        },
+      },
+      {
+        name: 'vehicle.serialNum',
+        label: 'Vehicle Serial Number',
+        options: {
+          filter: false,
+        },
+      },
+      {
+        name: 'vehicle.name',
+        label: 'Vehicle Name',
+        options: {
+          filter: false,
+        },
+      },
+      {
+        name: 'status',
+        label: 'Status',
+        options: {
+          filter: false,
+        },
+      },
+    ],
+    []
+  )
+
   return (
     <>
       <MetaTags title="Services" description="Services page" />
 
-      <h1>ServicesPage</h1>
-      <p>
-        Find me in <code>./web/src/pages/ServicesPage/ServicesPage.tsx</code>
-      </p>
-      <p>
-        My default route is named <code>services</code>, link to me with `
-      </p>
+      <Grid container spacing={4}>
+        <Grid item xs={12}>
+          <List
+            columns={columns}
+            listQuery={SERVICESPAGE_SERVICES_QUERY}
+            deleteMutation={DELETESERVICE_MUTATION}
+            resourceName={props.resourceName}
+          />
+        </Grid>
+      </Grid>
     </>
   )
 }

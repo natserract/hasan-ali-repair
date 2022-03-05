@@ -29,14 +29,14 @@ describe('schedules', () => {
   scenario('creates a schedule', async (scenario: StandardScenario) => {
     const result = await createSchedule({
       input: {
-        time_from: '2022-02-21T06:11:20Z',
-        time_to: '2022-02-21T06:11:20Z',
+        time_from: '2022-03-05T09:50:22Z',
+        time_to: '2022-03-05T09:50:22Z',
         service_id: scenario.schedule.two.service_id,
       },
     })
 
-    expect(result.time_from).toEqual('2022-02-21T06:11:20Z')
-    expect(result.time_to).toEqual('2022-02-21T06:11:20Z')
+    expect(result.time_from).toEqual('2022-03-05T09:50:22Z')
+    expect(result.time_to).toEqual('2022-03-05T09:50:22Z')
     expect(result.service_id).toEqual(scenario.schedule.two.service_id)
   })
 
@@ -44,10 +44,10 @@ describe('schedules', () => {
     const original = await schedule({ id: scenario.schedule.one.id })
     const result = await updateSchedule({
       id: original.id,
-      input: { time_from: '2022-02-22T06:11:20Z' },
+      input: { time_from: '2022-03-06T09:50:22Z' },
     })
 
-    expect(result.time_from).toEqual('2022-02-22T06:11:20Z')
+    expect(result.time_from).toEqual('2022-03-06T09:50:22Z')
   })
 
   scenario('deletes a schedule', async (scenario: StandardScenario) => {

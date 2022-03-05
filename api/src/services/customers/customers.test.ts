@@ -28,16 +28,10 @@ describe('customers', () => {
 
   scenario('creates a customer', async (scenario: StandardScenario) => {
     const result = await createCustomer({
-      input: {
-        user_id: scenario.customer.two.user_id,
-        service_id: scenario.customer.two.service_id,
-        schedule_id: scenario.customer.two.schedule_id,
-      },
+      input: { user_id: scenario.customer.two.user_id },
     })
 
     expect(result.user_id).toEqual(scenario.customer.two.user_id)
-    expect(result.service_id).toEqual(scenario.customer.two.service_id)
-    expect(result.schedule_id).toEqual(scenario.customer.two.schedule_id)
   })
 
   scenario('updates a customer', async (scenario: StandardScenario) => {

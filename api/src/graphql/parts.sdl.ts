@@ -1,6 +1,7 @@
 export const schema = gql`
   type Part {
     id: Int!
+    name: String!
     part_number: Int!
     in_date: DateTime
     qty: Int!
@@ -15,6 +16,7 @@ export const schema = gql`
   }
 
   input CreatePartInput {
+    name: String!
     part_number: Int!
     in_date: DateTime
     qty: Int!
@@ -23,6 +25,7 @@ export const schema = gql`
   }
 
   input UpdatePartInput {
+    name: String
     part_number: Int
     in_date: DateTime
     qty: Int

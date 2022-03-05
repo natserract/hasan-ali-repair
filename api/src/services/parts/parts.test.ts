@@ -22,22 +22,28 @@ describe('parts', () => {
 
   scenario('creates a part', async () => {
     const result = await createPart({
-      input: { part_number: 2409396, qty: 8107850, price: 8134793.261014941 },
+      input: {
+        name: 'String',
+        part_number: 8658861,
+        qty: 1222593,
+        price: 6335118.829663778,
+      },
     })
 
-    expect(result.part_number).toEqual(2409396)
-    expect(result.qty).toEqual(8107850)
-    expect(result.price).toEqual(8134793.261014941)
+    expect(result.name).toEqual('String')
+    expect(result.part_number).toEqual(8658861)
+    expect(result.qty).toEqual(1222593)
+    expect(result.price).toEqual(6335118.829663778)
   })
 
   scenario('updates a part', async (scenario: StandardScenario) => {
     const original = await part({ id: scenario.part.one.id })
     const result = await updatePart({
       id: original.id,
-      input: { part_number: 3921842 },
+      input: { name: 'String2' },
     })
 
-    expect(result.part_number).toEqual(3921842)
+    expect(result.name).toEqual('String2')
   })
 
   scenario('deletes a part', async (scenario: StandardScenario) => {

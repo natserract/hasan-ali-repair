@@ -1,14 +1,15 @@
 export const schema = gql`
   type Vehicle {
     id: Int!
-    serialNum: Int!
+    name: String!
+    serialNum: String!
     year: Int!
     details: String
     created_by: Int!
-    updated_by: Int!
+    updated_by: Int
     created_at: DateTime
     updated_at: DateTime
-    Service: [Service]!
+    service: [Service]!
   }
 
   type Query {
@@ -17,17 +18,19 @@ export const schema = gql`
   }
 
   input CreateVehicleInput {
-    serialNum: Int!
+    name: String!
+    serialNum: String!
     year: Int!
     details: String
     created_by: Int!
-    updated_by: Int!
+    updated_by: Int
     created_at: DateTime
     updated_at: DateTime
   }
 
   input UpdateVehicleInput {
-    serialNum: Int
+    name: String
+    serialNum: String
     year: Int
     details: String
     created_by: Int

@@ -7,8 +7,8 @@ export const schema = gql`
     address: String
     created_at: DateTime
     updated_at: DateTime
-    Service: [Service]!
-    PartsUsed: [PartUsed]!
+    service: [Service]!
+    partsUsed: [PartUsed]!
   }
 
   type Query {

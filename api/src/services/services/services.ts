@@ -45,10 +45,10 @@ export const Service = {
     db.service.findUnique({ where: { id: root.id } }).vehicle(),
   mechanic: (_obj, { root }: ResolverArgs<ReturnType<typeof service>>) =>
     db.service.findUnique({ where: { id: root.id } }).mechanic(),
-  Customer: (_obj, { root }: ResolverArgs<ReturnType<typeof service>>) =>
-    db.service.findUnique({ where: { id: root.id } }).Customer(),
-  PartsUsed: (_obj, { root }: ResolverArgs<ReturnType<typeof service>>) =>
-    db.service.findUnique({ where: { id: root.id } }).PartsUsed(),
-  Schedule: (_obj, { root }: ResolverArgs<ReturnType<typeof service>>) =>
-    db.service.findUnique({ where: { id: root.id } }).Schedule(),
+  customer: (_obj, { root }: ResolverArgs<ReturnType<typeof service>>) =>
+    db.service.findUnique({ where: { id: root.id } }).customer(),
+  partsUsed: (_obj, { root }: ResolverArgs<ReturnType<typeof service>>) =>
+    db.service.findUnique({ where: { id: root.id } }).partsUsed(),
+  schedule: (_obj, { root }: ResolverArgs<ReturnType<typeof service>>) =>
+    db.service.findUnique({ where: { id: root.id } }).schedule(),
 }

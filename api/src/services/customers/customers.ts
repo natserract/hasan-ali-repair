@@ -45,6 +45,4 @@ export const Customer = {
     db.customer.findUnique({ where: { id: root.id } }).user(),
   service: (_obj, { root }: ResolverArgs<ReturnType<typeof customer>>) =>
     db.customer.findUnique({ where: { id: root.id } }).service(),
-  schedule: (_obj, { root }: ResolverArgs<ReturnType<typeof customer>>) =>
-    db.customer.findUnique({ where: { id: root.id } }).schedule(),
 }

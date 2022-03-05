@@ -36,7 +36,7 @@ model User {
   phone_number String?
   address      String?
 
-  Customer Customer[]
+  customer Customer[]
 
   @@map("users")
 }
@@ -45,17 +45,18 @@ model Vehicle {
   id Int @id @default(autoincrement())
 
   // => Is a plat number, like: DK 1..
-  serialNum Int     @unique
+  name      String
+  serialNum String  @unique
   year      Int
   details   String?
 
   created_by Int
-  updated_by Int
+  updated_by Int?
 
   created_at DateTime? @default(now())
   updated_at DateTime? @updatedAt
 
-  Service Service[]
+  service Service[]
   @@map("vehicle")
 }
 
@@ -70,9 +71,6 @@ model Schedule {
   service_id Int
   service    Service @relation(fields: [service_id], references: [id])
 
-  Customer Customer[]
-
-  @@unique([service_id])
   @@map("schedule")
 }
 
@@ -86,8 +84,8 @@ model Mechanic {
   created_at DateTime? @default(now())
   updated_at DateTime? @updatedAt
 
-  Service   Service[]
-  PartsUsed PartUsed[]
+  service   Service[]
+  partsUsed PartUsed[]
 
   @@map("mechanic")
 }
@@ -100,7 +98,7 @@ model Service {
   price   Decimal?
 
   created_by Int
-  updated_by Int
+  updated_by Int?
 
   vehicle_id Int
   vehicle    Vehicle @relation(fields: [vehicle_id], references: [id])
@@ -108,12 +106,14 @@ model Service {
   mechanic_id Int
   mechanic    Mechanic @relation(fields: [mechanic_id], references: [id])
 
+  customer_id Int
+  customer    Customer @relation(fields: [customer_id], references: [id])
+
   created_at DateTime? @default(now())
   updated_at DateTime? @updatedAt
 
-  Customer  Customer[]
-  PartsUsed PartUsed[]
-  Schedule  Schedule[]
+  partsUsed PartUsed[]
+  schedule  Schedule[]
 
   @@map("services")
 }
@@ -121,6 +121,7 @@ model Service {
 // => In
 model Part {
   id          Int       @id @default(autoincrement())
+  name        String
   part_number Int       @unique
   in_date     DateTime? @default(now())
   qty         Int
@@ -153,12 +154,6 @@ model Customer {
   user_id Int
   user    User @relation(fields: [user_id], references: [id])
 
-  service_id Int
-  service    Service @relation(fields: [service_id], references: [id])
-
-  schedule_id Int
-  schedule    Schedule @relation(fields: [schedule_id], references: [id])
-
-  @@unique([service_id, schedule_id])
+  service Service[]
   @@map("customer")
 }

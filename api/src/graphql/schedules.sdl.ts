@@ -7,7 +7,6 @@ export const schema = gql`
     updated_at: DateTime
     service_id: Int!
     service: Service!
-    Customer: [Customer]!
   }
 
   type Query {

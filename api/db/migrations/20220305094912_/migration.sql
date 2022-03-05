@@ -3,6 +3,7 @@ CREATE TABLE `users` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `uuid` VARCHAR(191) NULL,
     `name` VARCHAR(191) NOT NULL,
+    `password` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
     `hashedPassword` VARCHAR(191) NOT NULL DEFAULT '',
     `salt` VARCHAR(191) NOT NULL DEFAULT '',
@@ -20,11 +21,12 @@ CREATE TABLE `users` (
 -- CreateTable
 CREATE TABLE `vehicle` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `serialNum` INTEGER NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+    `serialNum` VARCHAR(191) NOT NULL,
     `year` INTEGER NOT NULL,
     `details` VARCHAR(191) NULL,
     `created_by` INTEGER NOT NULL,
-    `updated_by` INTEGER NOT NULL,
+    `updated_by` INTEGER NULL,
     `created_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NULL,
 
@@ -41,7 +43,6 @@ CREATE TABLE `schedule` (
     `updated_at` DATETIME(3) NULL,
     `service_id` INTEGER NOT NULL,
 
-    UNIQUE INDEX `schedule_service_id_key`(`service_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -67,9 +68,10 @@ CREATE TABLE `services` (
     `message` VARCHAR(191) NULL,
     `price` DECIMAL(65, 30) NULL,
     `created_by` INTEGER NOT NULL,
-    `updated_by` INTEGER NOT NULL,
+    `updated_by` INTEGER NULL,
     `vehicle_id` INTEGER NOT NULL,
     `mechanic_id` INTEGER NOT NULL,
+    `customer_id` INTEGER NOT NULL,
     `created_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NULL,
 
@@ -79,6 +81,7 @@ CREATE TABLE `services` (
 -- CreateTable
 CREATE TABLE `parts` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
     `part_number` INTEGER NOT NULL,
     `in_date` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
     `qty` INTEGER NOT NULL,
@@ -103,10 +106,7 @@ CREATE TABLE `parts_used` (
 CREATE TABLE `customer` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `user_id` INTEGER NOT NULL,
-    `service_id` INTEGER NOT NULL,
-    `schedule_id` INTEGER NOT NULL,
 
-    UNIQUE INDEX `customer_service_id_schedule_id_key`(`service_id`, `schedule_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -120,6 +120,9 @@ ALTER TABLE `services` ADD CONSTRAINT `services_vehicle_id_fkey` FOREIGN KEY (`v
 ALTER TABLE `services` ADD CONSTRAINT `services_mechanic_id_fkey` FOREIGN KEY (`mechanic_id`) REFERENCES `mechanic`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `services` ADD CONSTRAINT `services_customer_id_fkey` FOREIGN KEY (`customer_id`) REFERENCES `customer`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `parts_used` ADD CONSTRAINT `parts_used_mechanic_id_fkey` FOREIGN KEY (`mechanic_id`) REFERENCES `mechanic`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -130,9 +133,3 @@ ALTER TABLE `parts_used` ADD CONSTRAINT `parts_used_part_id_fkey` FOREIGN KEY (`
 
 -- AddForeignKey
 ALTER TABLE `customer` ADD CONSTRAINT `customer_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `customer` ADD CONSTRAINT `customer_schedule_id_fkey` FOREIGN KEY (`schedule_id`) REFERENCES `schedule`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `customer` ADD CONSTRAINT `customer_service_id_fkey` FOREIGN KEY (`service_id`) REFERENCES `services`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

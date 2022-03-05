@@ -3,10 +3,7 @@ export const schema = gql`
     id: Int!
     user_id: Int!
     user: User!
-    service_id: Int!
-    service: Service!
-    schedule_id: Int!
-    schedule: Schedule!
+    service: [Service]!
   }
 
   type Query {
@@ -16,14 +13,10 @@ export const schema = gql`
 
   input CreateCustomerInput {
     user_id: Int!
-    service_id: Int!
-    schedule_id: Int!
   }
 
   input UpdateCustomerInput {
     user_id: Int
-    service_id: Int
-    schedule_id: Int
   }
 
   type Mutation {

@@ -6,16 +6,17 @@ export const schema = gql`
     message: String
     price: Float
     created_by: Int!
-    updated_by: Int!
+    updated_by: Int
     vehicle_id: Int!
     vehicle: Vehicle!
     mechanic_id: Int!
     mechanic: Mechanic!
+    customer_id: Int!
+    customer: Customer!
     created_at: DateTime
     updated_at: DateTime
-    Customer: [Customer]!
-    PartsUsed: [PartUsed]!
-    Schedule: [Schedule]!
+    partsUsed: [PartUsed]!
+    schedule: [Schedule]!
   }
 
   type Query {
@@ -29,9 +30,10 @@ export const schema = gql`
     message: String
     price: Float
     created_by: Int!
-    updated_by: Int!
+    updated_by: Int
     vehicle_id: Int!
     mechanic_id: Int!
+    customer_id: Int!
     created_at: DateTime
     updated_at: DateTime
   }
@@ -45,6 +47,7 @@ export const schema = gql`
     updated_by: Int
     vehicle_id: Int
     mechanic_id: Int
+    customer_id: Int
     created_at: DateTime
     updated_at: DateTime
   }

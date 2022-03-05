@@ -4,18 +4,18 @@ export const standard = defineScenario<Prisma.VehicleCreateArgs>({
   vehicle: {
     one: {
       data: {
-        serialNum: 3092029,
-        year: 7182476,
-        created_by: 1562388,
-        updated_by: 6276978,
+        name: 'String',
+        serialNum: 'String1199775',
+        year: 6130222,
+        created_by: 5713497,
       },
     },
     two: {
       data: {
-        serialNum: 6020581,
-        year: 9316635,
-        created_by: 2260246,
-        updated_by: 2751547,
+        name: 'String',
+        serialNum: 'String1976977',
+        year: 2035017,
+        created_by: 6158699,
       },
     },
   },

@@ -41,6 +41,6 @@ export const deleteVehicle = ({ id }: Prisma.VehicleWhereUniqueInput) => {
 }
 
 export const Vehicle = {
-  Service: (_obj, { root }: ResolverArgs<ReturnType<typeof vehicle>>) =>
-    db.vehicle.findUnique({ where: { id: root.id } }).Service(),
+  service: (_obj, { root }: ResolverArgs<ReturnType<typeof vehicle>>) =>
+    db.vehicle.findUnique({ where: { id: root.id } }).service(),
 }

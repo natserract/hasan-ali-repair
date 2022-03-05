@@ -28,10 +28,10 @@ describe('mechanics', () => {
 
   scenario('creates a mechanic', async () => {
     const result = await createMechanic({
-      input: { person_id: 3001860, name: 'String' },
+      input: { person_id: 2491026, name: 'String' },
     })
 
-    expect(result.person_id).toEqual(3001860)
+    expect(result.person_id).toEqual(2491026)
     expect(result.name).toEqual('String')
   })
 
@@ -39,10 +39,10 @@ describe('mechanics', () => {
     const original = await mechanic({ id: scenario.mechanic.one.id })
     const result = await updateMechanic({
       id: original.id,
-      input: { person_id: 7810848 },
+      input: { person_id: 5564807 },
     })
 
-    expect(result.person_id).toEqual(7810848)
+    expect(result.person_id).toEqual(5564807)
   })
 
   scenario('deletes a mechanic', async (scenario: StandardScenario) => {

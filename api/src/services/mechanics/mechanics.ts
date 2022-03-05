@@ -41,8 +41,8 @@ export const deleteMechanic = ({ id }: Prisma.MechanicWhereUniqueInput) => {
 }
 
 export const Mechanic = {
-  Service: (_obj, { root }: ResolverArgs<ReturnType<typeof mechanic>>) =>
-    db.mechanic.findUnique({ where: { id: root.id } }).Service(),
-  PartsUsed: (_obj, { root }: ResolverArgs<ReturnType<typeof mechanic>>) =>
-    db.mechanic.findUnique({ where: { id: root.id } }).PartsUsed(),
+  service: (_obj, { root }: ResolverArgs<ReturnType<typeof mechanic>>) =>
+    db.mechanic.findUnique({ where: { id: root.id } }).service(),
+  partsUsed: (_obj, { root }: ResolverArgs<ReturnType<typeof mechanic>>) =>
+    db.mechanic.findUnique({ where: { id: root.id } }).partsUsed(),
 }

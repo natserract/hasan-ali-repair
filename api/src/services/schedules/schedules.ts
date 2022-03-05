@@ -43,6 +43,4 @@ export const deleteSchedule = ({ id }: Prisma.ScheduleWhereUniqueInput) => {
 export const Schedule = {
   service: (_obj, { root }: ResolverArgs<ReturnType<typeof schedule>>) =>
     db.schedule.findUnique({ where: { id: root.id } }).service(),
-  Customer: (_obj, { root }: ResolverArgs<ReturnType<typeof schedule>>) =>
-    db.schedule.findUnique({ where: { id: root.id } }).Customer(),
 }

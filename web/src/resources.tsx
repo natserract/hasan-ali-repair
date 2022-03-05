@@ -6,6 +6,7 @@ import {
   Motorcycle as MotorcycleIcon,
   BusinessCenter as BusinessCenterIcon,
   EmojiPeople as EmojiPeopleIcon,
+  AvTimer as AvTimerIcon,
 } from '@material-ui/icons'
 
 // Pages
@@ -20,6 +21,10 @@ import CreateUserPage from './pages/UsersPage/pages/CreateUserPage/CreateUserPag
 import ShowUserPage from './pages/UsersPage/pages/ShowUserPage/ShowUserPage'
 import { IResourceItem } from './libs/gql-router'
 import ProfilePage from './pages/ProfilePage/ProfilePage'
+import ShowServicePage from './pages/ServicesPage/pages/ShowServicePage/ShowServicePage'
+import SchedulesPage from './pages/SchedulesPage'
+import CreateServicePage from './pages/ServicesPage/pages/CreateServicePage/CreateServicePage'
+import EditServicePage from './pages/ServicesPage/pages/EditServicePage/EditServicePage'
 
 const adminAccess = [
   'dashboard',
@@ -30,8 +35,16 @@ const adminAccess = [
   'mechanics',
   'register',
   'profiles',
+  'schedules',
 ]
-const clientAccess = ['dashboard', 'register', 'books', 'services', 'profiles']
+const clientAccess = [
+  'dashboard',
+  'register',
+  'books',
+  'services',
+  'profiles',
+  'schedules',
+]
 
 const resources: IResourceItem[] = [
   {
@@ -50,7 +63,15 @@ const resources: IResourceItem[] = [
   {
     name: 'services',
     list: ServicesPage,
+    show: ShowServicePage,
+    create: CreateServicePage,
+    edit: EditServicePage,
     icon: <SettingsIcon />,
+  },
+  {
+    name: 'schedules',
+    list: SchedulesPage,
+    icon: <AvTimerIcon />,
   },
   {
     name: 'vehicles',
