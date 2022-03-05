@@ -69,7 +69,7 @@ const RouteComponent: React.FC<RouteComponentProps> = ({
           path: route ?? `${routePath}/${pluralizeName}/create`,
           component: () => (
             <CreateComponent
-              resourceName={name}
+              resourceName={pluralizeName}
               canCreate={canCreate}
               canDelete={canDelete}
               canEdit={canEdit}

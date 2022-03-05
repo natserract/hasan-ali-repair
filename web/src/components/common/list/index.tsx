@@ -29,8 +29,8 @@ type ListProps = {
     name: string
     label: string
     options: {
-      filter: boolean
-      customBodyRender?: (tableMeta) => string
+      filter?: boolean
+      customBodyRender?: (tableMeta) => any
       sort?: undefined
     }
   }[]
@@ -95,13 +95,13 @@ const List: React.FC<ListProps> = ({
 
     onDelete(id)
       .then(() => {
-        toast.success(`${resourceTitle} successfully deleted`)
+        toast.success(`${toCamelCase(resourcePluralize)} successfully deleted`)
       })
       .catch((error) => toast.error(extractError(error).message))
       .finally(() => {
         setLoadingData(false)
       })
-  }, [onDelete, resourceTitle])
+  }, [onDelete, resourcePluralize])
 
   const options = useMemo(
     () => ({

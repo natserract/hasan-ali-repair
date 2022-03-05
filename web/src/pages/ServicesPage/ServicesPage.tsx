@@ -4,6 +4,7 @@ import { Grid } from '@material-ui/core'
 import { SERVICESPAGE_SERVICES_QUERY } from './query'
 import { DELETESERVICE_MUTATION } from './mutation'
 import { useMemo } from 'react'
+import { toCamelCase } from 'src/utils/string'
 
 const ServicesPage = (props) => {
   const columns = useMemo(
@@ -33,7 +34,9 @@ const ServicesPage = (props) => {
         name: 'status',
         label: 'Status',
         options: {
-          filter: false,
+          customBodyRender: (tableMeta) => {
+            return toCamelCase(tableMeta)
+          },
         },
       },
     ],

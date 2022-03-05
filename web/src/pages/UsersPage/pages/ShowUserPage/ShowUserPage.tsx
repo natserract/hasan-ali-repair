@@ -25,7 +25,7 @@ const ShowUserPage = () => {
     <>
       <MetaTags title="ShowUser" description="ShowUser page" />
 
-      <Widget isLoading={loadingQueryData} title="View User">
+      <Widget isLoading={loadingQueryData} title="View User" disableWidgetMenu>
         <div className={classes.labelGroup}>
           <Typography variant="h6" component="h4">
             Name
