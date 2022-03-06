@@ -44,7 +44,7 @@ const ServicesPage = (props) => {
       },
       {
         name: 'created_at',
-        label: 'Service At',
+        label: 'Service Date',
         options: {
           filter: false,
           customBodyRender: (data) => {

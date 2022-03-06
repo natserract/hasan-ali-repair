@@ -12,7 +12,6 @@ import {
 } from '@redwoodjs/forms'
 import { toast, Toaster } from '@redwoodjs/web/toast'
 import { Link } from 'react-router-dom'
-import { browserHistory } from 'src/utils/history'
 
 const LoginPage = () => {
   const classes = useStyles()

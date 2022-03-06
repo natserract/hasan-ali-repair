@@ -27,6 +27,8 @@ import SchedulesPage from './pages/SchedulesPage'
 import CreateServicePage from './pages/ServicesPage/pages/CreateServicePage/CreateServicePage'
 import EditServicePage from './pages/ServicesPage/pages/EditServicePage/EditServicePage'
 import PartsUsedPage from './pages/PartsUsedPage/PartsUsedPage'
+import ShowSchedulePage from './pages/SchedulesPage/pages/ShowSchedulePage/ShowSchedulePage'
+import CreateSchedulePage from './pages/SchedulesPage/pages/CreateSchedulePage/CreateSchedulePage'
 
 const adminAccess = [
   'dashboard',
@@ -43,10 +45,10 @@ const adminAccess = [
 const clientAccess = [
   'dashboard',
   'register',
-  'books',
   'services',
   'profiles',
   'schedules',
+  'vehicles',
 ]
 
 const resources: IResourceItem[] = [
@@ -67,6 +69,8 @@ const resources: IResourceItem[] = [
     name: 'schedules',
     label: 'Bookings',
     list: SchedulesPage,
+    show: ShowSchedulePage,
+    create: CreateSchedulePage,
     icon: <AvTimerIcon />,
   },
   {
