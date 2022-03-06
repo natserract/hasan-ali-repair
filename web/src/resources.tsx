@@ -7,6 +7,7 @@ import {
   BusinessCenter as BusinessCenterIcon,
   EmojiPeople as EmojiPeopleIcon,
   AvTimer as AvTimerIcon,
+  GroupWork as GroupWorkIcon,
 } from '@material-ui/icons'
 
 // Pages
@@ -25,6 +26,7 @@ import ShowServicePage from './pages/ServicesPage/pages/ShowServicePage/ShowServ
 import SchedulesPage from './pages/SchedulesPage'
 import CreateServicePage from './pages/ServicesPage/pages/CreateServicePage/CreateServicePage'
 import EditServicePage from './pages/ServicesPage/pages/EditServicePage/EditServicePage'
+import PartsUsedPage from './pages/PartsUsedPage/PartsUsedPage'
 
 const adminAccess = [
   'dashboard',
@@ -36,6 +38,7 @@ const adminAccess = [
   'register',
   'profiles',
   'schedules',
+  'used-parts',
 ]
 const clientAccess = [
   'dashboard',
@@ -61,6 +64,12 @@ const resources: IResourceItem[] = [
     icon: <PeopleIcon />,
   },
   {
+    name: 'schedules',
+    label: 'Bookings',
+    list: SchedulesPage,
+    icon: <AvTimerIcon />,
+  },
+  {
     name: 'services',
     list: ServicesPage,
     show: ShowServicePage,
@@ -69,9 +78,10 @@ const resources: IResourceItem[] = [
     icon: <SettingsIcon />,
   },
   {
-    name: 'schedules',
-    list: SchedulesPage,
-    icon: <AvTimerIcon />,
+    name: 'used-parts',
+    label: 'Parts Used',
+    list: PartsUsedPage,
+    icon: <GroupWorkIcon />,
   },
   {
     name: 'vehicles',

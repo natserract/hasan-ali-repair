@@ -5,6 +5,7 @@ import { SERVICESPAGE_SERVICES_QUERY } from './query'
 import { DELETESERVICE_MUTATION } from './mutation'
 import { useMemo } from 'react'
 import { toCamelCase } from 'src/utils/string'
+import { parseDate } from 'src/utils/date'
 
 const ServicesPage = (props) => {
   const columns = useMemo(
@@ -25,13 +26,6 @@ const ServicesPage = (props) => {
         },
       },
       {
-        name: 'vehicle.serialNum',
-        label: 'Vehicle Serial Number',
-        options: {
-          filter: false,
-        },
-      },
-      {
         name: 'vehicle.name',
         label: 'Vehicle Name',
         options: {
@@ -42,8 +36,19 @@ const ServicesPage = (props) => {
         name: 'status',
         label: 'Status',
         options: {
+          sort: false,
           customBodyRender: (tableMeta) => {
             return toCamelCase(tableMeta)
+          },
+        },
+      },
+      {
+        name: 'created_at',
+        label: 'Service At',
+        options: {
+          filter: false,
+          customBodyRender: (data) => {
+            return parseDate(new Date(data))
           },
         },
       },

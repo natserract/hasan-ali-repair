@@ -6,25 +6,37 @@ export const standard = defineScenario<Prisma.PartUsedCreateArgs>({
       data: {
         parts: {
           create: {
-            part_number: 657917,
-            qty: 7553564,
-            price: 9805426.436734388,
+            name: 'String',
+            part_number: 5451430,
+            qty: 4142205,
+            price: 4246401.237351945,
           },
         },
-        mechanic: { create: { person_id: 6757619, name: 'String' } },
+        mechanic: { create: { person_id: 1533419, name: 'String' } },
         service: {
           create: {
-            created_by: 3450617,
-            updated_by: 6878255,
+            created_by: 9195111,
             vehicle: {
               create: {
-                serialNum: 491101,
-                year: 2281180,
-                created_by: 2818848,
-                updated_by: 6473371,
+                name: 'String',
+                serialNum: 'String2451690',
+                year: 587671,
+                created_by: 4765295,
               },
             },
-            mechanic: { create: { person_id: 608836, name: 'String' } },
+            mechanic: { create: { person_id: 2143035, name: 'String' } },
+            customer: {
+              create: {
+                user: {
+                  create: {
+                    name: 'String',
+                    password: 'String',
+                    email: 'String1003225',
+                    user_type: 'String',
+                  },
+                },
+              },
+            },
           },
         },
       },
@@ -33,25 +45,37 @@ export const standard = defineScenario<Prisma.PartUsedCreateArgs>({
       data: {
         parts: {
           create: {
-            part_number: 1091778,
-            qty: 513690,
-            price: 2413791.2740004077,
+            name: 'String',
+            part_number: 7850940,
+            qty: 6614938,
+            price: 5778340.240274003,
           },
         },
-        mechanic: { create: { person_id: 7709754, name: 'String' } },
+        mechanic: { create: { person_id: 1302267, name: 'String' } },
         service: {
           create: {
-            created_by: 7140409,
-            updated_by: 539300,
+            created_by: 8563393,
             vehicle: {
               create: {
-                serialNum: 4695473,
-                year: 3237235,
-                created_by: 4361643,
-                updated_by: 4818348,
+                name: 'String',
+                serialNum: 'String7922689',
+                year: 2544135,
+                created_by: 5193395,
               },
             },
-            mechanic: { create: { person_id: 1251205, name: 'String' } },
+            mechanic: { create: { person_id: 8460263, name: 'String' } },
+            customer: {
+              create: {
+                user: {
+                  create: {
+                    name: 'String',
+                    password: 'String',
+                    email: 'String727262',
+                    user_type: 'String',
+                  },
+                },
+              },
+            },
           },
         },
       },

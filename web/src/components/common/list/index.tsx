@@ -31,7 +31,7 @@ type ListProps = {
     options: {
       filter?: boolean
       customBodyRender?: (tableMeta) => any
-      sort?: undefined
+      sort?: boolean
     }
   }[]
 } & Partial<OptionalProps>

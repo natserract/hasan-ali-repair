@@ -69,7 +69,7 @@ model Schedule {
   updated_at DateTime? @updatedAt
 
   service_id Int
-  service    Service @relation(fields: [service_id], references: [id])
+  service    Service @relation(fields: [service_id], references: [id], onDelete: Cascade)
 
   @@map("schedule")
 }
@@ -143,7 +143,7 @@ model PartUsed {
   mechanic    Mechanic @relation(fields: [mechanic_id], references: [id])
 
   service_id Int
-  service    Service @relation(fields: [service_id], references: [id])
+  service    Service @relation(fields: [service_id], references: [id], onDelete: Cascade)
 
   @@map("parts_used")
 }

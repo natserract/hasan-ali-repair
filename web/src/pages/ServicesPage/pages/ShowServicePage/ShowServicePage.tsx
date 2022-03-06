@@ -49,28 +49,30 @@ const ShowServicePage = () => {
             </Typography>
             <InputLabel color="secondary">
               <List dense disablePadding>
-                {service?.schedule.map((item) => (
-                  <ListItem
-                    divider
-                    style={{
-                      paddingTop: 0,
-                      paddingBottom: 0,
-                    }}
-                    key={item?.id}
-                  >
-                    <ListItemIcon style={{ minWidth: 30 }}>
-                      <DoneIcon />
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={`Time from`}
-                      secondary={`${parseDate(new Date(item?.time_from))}`}
-                    />
-                    <ListItemText
-                      primary={`Time to`}
-                      secondary={`${parseDate(new Date(item?.time_to))}`}
-                    />
-                  </ListItem>
-                ))}
+                {service?.schedule.length
+                  ? service?.schedule.map((item) => (
+                      <ListItem
+                        divider
+                        style={{
+                          paddingTop: 0,
+                          paddingBottom: 0,
+                        }}
+                        key={item?.id}
+                      >
+                        <ListItemIcon style={{ minWidth: 30 }}>
+                          <DoneIcon />
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={`Time from`}
+                          secondary={`${parseDate(new Date(item?.time_from))}`}
+                        />
+                        <ListItemText
+                          primary={`Time to`}
+                          secondary={`${parseDate(new Date(item?.time_to))}`}
+                        />
+                      </ListItem>
+                    ))
+                  : 'Not Yet'}
               </List>
             </InputLabel>
           </div>
@@ -96,7 +98,7 @@ const ShowServicePage = () => {
               Mechanic Id
             </Typography>
             <InputLabel color="secondary">
-              #{service?.mechanic?.id} - {service?.mechanic?.person_id}
+              {service?.mechanic?.person_id}
             </InputLabel>
           </div>
 
@@ -122,28 +124,30 @@ const ShowServicePage = () => {
             </Typography>
             <InputLabel color="secondary">
               <List dense disablePadding>
-                {service?.partsUsed.map((item) => (
-                  <ListItem
-                    divider
-                    style={{
-                      paddingTop: 0,
-                      paddingBottom: 0,
-                    }}
-                    key={item?.id}
-                  >
-                    <ListItemIcon style={{ minWidth: 30 }}>
-                      <DoneIcon />
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={`Part Name`}
-                      secondary={item?.parts?.name}
-                    />
-                    <ListItemText
-                      primary={`Part Serial Num`}
-                      secondary={item?.parts?.part_number}
-                    />
-                  </ListItem>
-                ))}
+                {service?.partsUsed.length
+                  ? service?.partsUsed.map((item) => (
+                      <ListItem
+                        divider
+                        style={{
+                          paddingTop: 0,
+                          paddingBottom: 0,
+                        }}
+                        key={item?.id}
+                      >
+                        <ListItemIcon style={{ minWidth: 30 }}>
+                          <DoneIcon />
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={`Part Name`}
+                          secondary={item?.parts?.name}
+                        />
+                        <ListItemText
+                          primary={`Part Serial Num`}
+                          secondary={item?.parts?.part_number}
+                        />
+                      </ListItem>
+                    ))
+                  : 'Not Yet'}
               </List>
             </InputLabel>
           </div>

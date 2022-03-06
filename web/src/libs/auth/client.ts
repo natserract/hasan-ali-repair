@@ -50,7 +50,7 @@ const AuthClient = {
         token,
       })
       .finally(() => {
-        browserHistory.push(window.origin)
+        browserHistory.replace(window.origin)
         localStorage.removeItem(storageKey)
       })
   },

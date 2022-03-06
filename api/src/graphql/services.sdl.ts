@@ -4,7 +4,7 @@ export const schema = gql`
     uuid: String
     status: String!
     message: String
-    price: Float
+    price: Int
     created_by: Int!
     updated_by: Int
     vehicle_id: Int!
@@ -35,7 +35,7 @@ export const schema = gql`
     uuid: String
     status: String!
     message: String
-    price: Float
+    price: Int
     created_by: Int!
     updated_by: Int
     vehicle_id: Int!
@@ -49,7 +49,7 @@ export const schema = gql`
     uuid: String
     status: String
     message: String
-    price: Float
+    price: Int
     created_by: Int
     updated_by: Int
     vehicle_id: Int

@@ -93,7 +93,7 @@ const Sidebar = () => {
         if (!isCommon) {
           dynamicMenuRef.current.push({
             id,
-            label: toCamelCase(value.name),
+            label: value?.label ?? toCamelCase(value.name),
             link: `/app/${value.name}`,
             // eslint-disable-next-line react/no-children-prop
             icon: <React.Fragment children={value?.icon || <ListIcon />} />,

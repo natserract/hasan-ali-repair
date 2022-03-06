@@ -12,7 +12,17 @@ interface FormInputProps {
   errorobj: Record<string, unknown>
   required?: boolean
   errormessage?: string
-  defaultValue: string
+  defaultValue?: string | number | readonly string[]
+  disabled?: boolean
+  multiple?: boolean
+  onChange?: (
+    event: React.ChangeEvent<{
+      name?: string
+      value: unknown
+    }>,
+    child: React.ReactNode
+  ) => void
+  renderValue?: (value: unknown) => React.ReactNode
 }
 
 const FormInput: React.FC<FormInputProps> = (props): JSX.Element => {
@@ -24,6 +34,10 @@ const FormInput: React.FC<FormInputProps> = (props): JSX.Element => {
     errorobj,
     required,
     errormessage,
+    onChange: onChangeProps,
+    disabled,
+    multiple,
+    renderValue,
   } = props
 
   let isError = false
@@ -46,8 +60,17 @@ const FormInput: React.FC<FormInputProps> = (props): JSX.Element => {
               className: required ? 'required-label' : '',
               required: required || false,
             }}
-            defaultValue={defaultValue}
-            onChange={onChange}
+            renderValue={renderValue}
+            defaultValue={defaultValue || ''}
+            disabled={disabled}
+            onChange={(event) => {
+              if (onChangeProps && typeof onChangeProps === 'function') {
+                onChangeProps(event, <React.Fragment />)
+              }
+
+              return onChange(event)
+            }}
+            multiple={multiple}
             ref={ref}
           >
             {props.children}

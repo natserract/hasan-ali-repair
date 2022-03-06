@@ -4,23 +4,23 @@ export const standard = defineScenario<Prisma.ServiceCreateArgs>({
   service: {
     one: {
       data: {
-        created_by: 7491604,
+        created_by: 229375,
         vehicle: {
           create: {
             name: 'String',
-            serialNum: 'String7952465',
-            year: 5073388,
-            created_by: 9372112,
+            serialNum: 'String8666909',
+            year: 3447133,
+            created_by: 6592690,
           },
         },
-        mechanic: { create: { person_id: 9618031, name: 'String' } },
+        mechanic: { create: { person_id: 1776807, name: 'String' } },
         customer: {
           create: {
             user: {
               create: {
                 name: 'String',
                 password: 'String',
-                email: 'String2394194',
+                email: 'String5912287',
                 user_type: 'String',
               },
             },
@@ -30,23 +30,23 @@ export const standard = defineScenario<Prisma.ServiceCreateArgs>({
     },
     two: {
       data: {
-        created_by: 4100124,
+        created_by: 9822285,
         vehicle: {
           create: {
             name: 'String',
-            serialNum: 'String2758296',
-            year: 5332100,
-            created_by: 3577354,
+            serialNum: 'String3316693',
+            year: 3084972,
+            created_by: 4347310,
           },
         },
-        mechanic: { create: { person_id: 1924737, name: 'String' } },
+        mechanic: { create: { person_id: 9697635, name: 'String' } },
         customer: {
           create: {
             user: {
               create: {
                 name: 'String',
                 password: 'String',
-                email: 'String2390010',
+                email: 'String1255373',
                 user_type: 'String',
               },
             },

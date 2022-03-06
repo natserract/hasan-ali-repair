@@ -4,27 +4,27 @@ export const standard = defineScenario<Prisma.ScheduleCreateArgs>({
   schedule: {
     one: {
       data: {
-        time_from: '2022-03-05T09:50:22Z',
-        time_to: '2022-03-05T09:50:22Z',
+        time_from: '2022-03-06T04:18:43Z',
+        time_to: '2022-03-06T04:18:43Z',
         service: {
           create: {
-            created_by: 9125734,
+            created_by: 7580877,
             vehicle: {
               create: {
                 name: 'String',
-                serialNum: 'String1022276',
-                year: 2848020,
-                created_by: 8305105,
+                serialNum: 'String8709684',
+                year: 4872764,
+                created_by: 8513685,
               },
             },
-            mechanic: { create: { person_id: 8106436, name: 'String' } },
+            mechanic: { create: { person_id: 9056938, name: 'String' } },
             customer: {
               create: {
                 user: {
                   create: {
                     name: 'String',
                     password: 'String',
-                    email: 'String2373052',
+                    email: 'String1358539',
                     user_type: 'String',
                   },
                 },
@@ -36,27 +36,27 @@ export const standard = defineScenario<Prisma.ScheduleCreateArgs>({
     },
     two: {
       data: {
-        time_from: '2022-03-05T09:50:22Z',
-        time_to: '2022-03-05T09:50:22Z',
+        time_from: '2022-03-06T04:18:43Z',
+        time_to: '2022-03-06T04:18:43Z',
         service: {
           create: {
-            created_by: 8085176,
+            created_by: 5956272,
             vehicle: {
               create: {
                 name: 'String',
-                serialNum: 'String4761640',
-                year: 2956757,
-                created_by: 6239297,
+                serialNum: 'String9014152',
+                year: 4656625,
+                created_by: 6831752,
               },
             },
-            mechanic: { create: { person_id: 467478, name: 'String' } },
+            mechanic: { create: { person_id: 4479326, name: 'String' } },
             customer: {
               create: {
                 user: {
                   create: {
                     name: 'String',
                     password: 'String',
-                    email: 'String8263667',
+                    email: 'String7165526',
                     user_type: 'String',
                   },
                 },

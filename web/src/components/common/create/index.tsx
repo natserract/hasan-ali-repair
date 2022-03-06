@@ -19,6 +19,7 @@ type CreateProps = {
   createMutation: DocumentNode
   input: (data) => Record<string, any>
   title?: string
+  isLoading?: boolean
 }
 
 const Create: React.FC<CreateProps> = ({
@@ -28,6 +29,7 @@ const Create: React.FC<CreateProps> = ({
   input,
   title,
   children,
+  isLoading,
 }) => {
   const classes = useStyles()
   const navigate = useNavigate()
@@ -66,7 +68,7 @@ const Create: React.FC<CreateProps> = ({
 
   return (
     <Widget
-      isLoading={loadingCreateData}
+      isLoading={isLoading || loadingCreateData}
       title={title ?? `Create ${resourceTitle}`}
       disableWidgetMenu
     >

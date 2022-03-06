@@ -12,6 +12,7 @@ export const SERVICESPAGE_SERVICES_QUERY = gql`
         serialNum
       }
       status
+      created_at
     }
   }
 `
