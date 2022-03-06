@@ -38,8 +38,6 @@ const CreateServicePage = (props) => {
   const { data: customersData, loading: customersLoading } =
     useQuery(CUSTOMERS_QUERY)
 
-  console.log('forms', form.getValues())
-
   return (
     <>
       <MetaTags title="CreateService" description="CreateService page" />
@@ -52,7 +50,6 @@ const CreateServicePage = (props) => {
         input={({ price, ...data }) => ({
           ...data,
           price: +price,
-          created_by: currentUser?.id,
         })}
       >
         <FormControl>

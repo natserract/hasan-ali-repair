@@ -39,8 +39,13 @@ interface CreateServiceArgs {
 }
 
 export const createService = ({ input }: CreateServiceArgs) => {
+  const sessionId = context?.currentUser?.id
+
   return db.service.create({
-    data: input,
+    data: {
+      ...input,
+      created_by: sessionId,
+    },
   })
 }
 
@@ -49,8 +54,13 @@ interface UpdateServiceArgs extends Prisma.ServiceWhereUniqueInput {
 }
 
 export const updateService = ({ id, input }: UpdateServiceArgs) => {
+  const sessionId = context?.currentUser?.id
+
   return db.service.update({
-    data: input,
+    data: {
+      ...input,
+      updated_by: sessionId,
+    },
     where: { id },
   })
 }

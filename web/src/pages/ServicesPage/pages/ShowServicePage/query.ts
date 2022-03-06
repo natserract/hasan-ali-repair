@@ -29,6 +29,7 @@ export const SHOWSERVICE_QUERY = gql`
           part_number
         }
       }
+      message
     }
   }
 `

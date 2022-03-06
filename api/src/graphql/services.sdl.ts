@@ -36,7 +36,7 @@ export const schema = gql`
     status: String!
     message: String
     price: Int
-    created_by: Int!
+    created_by: Int
     updated_by: Int
     vehicle_id: Int!
     mechanic_id: Int!

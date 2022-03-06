@@ -1,4 +1,4 @@
-import { AuthenticationError, ForbiddenError } from '@redwoodjs/graphql-server'
+import { AuthenticationError } from '@redwoodjs/graphql-server'
 import jwt from 'jsonwebtoken'
 
 const verifyToken = (token) => {
@@ -22,7 +22,7 @@ const verifyToken = (token) => {
   }
 }
 
-export const getCurrentUser = async (_p, headers) => {
+export const getCurrentUser = async (_p, headers): Promise<any> => {
   const userToken = headers?.token
   const { valid, expired, data } = verifyToken(userToken)
 

@@ -151,6 +151,13 @@ const ShowServicePage = () => {
               </List>
             </InputLabel>
           </div>
+
+          <div className="formGroupItem">
+            <Typography variant="h6" component="h4">
+              Message
+            </Typography>
+            <InputLabel color="secondary">{service?.message}</InputLabel>
+          </div>
         </div>
       </Widget>
     </>
