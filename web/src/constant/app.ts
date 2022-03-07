@@ -1,3 +1,3 @@
 export const APP = {
-  name: 'Auto Repair',
+  name: 'Bengkel Hasan Ali',
 }

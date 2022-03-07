@@ -19,32 +19,36 @@ const ServicesPage = (props) => {
         },
       },
       {
-        name: 'customer.user.name',
+        name: 'schedule.customer.user.name',
         label: 'Customer Name',
         options: {
           filter: false,
         },
       },
       {
-        name: 'vehicle.name',
-        label: 'Vehicle Name',
+        name: 'schedule.status',
+        label: 'Status',
+        options: {
+          filter: true,
+        },
+      },
+      {
+        name: 'schedule.vehicle.name',
+        label: 'Vehicle',
         options: {
           filter: false,
         },
       },
       {
-        name: 'status',
-        label: 'Status',
+        name: 'mechanic.name',
+        label: 'Mechanic',
         options: {
-          sort: false,
-          customBodyRender: (tableMeta) => {
-            return toCamelCase(tableMeta)
-          },
+          filter: false,
         },
       },
       {
-        name: 'created_at',
-        label: 'Service Date',
+        name: 'schedule.booking_date',
+        label: 'Booking Date',
         options: {
           filter: false,
           customBodyRender: (data) => {
@@ -67,6 +71,15 @@ const ServicesPage = (props) => {
             listQuery={SERVICESPAGE_SERVICES_QUERY}
             deleteMutation={DELETESERVICE_MUTATION}
             resourceName={props.resourceName}
+            input={{
+              filter: JSON.stringify({
+                schedule: {
+                  status: {
+                    in: ['approved', 'on progress', 'complete'],
+                  },
+                },
+              }),
+            }}
           />
         </Grid>
       </Grid>

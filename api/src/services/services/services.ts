@@ -5,6 +5,7 @@ import { ITEMS_PER_PAGE } from 'src/constants/config'
 import { db } from 'src/lib/db'
 
 import { InputList } from 'src/types/share'
+import { updateSchedule } from '../schedules/schedules'
 
 type ServicesArgs = InputList
 
@@ -35,18 +36,28 @@ export const service = ({ id }: Prisma.ServiceWhereUniqueInput) => {
 }
 
 interface CreateServiceArgs {
-  input: Prisma.ServiceCreateInput
+  input: Prisma.ServiceUncheckedCreateInput
 }
 
-export const createService = ({ input }: CreateServiceArgs) => {
+export const createService = async ({ input }: CreateServiceArgs) => {
   const sessionId = context?.currentUser?.id
 
-  return db.service.create({
+  const service = await db.service.create({
     data: {
       ...input,
-      created_by: sessionId,
+      created_by: input?.created_by ?? sessionId,
     },
   })
+
+  // Every service create, set to >= `on progress`
+  await updateSchedule({
+    id: service.schedule_id,
+    input: {
+      status: 'on progress',
+    },
+  })
+
+  return service
 }
 
 interface UpdateServiceArgs extends Prisma.ServiceWhereUniqueInput {
@@ -59,7 +70,7 @@ export const updateService = ({ id, input }: UpdateServiceArgs) => {
   return db.service.update({
     data: {
       ...input,
-      updated_by: sessionId,
+      updated_by: input?.updated_by ?? sessionId,
     },
     where: { id },
   })
@@ -72,14 +83,10 @@ export const deleteService = ({ id }: Prisma.ServiceWhereUniqueInput) => {
 }
 
 export const Service = {
-  vehicle: (_obj, { root }: ResolverArgs<ReturnType<typeof service>>) =>
-    db.service.findUnique({ where: { id: root.id } }).vehicle(),
   mechanic: (_obj, { root }: ResolverArgs<ReturnType<typeof service>>) =>
     db.service.findUnique({ where: { id: root.id } }).mechanic(),
-  customer: (_obj, { root }: ResolverArgs<ReturnType<typeof service>>) =>
-    db.service.findUnique({ where: { id: root.id } }).customer(),
-  partsUsed: (_obj, { root }: ResolverArgs<ReturnType<typeof service>>) =>
-    db.service.findUnique({ where: { id: root.id } }).partsUsed(),
   schedule: (_obj, { root }: ResolverArgs<ReturnType<typeof service>>) =>
     db.service.findUnique({ where: { id: root.id } }).schedule(),
+  partsUsed: (_obj, { root }: ResolverArgs<ReturnType<typeof service>>) =>
+    db.service.findUnique({ where: { id: root.id } }).partsUsed(),
 }

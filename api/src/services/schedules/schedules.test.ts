@@ -29,25 +29,25 @@ describe('schedules', () => {
   scenario('creates a schedule', async (scenario: StandardScenario) => {
     const result = await createSchedule({
       input: {
-        time_from: '2022-03-06T04:18:43Z',
-        time_to: '2022-03-06T04:18:43Z',
-        service_id: scenario.schedule.two.service_id,
+        booking_date: '2022-03-07T05:23:04Z',
+        customer_id: scenario.schedule.two.customer_id,
+        vehicle_id: scenario.schedule.two.vehicle_id,
       },
     })
 
-    expect(result.time_from).toEqual('2022-03-06T04:18:43Z')
-    expect(result.time_to).toEqual('2022-03-06T04:18:43Z')
-    expect(result.service_id).toEqual(scenario.schedule.two.service_id)
+    expect(result.booking_date).toEqual('2022-03-07T05:23:04Z')
+    expect(result.customer_id).toEqual(scenario.schedule.two.customer_id)
+    expect(result.vehicle_id).toEqual(scenario.schedule.two.vehicle_id)
   })
 
   scenario('updates a schedule', async (scenario: StandardScenario) => {
     const original = await schedule({ id: scenario.schedule.one.id })
     const result = await updateSchedule({
       id: original.id,
-      input: { time_from: '2022-03-07T04:18:43Z' },
+      input: { booking_date: '2022-03-08T05:23:04Z' },
     })
 
-    expect(result.time_from).toEqual('2022-03-07T04:18:43Z')
+    expect(result.booking_date).toEqual('2022-03-08T05:23:04Z')
   })
 
   scenario('deletes a schedule', async (scenario: StandardScenario) => {

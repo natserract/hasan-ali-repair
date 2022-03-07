@@ -23,9 +23,7 @@ model User {
   salt           String @default("")
 
   // => Type: Text
-  refreshToken String?
-  // resetToken          String?
-  // resetTokenExpiresAt DateTime?
+  refreshToken String? @db.Text
 
   // => Roles: as a admin or customer
   user_type String
@@ -37,6 +35,7 @@ model User {
   address      String?
 
   customer Customer[]
+  vehicle  Vehicle[]
 
   @@map("users")
 }
@@ -50,27 +49,36 @@ model Vehicle {
   year      Int
   details   String?
 
+  user_id Int
+  user    User @relation(fields: [user_id], references: [id])
+
   created_by Int
   updated_by Int?
 
   created_at DateTime? @default(now())
   updated_at DateTime? @updatedAt
 
-  service Service[]
+  schedule Schedule[]
   @@map("vehicle")
 }
 
 model Schedule {
-  id        Int      @id @default(autoincrement())
-  time_from DateTime
-  time_to   DateTime
+  id           Int      @id @default(autoincrement())
+  booking_date DateTime
+
+  customer_id Int
+  customer    Customer @relation(fields: [customer_id], references: [id])
+
+  vehicle_id Int
+  vehicle    Vehicle @relation(fields: [vehicle_id], references: [id])
+
+  status  String? @default(value: "pending")
+  message String?
 
   created_at DateTime? @default(now())
   updated_at DateTime? @updatedAt
 
-  service_id Int
-  service    Service @relation(fields: [service_id], references: [id], onDelete: Cascade)
-
+  service Service[]
   @@map("schedule")
 }
 
@@ -91,29 +99,24 @@ model Mechanic {
 }
 
 model Service {
-  id      Int      @id @default(autoincrement())
-  uuid    String?  @default(uuid())
-  status  String   @default(value: "pending")
-  message String?
-  price   Decimal?
+  id   Int     @id @default(autoincrement())
+  uuid String? @default(uuid())
+
+  price Decimal? @db.Decimal(10, 2)
 
   created_by Int
   updated_by Int?
 
-  vehicle_id Int
-  vehicle    Vehicle @relation(fields: [vehicle_id], references: [id])
-
   mechanic_id Int
   mechanic    Mechanic @relation(fields: [mechanic_id], references: [id])
 
-  customer_id Int
-  customer    Customer @relation(fields: [customer_id], references: [id])
+  schedule_id Int
+  schedule    Schedule @relation(fields: [schedule_id], references: [id], onDelete: Cascade)
 
   created_at DateTime? @default(now())
   updated_at DateTime? @updatedAt
 
   partsUsed PartUsed[]
-  schedule  Schedule[]
 
   @@map("services")
 }
@@ -125,16 +128,33 @@ model Part {
   part_number Int       @unique
   in_date     DateTime? @default(now())
   qty         Int
-  price       Decimal
+  price       Decimal   @db.Decimal(10, 2)
   description String?
 
-  PartsUsed PartUsed[]
+  partsUsed PartUsed[]
   @@map("parts")
 }
 
 // => Out
 model PartUsed {
   id Int @id @default(autoincrement())
+
+  // Triggers qty in parts
+  //
+  // SQL SCRIPT
+  //  drop trigger if exists subtract_quantity;
+  //   DELIMITER //
+
+  //   CREATE TRIGGER subtract_quantity
+  //   AFTER INSERT ON parts_used FOR EACH ROW
+  //   BEGIN
+  //     UPDATE parts
+  //       SET parts.qty = parts.qty - NEW.used_qty
+  //       WHERE parts.id = NEW.part_id;
+  //   END
+  //   //
+  //   DELIMITER ;
+  used_qty Int
 
   part_id Int
   parts   Part @relation(fields: [part_id], references: [id])
@@ -154,6 +174,6 @@ model Customer {
   user_id Int
   user    User @relation(fields: [user_id], references: [id])
 
-  service Service[]
+  schedule Schedule[]
   @@map("customer")
 }

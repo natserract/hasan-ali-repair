@@ -11,11 +11,12 @@ interface FormPickerProps {
   name: string
   label?: string
   control: Control<any, any>
-  type?: React.HTMLInputTypeAttribute
   errorobj: Record<string, unknown>
+  value: any
   required?: boolean
   errormessage?: string
   disabled?: boolean
+  onChange?: (date: Date, value?: string) => void
 }
 
 const FormPicker: React.FC<FormPickerProps> = (props): JSX.Element => {
@@ -23,10 +24,12 @@ const FormPicker: React.FC<FormPickerProps> = (props): JSX.Element => {
     name,
     label,
     control,
-    type,
+    value,
     errorobj,
     required,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     disabled,
+    onChange: onChangeProps,
     errormessage,
   } = props
 
@@ -49,12 +52,17 @@ const FormPicker: React.FC<FormPickerProps> = (props): JSX.Element => {
             margin="normal"
             id="date-picker-inline"
             label={label}
-            value=""
             error={isError}
             fullWidth={true}
             helperText={required ? errormessage : null}
-            // value={selectedDate}
-            onChange={onChange}
+            value={value}
+            onChange={(event) => {
+              if (onChangeProps && typeof onChangeProps === 'function') {
+                onChangeProps(event, value)
+              }
+
+              return onChange(event)
+            }}
             ref={ref}
             KeyboardButtonProps={{
               'aria-label': 'change date',

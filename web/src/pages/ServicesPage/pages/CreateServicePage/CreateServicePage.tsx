@@ -65,6 +65,7 @@ const CreateServicePage = (props) => {
                 //@ts-ignore
                 const item = Array.from(customersData.customers).find(
                   (v: { id: number }) => v.id === value
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 ) as any
                 setCustomerId(item?.user_id)
               }

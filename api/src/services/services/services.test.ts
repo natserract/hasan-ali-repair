@@ -29,27 +29,25 @@ describe('services', () => {
   scenario('creates a service', async (scenario: StandardScenario) => {
     const result = await createService({
       input: {
-        created_by: 9815602,
-        vehicle_id: scenario.service.two.vehicle_id,
+        created_by: 2066364,
         mechanic_id: scenario.service.two.mechanic_id,
-        customer_id: scenario.service.two.customer_id,
+        schedule_id: scenario.service.two.schedule_id,
       },
     })
 
-    expect(result.created_by).toEqual(9815602)
-    expect(result.vehicle_id).toEqual(scenario.service.two.vehicle_id)
+    expect(result.created_by).toEqual(2066364)
     expect(result.mechanic_id).toEqual(scenario.service.two.mechanic_id)
-    expect(result.customer_id).toEqual(scenario.service.two.customer_id)
+    expect(result.schedule_id).toEqual(scenario.service.two.schedule_id)
   })
 
   scenario('updates a service', async (scenario: StandardScenario) => {
     const original = await service({ id: scenario.service.one.id })
     const result = await updateService({
       id: original.id,
-      input: { created_by: 4520486 },
+      input: { created_by: 1627605 },
     })
 
-    expect(result.created_by).toEqual(4520486)
+    expect(result.created_by).toEqual(1627605)
   })
 
   scenario('deletes a service', async (scenario: StandardScenario) => {

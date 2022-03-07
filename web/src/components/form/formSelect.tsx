@@ -23,6 +23,7 @@ interface FormInputProps {
     child: React.ReactNode
   ) => void
   renderValue?: (value: unknown) => React.ReactNode
+  value?: any
 }
 
 const FormInput: React.FC<FormInputProps> = (props): JSX.Element => {
@@ -38,6 +39,7 @@ const FormInput: React.FC<FormInputProps> = (props): JSX.Element => {
     disabled,
     multiple,
     renderValue,
+    value,
   } = props
 
   let isError = false
@@ -61,7 +63,7 @@ const FormInput: React.FC<FormInputProps> = (props): JSX.Element => {
               required: required || false,
             }}
             renderValue={renderValue}
-            defaultValue={defaultValue || ''}
+            defaultValue={defaultValue ?? ''}
             disabled={disabled}
             onChange={(event) => {
               if (onChangeProps && typeof onChangeProps === 'function') {
@@ -71,6 +73,7 @@ const FormInput: React.FC<FormInputProps> = (props): JSX.Element => {
               return onChange(event)
             }}
             multiple={multiple}
+            value={value}
             ref={ref}
           >
             {props.children}

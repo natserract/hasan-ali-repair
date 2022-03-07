@@ -7,7 +7,7 @@ CREATE TABLE `users` (
     `email` VARCHAR(191) NOT NULL,
     `hashedPassword` VARCHAR(191) NOT NULL DEFAULT '',
     `salt` VARCHAR(191) NOT NULL DEFAULT '',
-    `refreshToken` VARCHAR(191) NULL,
+    `refreshToken` TEXT NULL,
     `user_type` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NULL,
@@ -25,6 +25,7 @@ CREATE TABLE `vehicle` (
     `serialNum` VARCHAR(191) NOT NULL,
     `year` INTEGER NOT NULL,
     `details` VARCHAR(191) NULL,
+    `user_id` INTEGER NOT NULL,
     `created_by` INTEGER NOT NULL,
     `updated_by` INTEGER NULL,
     `created_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -37,11 +38,13 @@ CREATE TABLE `vehicle` (
 -- CreateTable
 CREATE TABLE `schedule` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `time_from` DATETIME(3) NOT NULL,
-    `time_to` DATETIME(3) NOT NULL,
+    `booking_date` DATETIME(3) NOT NULL,
+    `customer_id` INTEGER NOT NULL,
+    `vehicle_id` INTEGER NOT NULL,
+    `status` VARCHAR(191) NULL DEFAULT 'pending',
+    `message` VARCHAR(191) NULL,
     `created_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NULL,
-    `service_id` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -64,14 +67,11 @@ CREATE TABLE `mechanic` (
 CREATE TABLE `services` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `uuid` VARCHAR(191) NULL,
-    `status` VARCHAR(191) NOT NULL DEFAULT 'pending',
-    `message` VARCHAR(191) NULL,
-    `price` DECIMAL(65, 30) NULL,
+    `price` DECIMAL(10, 2) NULL,
     `created_by` INTEGER NOT NULL,
     `updated_by` INTEGER NULL,
-    `vehicle_id` INTEGER NOT NULL,
     `mechanic_id` INTEGER NOT NULL,
-    `customer_id` INTEGER NOT NULL,
+    `schedule_id` INTEGER NOT NULL,
     `created_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NULL,
 
@@ -95,6 +95,7 @@ CREATE TABLE `parts` (
 -- CreateTable
 CREATE TABLE `parts_used` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `used_qty` INTEGER NOT NULL,
     `part_id` INTEGER NOT NULL,
     `mechanic_id` INTEGER NOT NULL,
     `service_id` INTEGER NOT NULL,
@@ -111,22 +112,25 @@ CREATE TABLE `customer` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `schedule` ADD CONSTRAINT `schedule_service_id_fkey` FOREIGN KEY (`service_id`) REFERENCES `services`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `vehicle` ADD CONSTRAINT `vehicle_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `services` ADD CONSTRAINT `services_vehicle_id_fkey` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicle`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `schedule` ADD CONSTRAINT `schedule_vehicle_id_fkey` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicle`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `schedule` ADD CONSTRAINT `schedule_customer_id_fkey` FOREIGN KEY (`customer_id`) REFERENCES `customer`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `services` ADD CONSTRAINT `services_schedule_id_fkey` FOREIGN KEY (`schedule_id`) REFERENCES `schedule`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `services` ADD CONSTRAINT `services_mechanic_id_fkey` FOREIGN KEY (`mechanic_id`) REFERENCES `mechanic`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `services` ADD CONSTRAINT `services_customer_id_fkey` FOREIGN KEY (`customer_id`) REFERENCES `customer`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE `parts_used` ADD CONSTRAINT `parts_used_mechanic_id_fkey` FOREIGN KEY (`mechanic_id`) REFERENCES `mechanic`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `parts_used` ADD CONSTRAINT `parts_used_service_id_fkey` FOREIGN KEY (`service_id`) REFERENCES `services`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `parts_used` ADD CONSTRAINT `parts_used_service_id_fkey` FOREIGN KEY (`service_id`) REFERENCES `services`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `parts_used` ADD CONSTRAINT `parts_used_part_id_fkey` FOREIGN KEY (`part_id`) REFERENCES `parts`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

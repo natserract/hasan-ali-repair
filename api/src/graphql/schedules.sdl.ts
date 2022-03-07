@@ -1,39 +1,53 @@
 export const schema = gql`
   type Schedule {
     id: Int!
-    time_from: DateTime!
-    time_to: DateTime!
+    booking_date: DateTime!
+    customer_id: Int!
+    customer: Customer!
+    vehicle_id: Int!
+    vehicle: Vehicle!
+    status: String
+    message: String
     created_at: DateTime
     updated_at: DateTime
-    service_id: Int!
-    service: Service!
+    service: [Service]!
+  }
+
+  input ScheduleInput {
+    sort: String
+    filter: String
+    start: Int
+    limit: Int
   }
 
   type Query {
-    schedules: [Schedule!]! @requireAuth
+    schedules(input: ScheduleInput): [Schedule!]! @skipAuth
     schedule(id: Int!): Schedule @requireAuth
   }
 
   input CreateScheduleInput {
-    time_from: DateTime!
-    time_to: DateTime!
+    booking_date: DateTime!
+    customer_id: Int!
+    vehicle_id: Int!
+    status: String
+    message: String
     created_at: DateTime
     updated_at: DateTime
-    service_id: Int!
   }
 
   input UpdateScheduleInput {
-    time_from: DateTime
-    time_to: DateTime
+    booking_date: DateTime
+    customer_id: Int
+    vehicle_id: Int
+    status: String
+    message: String
     created_at: DateTime
     updated_at: DateTime
-    service_id: Int
   }
 
   type Mutation {
-    createSchedule(input: CreateScheduleInput!): Schedule! @requireAuth
-    updateSchedule(id: Int!, input: UpdateScheduleInput!): Schedule!
-      @requireAuth
+    createSchedule(input: CreateScheduleInput!): Schedule! @skipAuth
+    updateSchedule(id: Int!, input: UpdateScheduleInput!): Schedule! @skipAuth
     deleteSchedule(id: Int!): Schedule! @requireAuth
   }
 `

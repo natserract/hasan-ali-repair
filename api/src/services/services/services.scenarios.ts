@@ -4,24 +4,37 @@ export const standard = defineScenario<Prisma.ServiceCreateArgs>({
   service: {
     one: {
       data: {
-        created_by: 229375,
-        vehicle: {
+        created_by: 9442128,
+        mechanic: { create: { person_id: 9869177, name: 'String' } },
+        schedule: {
           create: {
-            name: 'String',
-            serialNum: 'String8666909',
-            year: 3447133,
-            created_by: 6592690,
-          },
-        },
-        mechanic: { create: { person_id: 1776807, name: 'String' } },
-        customer: {
-          create: {
-            user: {
+            booking_date: '2022-03-07T05:25:46Z',
+            customer: {
+              create: {
+                user: {
+                  create: {
+                    name: 'String',
+                    password: 'String',
+                    email: 'String89995',
+                    user_type: 'String',
+                  },
+                },
+              },
+            },
+            vehicle: {
               create: {
                 name: 'String',
-                password: 'String',
-                email: 'String5912287',
-                user_type: 'String',
+                serialNum: 'String8577946',
+                year: 5981869,
+                created_by: 3294030,
+                user: {
+                  create: {
+                    name: 'String',
+                    password: 'String',
+                    email: 'String6126645',
+                    user_type: 'String',
+                  },
+                },
               },
             },
           },
@@ -30,24 +43,37 @@ export const standard = defineScenario<Prisma.ServiceCreateArgs>({
     },
     two: {
       data: {
-        created_by: 9822285,
-        vehicle: {
+        created_by: 3060790,
+        mechanic: { create: { person_id: 9883060, name: 'String' } },
+        schedule: {
           create: {
-            name: 'String',
-            serialNum: 'String3316693',
-            year: 3084972,
-            created_by: 4347310,
-          },
-        },
-        mechanic: { create: { person_id: 9697635, name: 'String' } },
-        customer: {
-          create: {
-            user: {
+            booking_date: '2022-03-07T05:25:46Z',
+            customer: {
+              create: {
+                user: {
+                  create: {
+                    name: 'String',
+                    password: 'String',
+                    email: 'String2930301',
+                    user_type: 'String',
+                  },
+                },
+              },
+            },
+            vehicle: {
               create: {
                 name: 'String',
-                password: 'String',
-                email: 'String1255373',
-                user_type: 'String',
+                serialNum: 'String5877470',
+                year: 7353664,
+                created_by: 7381864,
+                user: {
+                  create: {
+                    name: 'String',
+                    password: 'String',
+                    email: 'String6546822',
+                    user_type: 'String',
+                  },
+                },
               },
             },
           },

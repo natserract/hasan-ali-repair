@@ -17,9 +17,20 @@ import { extractError } from 'src/utils/errors'
 import { toCamelCase } from 'src/utils/string'
 import pluralize from 'pluralize'
 
+type ActionDisabled = {
+  createDisabled: boolean | ((data) => boolean)
+  showDisabled: boolean | ((data) => boolean)
+  editDisabled: boolean | ((data) => boolean)
+  deleteDisabled: boolean | ((data) => boolean)
+}
+
 type OptionalProps = {
   title: string
-}
+  input: Record<string, any>
+  isLoading: boolean
+  refetchOnMount: boolean
+  onFetch: (data: any) => void
+} & Partial<ActionDisabled>
 
 type ListProps = {
   resourceName: string
@@ -30,7 +41,7 @@ type ListProps = {
     label: string
     options: {
       filter?: boolean
-      customBodyRender?: (tableMeta) => any
+      customBodyRender?: (tableMeta: any, tableData: any) => any
       sort?: boolean
     }
   }[]
@@ -42,6 +53,14 @@ const List: React.FC<ListProps> = ({
   listQuery,
   deleteMutation,
   columns,
+  input,
+  isLoading,
+  onFetch,
+  refetchOnMount,
+  createDisabled,
+  showDisabled,
+  editDisabled,
+  deleteDisabled,
 }) => {
   const classes = useStyles()
   const navigate = useNavigate()
@@ -56,7 +75,13 @@ const List: React.FC<ListProps> = ({
   const deleteRowsRef = useRef([])
   const [loadingData, setLoadingData] = useState(false)
 
-  const { data: queryData } = useQuery(listQuery)
+  const { data: queryData, refetch } = useQuery(listQuery, {
+    variables: {
+      input: {
+        ...input,
+      },
+    },
+  })
   const [deleteFunc] = useMutation(deleteMutation, {
     refetchQueries: [listQuery],
   })
@@ -115,12 +140,17 @@ const List: React.FC<ListProps> = ({
             variant="outlined"
             onClick={() => navigate.push(`/app/${resourcePluralize}/create`)}
             disableElevation
+            disabled={
+              typeof createDisabled == 'function'
+                ? createDisabled(undefined)
+                : (createDisabled as boolean)
+            }
           >
             Create
           </Button>
         </React.Fragment>
       ),
-      onRowSelectionChange: (currentRowsSelected) => {
+      onRowSelectionChange: (currentRowsSelected: { dataIndex: any }[]) => {
         currentRowsSelected.map(({ dataIndex }) => {
           const id = data[dataIndex].id
           const isHas =
@@ -150,7 +180,7 @@ const List: React.FC<ListProps> = ({
         }
       },
     }),
-    [navigate, resourcePluralize, data, resourceTitle, onDelete]
+    [createDisabled, navigate, resourcePluralize, data, resourceTitle, onDelete]
   )
 
   const tableColumns = useMemo(
@@ -161,38 +191,78 @@ const List: React.FC<ListProps> = ({
         options: {
           filter: false,
           sort: false,
-          customBodyRender: (value, tableMeta, _updateValue) => {
+          customBodyRender: (
+            value: any,
+            tableMeta: { rowIndex: any; tableData: any },
+            _updateValue: any
+          ) => {
             const rowIdx = tableMeta.rowIndex
             const dataIdx =
               tableMeta.tableData[rowIdx].id || tableMeta.tableData[rowIdx][0]
 
             return (
               <Grid container className={classes.actionButtonContainer}>
-                <Tooltip title="View">
+                <Tooltip
+                  disableHoverListener={
+                    typeof showDisabled == 'function'
+                      ? showDisabled(tableMeta)
+                      : (showDisabled as boolean)
+                  }
+                  title="View"
+                >
                   <IconButton
                     color="primary"
                     onClick={() =>
                       navigate.push(`/app/${resourcePluralize}/view/${dataIdx}`)
                     }
+                    disabled={
+                      typeof showDisabled == 'function'
+                        ? showDisabled(tableMeta)
+                        : (showDisabled as boolean)
+                    }
                   >
                     <VisibilityOutlinedIcon />
                   </IconButton>
                 </Tooltip>
-                <Tooltip title="Edit">
+                <Tooltip
+                  disableHoverListener={
+                    typeof editDisabled == 'function'
+                      ? editDisabled(tableMeta)
+                      : (editDisabled as boolean)
+                  }
+                  title="Edit"
+                >
                   <IconButton
                     color="primary"
                     onClick={() =>
                       navigate.push(`/app/${resourcePluralize}/edit/${dataIdx}`)
                     }
+                    disabled={
+                      typeof editDisabled == 'function'
+                        ? editDisabled(tableMeta)
+                        : (editDisabled as boolean)
+                    }
                   >
                     <EditOutlinedIcon />
                   </IconButton>
                 </Tooltip>
-                <Tooltip title="Delete">
+                <Tooltip
+                  disableHoverListener={
+                    typeof deleteDisabled == 'function'
+                      ? deleteDisabled(tableMeta)
+                      : (deleteDisabled as boolean)
+                  }
+                  title="Delete"
+                >
                   <IconButton
                     color="secondary"
                     aria-haspopup="true"
                     onClick={(e) => handleClick(e, dataIdx)}
+                    disabled={
+                      typeof deleteDisabled == 'function'
+                        ? deleteDisabled(tableMeta)
+                        : (deleteDisabled as boolean)
+                    }
                   >
                     <DeleteOutlineOutlinedIcon />
                   </IconButton>
@@ -255,9 +325,12 @@ const List: React.FC<ListProps> = ({
       classes.actionButtonContainer,
       classes.menuItemRoot,
       columns,
+      deleteDisabled,
+      editDisabled,
       handleDelete,
       navigate,
       resourcePluralize,
+      showDisabled,
     ]
   )
 
@@ -265,14 +338,25 @@ const List: React.FC<ListProps> = ({
     if (queryData) {
       const data = queryData[resourceName]
       setData(data)
+
+      // Passing data to props
+      if (onFetch && typeof onFetch === 'function') {
+        onFetch(data)
+      }
     }
   }
 
-  useEffect(fetchData, [queryData, resourceName])
+  useEffect(fetchData, [onFetch, queryData, resourceName])
+
+  useEffect(() => {
+    if (refetchOnMount) {
+      refetch()
+    }
+  }, [refetch, refetchOnMount])
 
   return (
     <Widget
-      isLoading={!data.length || loadingData}
+      isLoading={isLoading || !data.length || loadingData}
       header={<React.Fragment />}
       noBodyPadding
       noHeaderPadding

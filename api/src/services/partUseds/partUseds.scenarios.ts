@@ -4,35 +4,49 @@ export const standard = defineScenario<Prisma.PartUsedCreateArgs>({
   partUsed: {
     one: {
       data: {
+        used_qty: 4542497,
         parts: {
           create: {
             name: 'String',
-            part_number: 5451430,
-            qty: 4142205,
-            price: 4246401.237351945,
+            part_number: 2097671,
+            qty: 1765497,
+            price: 1527658.4703279394,
           },
         },
-        mechanic: { create: { person_id: 1533419, name: 'String' } },
+        mechanic: { create: { person_id: 7818975, name: 'String' } },
         service: {
           create: {
-            created_by: 9195111,
-            vehicle: {
+            created_by: 641823,
+            mechanic: { create: { person_id: 2711026, name: 'String' } },
+            schedule: {
               create: {
-                name: 'String',
-                serialNum: 'String2451690',
-                year: 587671,
-                created_by: 4765295,
-              },
-            },
-            mechanic: { create: { person_id: 2143035, name: 'String' } },
-            customer: {
-              create: {
-                user: {
+                booking_date: '2022-03-07T05:48:31Z',
+                customer: {
+                  create: {
+                    user: {
+                      create: {
+                        name: 'String',
+                        password: 'String',
+                        email: 'String1636713',
+                        user_type: 'String',
+                      },
+                    },
+                  },
+                },
+                vehicle: {
                   create: {
                     name: 'String',
-                    password: 'String',
-                    email: 'String1003225',
-                    user_type: 'String',
+                    serialNum: 'String3334700',
+                    year: 2155615,
+                    created_by: 9136183,
+                    user: {
+                      create: {
+                        name: 'String',
+                        password: 'String',
+                        email: 'String6152196',
+                        user_type: 'String',
+                      },
+                    },
                   },
                 },
               },
@@ -43,35 +57,49 @@ export const standard = defineScenario<Prisma.PartUsedCreateArgs>({
     },
     two: {
       data: {
+        used_qty: 768344,
         parts: {
           create: {
             name: 'String',
-            part_number: 7850940,
-            qty: 6614938,
-            price: 5778340.240274003,
+            part_number: 8644121,
+            qty: 1361096,
+            price: 7382737.805214965,
           },
         },
-        mechanic: { create: { person_id: 1302267, name: 'String' } },
+        mechanic: { create: { person_id: 6404416, name: 'String' } },
         service: {
           create: {
-            created_by: 8563393,
-            vehicle: {
+            created_by: 2386987,
+            mechanic: { create: { person_id: 5932075, name: 'String' } },
+            schedule: {
               create: {
-                name: 'String',
-                serialNum: 'String7922689',
-                year: 2544135,
-                created_by: 5193395,
-              },
-            },
-            mechanic: { create: { person_id: 8460263, name: 'String' } },
-            customer: {
-              create: {
-                user: {
+                booking_date: '2022-03-07T05:48:31Z',
+                customer: {
+                  create: {
+                    user: {
+                      create: {
+                        name: 'String',
+                        password: 'String',
+                        email: 'String4999320',
+                        user_type: 'String',
+                      },
+                    },
+                  },
+                },
+                vehicle: {
                   create: {
                     name: 'String',
-                    password: 'String',
-                    email: 'String727262',
-                    user_type: 'String',
+                    serialNum: 'String1020519',
+                    year: 5857283,
+                    created_by: 6337665,
+                    user: {
+                      create: {
+                        name: 'String',
+                        password: 'String',
+                        email: 'String8037132',
+                        user_type: 'String',
+                      },
+                    },
                   },
                 },
               },
