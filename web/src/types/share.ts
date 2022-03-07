@@ -14,3 +14,9 @@ export type CurrentUser = {
   exp?: number
   iat?: number
 }
+
+export type ScheduleStatus =
+  | 'pending'
+  | 'on review'
+  | 'on progress'
+  | 'complete'

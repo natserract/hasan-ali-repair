@@ -4,6 +4,7 @@ import { ValidationError } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'
 import { useHashedPassword } from 'src/utils/encrypt'
+import { createCustomer } from '../customers/customers'
 
 export const users = () => {
   return db.user.findMany()
@@ -45,9 +46,23 @@ export const createUser = async ({ input }: CreateUserArgs) => {
     address: input?.address,
   }
 
-  return db.user.create({
+  const userCreate = await db.user.create({
     data: userInput,
   })
+
+  if (input.user_type !== 'admin') {
+    await createCustomer({
+      input: {
+        user: {
+          connect: {
+            id: userCreate.id,
+          },
+        },
+      },
+    })
+  }
+
+  return userCreate
 }
 
 interface UpdateUserArgs extends Prisma.UserWhereUniqueInput {

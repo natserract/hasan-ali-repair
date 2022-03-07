@@ -30,6 +30,9 @@ type OptionalProps = {
   isLoading: boolean
   refetchOnMount: boolean
   onFetch: (data: any) => void
+
+  // Check: https://www.npmjs.com/package/mui-datatables
+  options?: Record<string, any>
 } & Partial<ActionDisabled>
 
 type ListProps = {
@@ -61,6 +64,7 @@ const List: React.FC<ListProps> = ({
   showDisabled,
   editDisabled,
   deleteDisabled,
+  options: optionsProps,
 }) => {
   const classes = useStyles()
   const navigate = useNavigate()
@@ -130,6 +134,7 @@ const List: React.FC<ListProps> = ({
 
   const options = useMemo(
     () => ({
+      ...optionsProps,
       filter: true,
       filterType: 'dropdown',
       responsive: 'simple',
@@ -180,7 +185,15 @@ const List: React.FC<ListProps> = ({
         }
       },
     }),
-    [createDisabled, navigate, resourcePluralize, data, resourceTitle, onDelete]
+    [
+      createDisabled,
+      optionsProps,
+      navigate,
+      resourcePluralize,
+      data,
+      resourceTitle,
+      onDelete,
+    ]
   )
 
   const tableColumns = useMemo(
@@ -246,74 +259,81 @@ const List: React.FC<ListProps> = ({
                     <EditOutlinedIcon />
                   </IconButton>
                 </Tooltip>
-                <Tooltip
-                  disableHoverListener={
-                    typeof deleteDisabled == 'function'
-                      ? deleteDisabled(tableMeta)
-                      : (deleteDisabled as boolean)
-                  }
-                  title="Delete"
-                >
-                  <IconButton
-                    color="secondary"
-                    aria-haspopup="true"
-                    onClick={(e) => handleClick(e, dataIdx)}
-                    disabled={
-                      typeof deleteDisabled == 'function'
-                        ? deleteDisabled(tableMeta)
-                        : (deleteDisabled as boolean)
-                    }
-                  >
-                    <DeleteOutlineOutlinedIcon />
-                  </IconButton>
-                </Tooltip>
 
-                <Menu
-                  id="delete-menu"
-                  anchorEl={anchorEl}
-                  keepMounted
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem
-                    className={classes.menuItemRoot}
-                    onClick={handleClose}
-                  >
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                      }}
+                {!(typeof deleteDisabled == 'function'
+                  ? deleteDisabled(tableMeta)
+                  : (deleteDisabled as boolean)) && (
+                  <>
+                    <Tooltip
+                      disableHoverListener={
+                        typeof deleteDisabled == 'function'
+                          ? deleteDisabled(tableMeta)
+                          : (deleteDisabled as boolean)
+                      }
+                      title="Delete"
                     >
-                      Are you sure want to delete?
-                      <div
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          justifyContent: 'center',
-                          marginTop: 10,
-                        }}
+                      <IconButton
+                        color="secondary"
+                        aria-haspopup="true"
+                        onClick={(e) => handleClick(e, dataIdx)}
+                        disabled={
+                          typeof deleteDisabled == 'function'
+                            ? deleteDisabled(tableMeta)
+                            : (deleteDisabled as boolean)
+                        }
                       >
-                        <Button
-                          variant="outlined"
-                          onClick={handleDelete}
-                          disableElevation
-                          style={{ marginRight: 7 }}
+                        <DeleteOutlineOutlinedIcon />
+                      </IconButton>
+                    </Tooltip>
+
+                    <Menu
+                      id="delete-menu"
+                      anchorEl={anchorEl}
+                      keepMounted
+                      open={Boolean(anchorEl)}
+                      onClose={handleClose}
+                    >
+                      <MenuItem
+                        className={classes.menuItemRoot}
+                        onClick={handleClose}
+                      >
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'center',
+                          }}
                         >
-                          Yes
-                        </Button>
-                        <Button
-                          variant="outlined"
-                          onClick={handleClose}
-                          disableElevation
-                        >
-                          No
-                        </Button>
-                      </div>
-                    </div>
-                  </MenuItem>
-                </Menu>
+                          Are you sure want to delete?
+                          <div
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'row',
+                              justifyContent: 'center',
+                              marginTop: 10,
+                            }}
+                          >
+                            <Button
+                              variant="outlined"
+                              onClick={handleDelete}
+                              disableElevation
+                              style={{ marginRight: 7 }}
+                            >
+                              Yes
+                            </Button>
+                            <Button
+                              variant="outlined"
+                              onClick={handleClose}
+                              disableElevation
+                            >
+                              No
+                            </Button>
+                          </div>
+                        </div>
+                      </MenuItem>
+                    </Menu>
+                  </>
+                )}
               </Grid>
             )
           },

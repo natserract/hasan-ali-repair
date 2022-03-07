@@ -6,8 +6,15 @@ export const schema = gql`
     service: [Service]!
   }
 
+  input CustomersInput {
+    sort: String
+    filter: String
+    start: Int
+    limit: Int
+  }
+
   type Query {
-    customers: [Customer!]! @requireAuth
+    customers(input: CustomersInput): [Customer!]! @skipAuth
     customer(id: Int!): Customer @requireAuth
   }
 

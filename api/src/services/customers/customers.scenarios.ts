@@ -8,7 +8,7 @@ export const standard = defineScenario<Prisma.CustomerCreateArgs>({
           create: {
             name: 'String',
             password: 'String',
-            email: 'String552086',
+            email: 'String5110548',
             user_type: 'String',
           },
         },
@@ -20,7 +20,7 @@ export const standard = defineScenario<Prisma.CustomerCreateArgs>({
           create: {
             name: 'String',
             password: 'String',
-            email: 'String1988498',
+            email: 'String9487773',
             user_type: 'String',
           },
         },
