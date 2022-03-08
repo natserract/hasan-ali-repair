@@ -26,20 +26,22 @@ describe('vehicles', () => {
     expect(result).toEqual(scenario.vehicle.one)
   })
 
-  scenario('creates a vehicle', async () => {
+  scenario('creates a vehicle', async (scenario: StandardScenario) => {
     const result = await createVehicle({
       input: {
         name: 'String',
-        serialNum: 'String635769',
-        year: 9991233,
-        created_by: 2205258,
+        serialNum: 'String6686250',
+        year: 2636850,
+        user_id: scenario.vehicle.two.user_id,
+        created_by: 6422654,
       },
     })
 
     expect(result.name).toEqual('String')
-    expect(result.serialNum).toEqual('String635769')
-    expect(result.year).toEqual(9991233)
-    expect(result.created_by).toEqual(2205258)
+    expect(result.serialNum).toEqual('String6686250')
+    expect(result.year).toEqual(2636850)
+    expect(result.user_id).toEqual(scenario.vehicle.two.user_id)
+    expect(result.created_by).toEqual(6422654)
   })
 
   scenario('updates a vehicle', async (scenario: StandardScenario) => {

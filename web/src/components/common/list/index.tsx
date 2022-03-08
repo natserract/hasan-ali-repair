@@ -79,7 +79,11 @@ const List: React.FC<ListProps> = ({
   const deleteRowsRef = useRef([])
   const [loadingData, setLoadingData] = useState(false)
 
-  const { data: queryData, refetch } = useQuery(listQuery, {
+  const {
+    data: queryData,
+    loading: queryLoading,
+    refetch,
+  } = useQuery(listQuery, {
     variables: {
       input: {
         ...input,
@@ -376,7 +380,7 @@ const List: React.FC<ListProps> = ({
 
   return (
     <Widget
-      isLoading={isLoading || !data.length || loadingData}
+      isLoading={isLoading || queryLoading || loadingData}
       header={<React.Fragment />}
       noBodyPadding
       noHeaderPadding

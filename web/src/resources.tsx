@@ -29,6 +29,7 @@ import EditServicePage from './pages/ServicesPage/pages/EditServicePage/EditServ
 import PartsUsedPage from './pages/PartsUsedPage/PartsUsedPage'
 import ShowSchedulePage from './pages/SchedulesPage/pages/ShowSchedulePage/ShowSchedulePage'
 import CreateSchedulePage from './pages/SchedulesPage/pages/CreateSchedulePage/CreateSchedulePage'
+import EditSchedulePage from './pages/SchedulesPage/pages/EditSchedulePage/EditSchedulePage'
 
 const adminAccess = [
   'dashboard',
@@ -71,6 +72,7 @@ const resources: IResourceItem[] = [
     list: SchedulesPage,
     show: ShowSchedulePage,
     create: CreateSchedulePage,
+    edit: EditSchedulePage,
     icon: <AvTimerIcon />,
   },
   {

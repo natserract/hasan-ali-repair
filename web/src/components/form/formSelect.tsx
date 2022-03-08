@@ -24,6 +24,7 @@ interface FormInputProps {
   ) => void
   renderValue?: (value: unknown) => React.ReactNode
   value?: any
+  useKey?: boolean
 }
 
 const FormInput: React.FC<FormInputProps> = (props): JSX.Element => {
@@ -40,12 +41,21 @@ const FormInput: React.FC<FormInputProps> = (props): JSX.Element => {
     multiple,
     renderValue,
     value,
+    useKey,
   } = props
 
   let isError = false
   if (errorobj && Object.prototype.hasOwnProperty.call(errorobj, name)) {
     isError = true
   }
+
+  // Issues: A component is changing the default value state of an
+  // uncontrolled Select after being initialized. To suppress this warning
+  // opt to use a controlled Select.
+  // Solved: https://stackoverflow.com/questions/62711040/a-component-is-changing-the-default-value-state-of-an-uncontrolled-slider-after
+  const setKey = useKey
+    ? `select-${name}-${(defaultValue ?? value) || Math.random() * 10}`
+    : undefined
 
   return (
     <Controller
@@ -72,6 +82,7 @@ const FormInput: React.FC<FormInputProps> = (props): JSX.Element => {
 
               return onChange(event)
             }}
+            key={setKey}
             multiple={multiple}
             value={value}
             ref={ref}

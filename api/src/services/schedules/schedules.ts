@@ -12,6 +12,8 @@ export const schedules = ({ input }: ScheduleArgs) => {
   const orderBy = (input?.sort && JSON.parse(input?.sort)) || undefined
   const $where = (input?.filter && JSON.parse(input?.filter)) || undefined
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   return db.schedule.findMany({
     take: input?.limit || ITEMS_PER_PAGE,
     skip: input?.start || 0,

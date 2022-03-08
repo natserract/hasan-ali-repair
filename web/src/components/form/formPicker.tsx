@@ -43,7 +43,7 @@ const FormPicker: React.FC<FormPickerProps> = (props): JSX.Element => {
       name={name}
       rules={{ required }}
       control={control}
-      render={({ field: { onChange, ref } }) => (
+      render={({ field: { onChange } }) => (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardDatePicker
             disableToolbar
@@ -63,7 +63,6 @@ const FormPicker: React.FC<FormPickerProps> = (props): JSX.Element => {
 
               return onChange(event)
             }}
-            ref={ref}
             KeyboardButtonProps={{
               'aria-label': 'change date',
             }}

@@ -175,5 +175,7 @@ model Customer {
   user    User @relation(fields: [user_id], references: [id])
 
   schedule Schedule[]
+
+  @@unique([user_id])
   @@map("customer")
 }

@@ -3,6 +3,7 @@ import type { ResolverArgs } from '@redwoodjs/graphql-server'
 import { ITEMS_PER_PAGE } from 'src/constants/config'
 
 import { db } from 'src/lib/db'
+
 import { InputList } from 'src/types/share'
 
 type VehiclesInput = InputList
@@ -61,6 +62,8 @@ export const deleteVehicle = ({ id }: Prisma.VehicleWhereUniqueInput) => {
 }
 
 export const Vehicle = {
-  service: (_obj, { root }: ResolverArgs<ReturnType<typeof vehicle>>) =>
-    db.vehicle.findUnique({ where: { id: root.id } }).service(),
+  user: (_obj, { root }: ResolverArgs<ReturnType<typeof vehicle>>) =>
+    db.vehicle.findUnique({ where: { id: root.id } }).user(),
+  schedule: (_obj, { root }: ResolverArgs<ReturnType<typeof vehicle>>) =>
+    db.vehicle.findUnique({ where: { id: root.id } }).schedule(),
 }

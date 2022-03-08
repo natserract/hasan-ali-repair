@@ -55,6 +55,7 @@ const Edit: React.FC<EditProps> = ({
   const [loadingEditData, setLoadingEditData] = useState(false)
 
   const onSubmit = async (data) => {
+    console.log('submitted form', data)
     setLoadingEditData(true)
 
     try {

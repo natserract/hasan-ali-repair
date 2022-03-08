@@ -1,54 +1,49 @@
+import React, { useEffect, useState } from 'react'
 import { MetaTags, useQuery } from '@redwoodjs/web'
-import FormPicker from 'src/components/form/formPicker'
-import { useForm } from 'react-hook-form'
-import Create from 'src/components/common/create'
-import { VEHICLES_QUERY, CUSTOMERS_QUERY } from './query'
-import { useAuthState } from 'src/libs/auth/hooks'
-import { CREATESCHEDULE_MUTATION } from './mutation'
+import {
+  EDITSCHEDULE_SHOWSCHEDULE_QUERY,
+  EDITSCHEDULECUSTOMERS_QUERY,
+  EDITSCHEDULEVEHICLES_QUERY,
+} from './query'
+import { EDITSCHEDULE_MUTATION } from './mutation'
+import Edit from 'src/components/common/edit'
 import FormInput from 'src/components/form/formInput'
 import FormSelect from 'src/components/form/formSelect'
-import FormControl from '@material-ui/core/FormControl'
+import FormPicker from 'src/components/form/formPicker'
 import MenuItem from '@material-ui/core/MenuItem'
-import { useAccess } from 'src/libs/gql-router'
-import { useState } from 'react'
+import FormControl from '@material-ui/core/FormControl'
+import { useAuthState } from 'src/libs/auth/hooks'
+import { useAccess, useParams } from 'src/libs/gql-router'
+import { useForm } from 'react-hook-form'
 import TextField from '@material-ui/core/TextField'
 
 const vehicleEmptyMessage = `Vehicle's not yet selected or empty's`
 
-const CreateSchedulePage = (props) => {
+const EditSchedulePage = (props) => {
+  const params = useParams()
   const { currentUser } = useAuthState()
   const { currentRole } = useAccess()
 
   const isAdmin = currentRole === 'admin'
 
-  const form = useForm({
-    mode: 'onSubmit',
-  })
+  const form = useForm()
   const {
     formState: { errors },
     control,
   } = form
 
-  const [selectedDate, setSelectedDate] = useState(new Date())
-
-  const [customerId, setCustomerId] = useState(NaN)
-  const { data: vehiclesData, loading: vehiclesLoading } = useQuery(
-    VEHICLES_QUERY,
+  const { data: scheduleData, loading: loadingScheduleData } = useQuery(
+    EDITSCHEDULE_SHOWSCHEDULE_QUERY,
     {
       variables: {
-        input: {
-          filter: JSON.stringify({
-            // If admin based on selected customer
-            // Else if admin, based on login currentUser?.id
-            user_id: customerId || currentUser?.id || undefined,
-          }),
-        },
+        id: +params?.id,
       },
     }
   )
+  const schedule = scheduleData?.schedule
 
   const { data: customersData, loading: customersLoading } = useQuery(
-    CUSTOMERS_QUERY,
+    EDITSCHEDULECUSTOMERS_QUERY,
     {
       variables: {
         input: {
@@ -62,28 +57,60 @@ const CreateSchedulePage = (props) => {
     }
   )
 
+  const [customerId, setCustomerId] = useState(NaN)
+  const { data: vehiclesData, loading: vehiclesLoading } = useQuery(
+    EDITSCHEDULEVEHICLES_QUERY,
+    {
+      variables: {
+        input: {
+          filter: JSON.stringify({
+            // If admin based on selected customer
+            // Else if admin, based on login currentUser?.id
+            user_id: customerId,
+          }),
+        },
+      },
+      skip: !customerId,
+    }
+  )
+
+  const [selectedDate, setSelectedDate] = useState(new Date())
+
   const handleDateChange = (date) => {
     setSelectedDate(date)
   }
 
+  useEffect(() => {
+    setSelectedDate(schedule?.booking_date)
+
+    if (isAdmin) {
+      setCustomerId(schedule?.customer?.user?.id)
+    } else {
+      setCustomerId(currentUser?.id)
+    }
+  }, [currentUser?.id, isAdmin, schedule])
+
   const isVehiclesReady =
     vehiclesData && vehiclesData.vehicles && vehiclesData.vehicles.length
 
+  console.log('vehiclesData', vehiclesData, currentUser?.id)
+
+  if (!schedule) return <React.Fragment />
+
   return (
     <>
-      <MetaTags title="Create Schedule" description="Create Schedule page" />
+      <MetaTags title="Edit Schedule" description="Edit Schedule page" />
 
-      <Create
-        isLoading={vehiclesLoading || customersLoading}
+      <Edit
         form={form}
-        createMutation={CREATESCHEDULE_MUTATION}
-        resourceName={props.resourceName}
+        editMutation={EDITSCHEDULE_MUTATION}
+        id={+params?.id}
         input={(data) => ({
           ...data,
-          ...(!isAdmin && {
-            customer_id: customersData?.customers[0]?.id,
-          }),
         })}
+        resourceName={props.resourceName}
+        showQuery={EDITSCHEDULE_SHOWSCHEDULE_QUERY}
+        isLoading={loadingScheduleData || customersLoading || vehiclesLoading}
       >
         <FormControl>
           <FormPicker
@@ -93,7 +120,6 @@ const CreateSchedulePage = (props) => {
             errorobj={errors}
             value={selectedDate}
             onChange={handleDateChange}
-            required
           />
         </FormControl>
 
@@ -101,10 +127,15 @@ const CreateSchedulePage = (props) => {
         {isAdmin && (
           <FormControl>
             <FormSelect
+              useKey
+              disabled
               label="Select Customer"
               name="customer_id"
               control={control}
               errorobj={errors}
+              // Issues: "[Select] You have provided an out-of-range value"
+              // Solved: https://github.com/mui/material-ui/issues/18494#issuecomment-782042971
+              defaultValue={customersData ? schedule?.customer?.id : undefined}
               onChange={(e) => {
                 const value = e.target.value
                 if (value) {
@@ -118,16 +149,16 @@ const CreateSchedulePage = (props) => {
                   setCustomerId(item?.user_id)
                 }
               }}
-              required
             >
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
-              {customersData?.customers.map((customer) => (
-                <MenuItem key={customer.id} value={customer.id}>
-                  {customer.user.name}
-                </MenuItem>
-              ))}
+              {customersData &&
+                customersData?.customers.map((customer) => (
+                  <MenuItem key={customer.id} value={customer.id}>
+                    {customer.user.name}
+                  </MenuItem>
+                ))}
             </FormSelect>
           </FormControl>
         )}
@@ -136,12 +167,13 @@ const CreateSchedulePage = (props) => {
           {/* Avoid warning */}
           {isVehiclesReady ? (
             <FormSelect
+              useKey
               label="Select Vehicle"
               name="vehicle_id"
               control={control}
               errorobj={errors}
-              disabled={(isAdmin && !customerId) || !isVehiclesReady}
-              required
+              defaultValue={isVehiclesReady ? schedule?.vehicle?.id : undefined}
+              disabled={!isVehiclesReady}
             >
               <MenuItem value="">
                 <em>None</em>
@@ -165,12 +197,12 @@ const CreateSchedulePage = (props) => {
         {isAdmin && (
           <FormControl>
             <FormSelect
+              useKey
               label="Select Status"
               control={control}
               errorobj={errors}
+              defaultValue={schedule?.status}
               name="status"
-              defaultValue="pending"
-              required
             >
               <MenuItem value="">
                 <em>None</em>
@@ -200,11 +232,12 @@ const CreateSchedulePage = (props) => {
             name="message"
             label="Message"
             errorobj={errors}
+            defaultValue={schedule?.message}
           />
         </FormControl>
-      </Create>
+      </Edit>
     </>
   )
 }
 
-export default CreateSchedulePage
+export default EditSchedulePage

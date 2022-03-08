@@ -5,11 +5,13 @@ export const schema = gql`
     serialNum: String!
     year: Int!
     details: String
+    user_id: Int!
+    user: User!
     created_by: Int!
     updated_by: Int
     created_at: DateTime
     updated_at: DateTime
-    service: [Service]!
+    schedule: [Schedule]!
   }
 
   input VehiclesInput {
@@ -29,6 +31,7 @@ export const schema = gql`
     serialNum: String!
     year: Int!
     details: String
+    user_id: Int!
     created_by: Int!
     updated_by: Int
     created_at: DateTime
@@ -40,6 +43,7 @@ export const schema = gql`
     serialNum: String
     year: Int
     details: String
+    user_id: Int
     created_by: Int
     updated_by: Int
     created_at: DateTime
@@ -47,7 +51,7 @@ export const schema = gql`
   }
 
   type Mutation {
-    createVehicle(input: CreateVehicleInput!): Vehicle! @requireAuth
+    createVehicle(input: CreateVehicleInput!): Vehicle! @skipAuth
     updateVehicle(id: Int!, input: UpdateVehicleInput!): Vehicle! @requireAuth
     deleteVehicle(id: Int!): Vehicle! @requireAuth
   }

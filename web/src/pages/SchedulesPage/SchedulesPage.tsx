@@ -16,6 +16,7 @@ import FormControl from '@material-ui/core/FormControl'
 import FormSelect from 'src/components/form/formSelect'
 import { ScheduleStatus } from 'src/types/share'
 import { useAccess } from 'src/libs/gql-router'
+import { useAuthState } from 'src/libs/auth/hooks'
 
 const SchedulesPage = (props) => {
   const form = useForm()
@@ -24,6 +25,7 @@ const SchedulesPage = (props) => {
     control,
   } = form
 
+  const { currentUser } = useAuthState()
   const { currentRole } = useAccess()
   const isPublicAccess = currentRole === 'customer'
 
@@ -132,6 +134,8 @@ const SchedulesPage = (props) => {
     [control, errors, isPublicAccess, handleChange]
   )
 
+  console.log('isPublicAccess', isPublicAccess, currentRole)
+
   return (
     <>
       <MetaTags title="Bookings" description="Bookings page" />
@@ -159,6 +163,14 @@ const SchedulesPage = (props) => {
               return status !== 'pending' && isPublicAccess
             }}
             deleteDisabled={isPublicAccess}
+            input={{
+              ...(isPublicAccess &&
+                currentUser &&
+                currentUser.id && {
+                  // eslint-disable-next-line prettier/prettier
+                  filter: `{\"customer\":{\"user_id\":{\"equals\":${currentUser?.id}}}}`
+                }),
+            }}
           />
         </Grid>
       </Grid>
