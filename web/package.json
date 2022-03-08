@@ -15,9 +15,10 @@
   "dependencies": {
     "@apollo/client": "^3.5.9",
     "@apollo/react-hooks": "^4.0.0",
-    "@material-ui/core": "^4.11.3",
     "@date-io/date-fns": "^1.3.13",
+    "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.60",
     "@material-ui/pickers": "^3.3.10",
     "@material-ui/styles": "^4.11.3",
     "@redwoodjs/auth": "0.46.0",

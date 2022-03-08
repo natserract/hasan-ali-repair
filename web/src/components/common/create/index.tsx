@@ -43,6 +43,7 @@ const Create: React.FC<CreateProps> = ({
   const [mutateCreateDataFunc] = useMutation(createMutation)
 
   const onSubmit = async (data) => {
+    console.log('submitted form', data)
     setLoadingCreateData(true)
 
     try {

@@ -35,7 +35,7 @@ const FormInput: React.FC<FormInputProps> = (props): JSX.Element => {
   return (
     <Controller
       name={name}
-      rules={{ required: required }}
+      rules={{ required }}
       control={control}
       render={({ field: { onChange, ref } }) => (
         <TextField
@@ -43,7 +43,7 @@ const FormInput: React.FC<FormInputProps> = (props): JSX.Element => {
           label={label}
           error={isError}
           helperText={required ? errormessage : null}
-          fullWidth={true}
+          fullWidth
           variant="outlined"
           disabled={disabled}
           defaultValue={defaultValue}

@@ -29,12 +29,15 @@ export const schema = gql`
   input CreateServiceInput {
     uuid: String
     price: Float
-    created_by: Int!
+    created_by: Int
     updated_by: Int
     mechanic_id: Int!
     schedule_id: Int!
     created_at: DateTime
     updated_at: DateTime
+
+    # Schedule
+    status: String
   }
 
   input UpdateServiceInput {
@@ -46,6 +49,9 @@ export const schema = gql`
     schedule_id: Int
     created_at: DateTime
     updated_at: DateTime
+
+    # Schedule
+    status: String
   }
 
   type Mutation {

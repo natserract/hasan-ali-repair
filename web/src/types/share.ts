@@ -17,6 +17,9 @@ export type CurrentUser = {
 
 export type ScheduleStatus =
   | 'pending'
+  | 'approved'
+  | 'unapproved'
   | 'on review'
   | 'on progress'
+  | 'cancelled'
   | 'complete'

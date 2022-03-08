@@ -9,6 +9,7 @@ export const SERVICESPAGE_SERVICES_QUERY = gql`
 
       # Booking date
       schedule {
+        id
         booking_date
 
         # Status

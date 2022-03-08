@@ -1,13 +1,3 @@
-export const VEHICLES_QUERY = gql`
-  query VehiclesQuery($input: VehiclesInput) {
-    vehicles(input: $input) {
-      id
-      name
-      serialNum
-    }
-  }
-`
-
 export const MECHANICS_QUERY = gql`
   query MechanicsQuery {
     mechanics {
@@ -18,14 +8,22 @@ export const MECHANICS_QUERY = gql`
   }
 `
 
-export const CUSTOMERS_QUERY = gql`
-  query CustomersQuery {
-    customers {
+export const CREATESERVICE_SCHEDULES_QUERY = gql`
+  query CreateServiceSchedulesQuery($input: ScheduleInput) {
+    schedules(input: $input) {
       id
-      user_id
-      user {
+      status
+      customer {
+        user {
+          name
+        }
+      }
+      vehicle {
         name
       }
+      booking_date
+      status
+      message
     }
   }
 `

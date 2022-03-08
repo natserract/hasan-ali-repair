@@ -5,3 +5,13 @@ export const DELETESERVICE_MUTATION = gql`
     }
   }
 `
+export const SERVICES_UPDATESCHEDULEMUTATION = gql`
+  mutation ServicesUpdateScheduleMutation(
+    $id: Int!
+    $input: UpdateScheduleInput!
+  ) {
+    updateSchedule(id: $id, input: $input) {
+      id
+    }
+  }
+`

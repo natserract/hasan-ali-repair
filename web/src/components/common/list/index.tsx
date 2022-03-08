@@ -18,7 +18,7 @@ import { toCamelCase } from 'src/utils/string'
 import pluralize from 'pluralize'
 
 type ActionDisabled = {
-  createDisabled: boolean | ((data) => boolean)
+  createDisabled: boolean
   showDisabled: boolean | ((data) => boolean)
   editDisabled: boolean | ((data) => boolean)
   deleteDisabled: boolean | ((data) => boolean)
@@ -145,18 +145,17 @@ const List: React.FC<ListProps> = ({
       enableNestedDataAccess: '.',
       customToolbar: () => (
         <React.Fragment>
-          <Button
-            variant="outlined"
-            onClick={() => navigate.push(`/app/${resourcePluralize}/create`)}
-            disableElevation
-            disabled={
-              typeof createDisabled == 'function'
-                ? createDisabled(undefined)
-                : (createDisabled as boolean)
-            }
-          >
-            Create
-          </Button>
+          {createDisabled ? (
+            <React.Fragment />
+          ) : (
+            <Button
+              variant="outlined"
+              onClick={() => navigate.push(`/app/${resourcePluralize}/create`)}
+              disableElevation
+            >
+              Create
+            </Button>
+          )}
         </React.Fragment>
       ),
       onRowSelectionChange: (currentRowsSelected: { dataIndex: any }[]) => {
@@ -227,19 +226,28 @@ const List: React.FC<ListProps> = ({
                   }
                   title="View"
                 >
-                  <IconButton
-                    color="primary"
-                    onClick={() =>
-                      navigate.push(`/app/${resourcePluralize}/view/${dataIdx}`)
-                    }
-                    disabled={
-                      typeof showDisabled == 'function'
-                        ? showDisabled(tableMeta)
-                        : (showDisabled as boolean)
-                    }
-                  >
-                    <VisibilityOutlinedIcon />
-                  </IconButton>
+                  {/*
+                    We need span wrapper, because:
+                    `Material UI: You are providing a disabled `button` child to the
+                    Tooltip component.`
+                  */}
+                  <span>
+                    <IconButton
+                      color="primary"
+                      onClick={() =>
+                        navigate.push(
+                          `/app/${resourcePluralize}/view/${dataIdx}`
+                        )
+                      }
+                      disabled={
+                        typeof showDisabled == 'function'
+                          ? showDisabled(tableMeta)
+                          : (showDisabled as boolean)
+                      }
+                    >
+                      <VisibilityOutlinedIcon />
+                    </IconButton>
+                  </span>
                 </Tooltip>
                 <Tooltip
                   disableHoverListener={
@@ -249,19 +257,23 @@ const List: React.FC<ListProps> = ({
                   }
                   title="Edit"
                 >
-                  <IconButton
-                    color="primary"
-                    onClick={() =>
-                      navigate.push(`/app/${resourcePluralize}/edit/${dataIdx}`)
-                    }
-                    disabled={
-                      typeof editDisabled == 'function'
-                        ? editDisabled(tableMeta)
-                        : (editDisabled as boolean)
-                    }
-                  >
-                    <EditOutlinedIcon />
-                  </IconButton>
+                  <span>
+                    <IconButton
+                      color="primary"
+                      onClick={() =>
+                        navigate.push(
+                          `/app/${resourcePluralize}/edit/${dataIdx}`
+                        )
+                      }
+                      disabled={
+                        typeof editDisabled == 'function'
+                          ? editDisabled(tableMeta)
+                          : (editDisabled as boolean)
+                      }
+                    >
+                      <EditOutlinedIcon />
+                    </IconButton>
+                  </span>
                 </Tooltip>
 
                 {!(typeof deleteDisabled == 'function'

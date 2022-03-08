@@ -44,8 +44,18 @@ export const createService = async ({ input }: CreateServiceArgs) => {
 
   const service = await db.service.create({
     data: {
-      ...input,
-      created_by: input?.created_by ?? sessionId,
+      mechanic: {
+        connect: {
+          id: input.mechanic_id,
+        },
+      },
+      schedule: {
+        connect: {
+          id: input.schedule_id,
+        },
+      },
+      price: input?.price,
+      created_by: sessionId,
     },
   })
 

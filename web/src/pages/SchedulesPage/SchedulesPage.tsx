@@ -118,6 +118,9 @@ const SchedulesPage = (props) => {
                   <MenuItem value="approved">
                     <em>Approved</em>
                   </MenuItem>
+                  <MenuItem value="unapproved">
+                    <em>Unapproved</em>
+                  </MenuItem>
                   <MenuItem value="on progress">
                     <em>On Progress</em>
                   </MenuItem>
