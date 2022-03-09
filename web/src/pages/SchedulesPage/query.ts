@@ -6,6 +6,7 @@ export const SCHEDULES_QUERY = gql`
       booking_date
       customer {
         user {
+          email
           name
         }
       }

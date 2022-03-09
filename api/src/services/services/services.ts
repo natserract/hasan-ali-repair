@@ -40,8 +40,6 @@ interface CreateServiceArgs {
 }
 
 export const createService = async ({ input }: CreateServiceArgs) => {
-  const sessionId = context?.currentUser?.id
-
   const service = await db.service.create({
     data: {
       mechanic: {
@@ -55,7 +53,7 @@ export const createService = async ({ input }: CreateServiceArgs) => {
         },
       },
       price: input?.price,
-      created_by: sessionId,
+      created_by: input.created_by,
     },
   })
 
@@ -63,7 +61,7 @@ export const createService = async ({ input }: CreateServiceArgs) => {
   await updateSchedule({
     id: service.schedule_id,
     input: {
-      status: 'on progress',
+      status: 'on review',
     },
   })
 

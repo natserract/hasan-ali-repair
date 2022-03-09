@@ -16,6 +16,7 @@ import { toast } from '@redwoodjs/web/toast'
 import { extractError } from 'src/utils/errors'
 import { toCamelCase } from 'src/utils/string'
 import pluralize from 'pluralize'
+import orderBy from 'lodash.orderby'
 
 type ActionDisabled = {
   createDisabled: boolean
@@ -33,6 +34,11 @@ type OptionalProps = {
 
   // Check: https://www.npmjs.com/package/mui-datatables
   options?: Record<string, any>
+
+  orderBy?: {
+    key: string
+    sort: 'asc' | 'desc'
+  }
 } & Partial<ActionDisabled>
 
 type ListProps = {
@@ -65,6 +71,7 @@ const List: React.FC<ListProps> = ({
   editDisabled,
   deleteDisabled,
   options: optionsProps,
+  orderBy: orderByProps,
 }) => {
   const classes = useStyles()
   const navigate = useNavigate()
@@ -373,7 +380,13 @@ const List: React.FC<ListProps> = ({
   const fetchData = () => {
     if (queryData) {
       const data = queryData[resourceName]
-      setData(data)
+
+      if (orderByProps) {
+        const sortedData = orderBy(data, orderByProps.key, orderByProps.sort)
+        setData(sortedData)
+      } else {
+        setData(data)
+      }
 
       // Passing data to props
       if (onFetch && typeof onFetch === 'function') {
@@ -382,7 +395,7 @@ const List: React.FC<ListProps> = ({
     }
   }
 
-  useEffect(fetchData, [onFetch, queryData, resourceName])
+  useEffect(fetchData, [onFetch, queryData, resourceName, orderByProps])
 
   useEffect(() => {
     if (refetchOnMount) {

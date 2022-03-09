@@ -78,6 +78,13 @@ const SchedulesPage = (props) => {
         },
       },
       {
+        name: 'customer.user.email',
+        label: 'Customer Email',
+        options: {
+          filter: false,
+        },
+      },
+      {
         name: 'booking_date',
         label: 'Booking Date',
         options: {
@@ -112,19 +119,22 @@ const SchedulesPage = (props) => {
                   <MenuItem value="pending">
                     <em>Pending</em>
                   </MenuItem>
-                  <MenuItem value="on review">
-                    <em>On Review</em>
-                  </MenuItem>
                   <MenuItem value="approved">
                     <em>Approved</em>
                   </MenuItem>
                   <MenuItem value="unapproved">
                     <em>Unapproved</em>
                   </MenuItem>
-                  <MenuItem value="on progress">
+                  <MenuItem disabled value="on review">
+                    <em>On Review</em>
+                  </MenuItem>
+                  <MenuItem disabled value="on progress">
                     <em>On Progress</em>
                   </MenuItem>
-                  <MenuItem value="complete">
+                  <MenuItem disabled value="cancelled">
+                    <em>Cancelled</em>
+                  </MenuItem>
+                  <MenuItem disabled value="complete">
                     <em>Complete</em>
                   </MenuItem>
                 </FormSelect>
@@ -136,8 +146,6 @@ const SchedulesPage = (props) => {
     ],
     [control, errors, isPublicAccess, handleChange]
   )
-
-  console.log('isPublicAccess', isPublicAccess, currentRole)
 
   return (
     <>
@@ -166,6 +174,10 @@ const SchedulesPage = (props) => {
               return status !== 'pending' && isPublicAccess
             }}
             deleteDisabled={isPublicAccess}
+            orderBy={{
+              key: 'booking_date',
+              sort: 'desc',
+            }}
             input={{
               ...(isPublicAccess &&
                 currentUser &&

@@ -24,6 +24,7 @@ type FormAutoCompleteProps = {
     reason: AutocompleteChangeReason,
     details?: AutocompleteChangeDetails<any>
   ) => void
+  multiple?: boolean
 }
 
 const FormAutoComplete: React.FC<FormAutoCompleteProps> = (props) => {
@@ -40,6 +41,7 @@ const FormAutoComplete: React.FC<FormAutoCompleteProps> = (props) => {
     options,
     isReady: isReadyProps,
     onChange: onChangeProps,
+    multiple,
   } = props
 
   let isError = false
@@ -55,6 +57,7 @@ const FormAutoComplete: React.FC<FormAutoCompleteProps> = (props) => {
       render={({ field: { onChange } }) =>
         isReadyProps ? (
           <Autocomplete
+            multiple={multiple}
             fullWidth
             onChange={(event, value, reason) => {
               if (onChangeProps && typeof onChangeProps === 'function') {

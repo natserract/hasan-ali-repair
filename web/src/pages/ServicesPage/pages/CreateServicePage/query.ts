@@ -15,6 +15,7 @@ export const CREATESERVICE_SCHEDULES_QUERY = gql`
       status
       customer {
         user {
+          email
           name
         }
       }
@@ -24,6 +25,17 @@ export const CREATESERVICE_SCHEDULES_QUERY = gql`
       booking_date
       status
       message
+    }
+  }
+`
+
+export const CREATESERVICE_PARTSQUERY = gql`
+  query CreateServicePartsQuery {
+    parts {
+      id
+      name
+      part_number
+      qty
     }
   }
 `

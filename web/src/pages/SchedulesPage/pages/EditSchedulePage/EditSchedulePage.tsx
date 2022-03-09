@@ -210,16 +210,22 @@ const EditSchedulePage = (props) => {
               <MenuItem value="pending">
                 <em>Pending</em>
               </MenuItem>
-              <MenuItem value="on review">
-                <em>On Review</em>
-              </MenuItem>
               <MenuItem value="approved">
                 <em>Approved</em>
               </MenuItem>
-              <MenuItem value="on progress">
+              <MenuItem value="unapproved">
+                <em>Unapproved</em>
+              </MenuItem>
+              <MenuItem disabled value="on review">
+                <em>On Review</em>
+              </MenuItem>
+              <MenuItem disabled value="on progress">
                 <em>On Progress</em>
               </MenuItem>
-              <MenuItem value="complete">
+              <MenuItem disabled value="cancelled">
+                <em>Cancelled</em>
+              </MenuItem>
+              <MenuItem disabled value="complete">
                 <em>Complete</em>
               </MenuItem>
             </FormSelect>

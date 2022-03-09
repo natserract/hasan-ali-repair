@@ -77,6 +77,20 @@ const ServicesPage = (props) => {
         },
       },
       {
+        name: 'schedule.vehicle.name',
+        label: 'Vehicle',
+        options: {
+          filter: false,
+        },
+      },
+      {
+        name: 'mechanic.name',
+        label: 'Mechanic',
+        options: {
+          filter: false,
+        },
+      },
+      {
         name: 'schedule.status',
         label: 'Status',
         options: {
@@ -98,6 +112,9 @@ const ServicesPage = (props) => {
                   <MenuItem value="">
                     <em>None</em>
                   </MenuItem>
+                  <MenuItem value="on review">
+                    <em>On Review</em>
+                  </MenuItem>
                   <MenuItem value="on progress">
                     <em>On Progress</em>
                   </MenuItem>
@@ -111,20 +128,6 @@ const ServicesPage = (props) => {
               </FormControl>
             )
           },
-        },
-      },
-      {
-        name: 'schedule.vehicle.name',
-        label: 'Vehicle',
-        options: {
-          filter: false,
-        },
-      },
-      {
-        name: 'mechanic.name',
-        label: 'Mechanic',
-        options: {
-          filter: false,
         },
       },
       {
@@ -148,6 +151,10 @@ const ServicesPage = (props) => {
       <Grid container spacing={4}>
         <Grid item xs={12}>
           <List
+            orderBy={{
+              key: 'schedule.booking_date',
+              sort: 'desc',
+            }}
             isLoading={changed}
             columns={columns}
             onFetch={(data) => setListData(data)}
@@ -170,7 +177,7 @@ const ServicesPage = (props) => {
                       },
                     }),
                   status: {
-                    in: ['approved', 'on progress', 'complete'],
+                    notIn: ['pending', 'approved', 'unapproved'],
                   },
                 },
               }),

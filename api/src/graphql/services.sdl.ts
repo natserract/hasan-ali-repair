@@ -29,7 +29,7 @@ export const schema = gql`
   input CreateServiceInput {
     uuid: String
     price: Float
-    created_by: Int
+    created_by: Int!
     updated_by: Int
     mechanic_id: Int!
     schedule_id: Int!
@@ -43,7 +43,7 @@ export const schema = gql`
   input UpdateServiceInput {
     uuid: String
     price: Float
-    created_by: Int
+    created_by: Int!
     updated_by: Int
     mechanic_id: Int
     schedule_id: Int

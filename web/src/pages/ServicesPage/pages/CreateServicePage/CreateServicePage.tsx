@@ -7,7 +7,11 @@ import { CREATESERVICE_MUTATION } from './mutation'
 import Create from 'src/components/common/create'
 import FormControl from '@material-ui/core/FormControl'
 import MenuItem from '@material-ui/core/MenuItem'
-import { MECHANICS_QUERY, CREATESERVICE_SCHEDULES_QUERY } from './query'
+import {
+  MECHANICS_QUERY,
+  CREATESERVICE_SCHEDULES_QUERY,
+  CREATESERVICE_PARTSQUERY,
+} from './query'
 import { useAuthState } from 'src/libs/auth/hooks'
 import { parseDate } from 'src/utils/date'
 import { useState } from 'react'
@@ -35,6 +39,9 @@ const CreateServicePage = (props) => {
   )
   const { data: mechanicsData, loading: mechanicsLoading } =
     useQuery(MECHANICS_QUERY)
+  const { data: partsData, loading: partsDataLoading } = useQuery(
+    CREATESERVICE_PARTSQUERY
+  )
 
   const [inputValue, setInputValue] = useState(NaN)
 
@@ -53,6 +60,7 @@ const CreateServicePage = (props) => {
           schedule_id: inputValue,
           status: data?.status,
           price: data?.price ? +data?.price : undefined,
+          created_by: currentUser?.id,
         })}
       >
         <FormControl>
@@ -67,9 +75,11 @@ const CreateServicePage = (props) => {
             options={schedulesData?.schedules}
             onChange={(event, value) => setInputValue(value.id)}
             getOptionLabel={(option: any) => {
-              return `Customer: ${option.customer.user.name}, Date: ${parseDate(
-                option.booking_date
-              )}, Vehicle: ${option.vehicle.name}, Status: ${option.status}`
+              return `Customer: ${option.customer.user.name}, Email: ${
+                option.customer.user.email
+              }, Date: ${parseDate(option.booking_date)}, Vehicle: ${
+                option.vehicle.name
+              }`
             }}
           />
         </FormControl>
@@ -102,6 +112,21 @@ const CreateServicePage = (props) => {
             errorobj={errors}
           />
         </FormControl>
+
+        <FormAutoComplete
+          required
+          multiple
+          label="Select Parts Used"
+          name="part_id"
+          control={control}
+          errorobj={errors}
+          isReady={!partsDataLoading}
+          options={partsData?.parts}
+          // onChange={(event, value) => setInputValue(value.id)}
+          getOptionLabel={(option: any) => {
+            return `${option.name} - ${option.part_number}`
+          }}
+        />
       </Create>
     </>
   )
