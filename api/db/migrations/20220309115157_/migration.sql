@@ -85,7 +85,7 @@ CREATE TABLE `parts` (
     `part_number` INTEGER NOT NULL,
     `in_date` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
     `qty` INTEGER NOT NULL,
-    `price` DECIMAL(65, 30) NOT NULL,
+    `price` DECIMAL(10, 2) NOT NULL,
     `description` VARCHAR(191) NULL,
 
     UNIQUE INDEX `parts_part_number_key`(`part_number`),
@@ -95,7 +95,6 @@ CREATE TABLE `parts` (
 -- CreateTable
 CREATE TABLE `parts_used` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `used_qty` INTEGER NOT NULL,
     `part_id` INTEGER NOT NULL,
     `mechanic_id` INTEGER NOT NULL,
     `service_id` INTEGER NOT NULL,
@@ -108,6 +107,7 @@ CREATE TABLE `customer` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `user_id` INTEGER NOT NULL,
 
+    UNIQUE INDEX `customer_user_id_key`(`user_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

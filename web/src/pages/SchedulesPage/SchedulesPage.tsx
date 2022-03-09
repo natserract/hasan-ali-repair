@@ -183,7 +183,7 @@ const SchedulesPage = (props) => {
                 currentUser &&
                 currentUser.id && {
                   // eslint-disable-next-line prettier/prettier
-                  filter: `{\"customer\":{\"user_id\":{\"equals\":${currentUser?.id}}}}`
+                  filter: `{\"status\":{\"in\":[\"pending\",\"approved\",\"unapproved\"]},\"customer\":{\"user_id\":{\"equals\":${currentUser.id}}}}`
                 }),
             }}
           />

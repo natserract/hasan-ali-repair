@@ -143,18 +143,20 @@ model PartUsed {
   //
   // SQL SCRIPT
   //  drop trigger if exists subtract_quantity;
-  //   DELIMITER //
+  // DELIMITER //
 
-  //   CREATE TRIGGER subtract_quantity
-  //   AFTER INSERT ON parts_used FOR EACH ROW
-  //   BEGIN
-  //     UPDATE parts
-  //       SET parts.qty = parts.qty - NEW.used_qty
-  //       WHERE parts.id = NEW.part_id;
-  //   END
-  //   //
-  //   DELIMITER ;
-  used_qty Int
+  // CREATE TRIGGER subtract_quantity
+  // AFTER INSERT ON parts_used FOR EACH ROW
+  // BEGIN
+  //   UPDATE parts
+  //     # not used SET parts.qty = parts.qty - NEW.used_qty or
+  //     # used SET parts.qty = parts.qty - 1
+  //     WHERE parts.id = NEW.part_id;
+  // END
+  // //
+  // DELIMITER ;
+  // I think we don't use this
+  // used_qty Int
 
   part_id Int
   parts   Part @relation(fields: [part_id], references: [id])

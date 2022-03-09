@@ -38,6 +38,9 @@ export const schema = gql`
 
     # Schedule
     status: String
+
+    # Parts Used
+    part_ids: [Int]
   }
 
   input UpdateServiceInput {
@@ -52,6 +55,9 @@ export const schema = gql`
 
     # Schedule
     status: String
+
+    # Parts Used
+    part_ids: [Int]
   }
 
   type Mutation {

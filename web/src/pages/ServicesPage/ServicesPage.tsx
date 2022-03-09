@@ -175,10 +175,10 @@ const ServicesPage = (props) => {
                           equals: currentUser.id,
                         },
                       },
+                      status: {
+                        notIn: ['pending', 'approved', 'unapproved'],
+                      },
                     }),
-                  status: {
-                    notIn: ['pending', 'approved', 'unapproved'],
-                  },
                 },
               }),
             }}

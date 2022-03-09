@@ -19,7 +19,16 @@
     'TOKEN_SIGN_KEY',
     'APP_HOST',
     'APP_WEB_PORT',
-    'APP_API_PORT'
+    'APP_API_PORT',
+    'SENDINBLUE_HOST',
+    'SENDINBLUE_PORT',
+    'SENDINBLUE_PASSWORD',
+    'SENDINBLUE_EMAIL',
+    'SENDINBLUE_APIKEY',
+    'GMAIL_HOST',
+    'GMAIL_PORT',
+    'GMAIL_USERNAME',
+    'GMAIL_PASSWORD',
   ] # any ENV vars that should be available to the web side, see https://redwoodjs.com/docs/environment-variables#web
 [api]
   port = 8911

@@ -14,7 +14,7 @@ import {
 } from './query'
 import { useAuthState } from 'src/libs/auth/hooks'
 import { parseDate } from 'src/utils/date'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 const CreateServicePage = (props) => {
   const form = useForm()
@@ -43,7 +43,8 @@ const CreateServicePage = (props) => {
     CREATESERVICE_PARTSQUERY
   )
 
-  const [inputValue, setInputValue] = useState(NaN)
+  const [scheduleId, setScheduleId] = useState(NaN)
+  const [partIds, setPartIds] = useState([])
 
   return (
     <>
@@ -57,10 +58,11 @@ const CreateServicePage = (props) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         input={(data) => ({
           mechanic_id: data.mechanic_id,
-          schedule_id: inputValue,
+          schedule_id: scheduleId,
           status: data?.status,
           price: data?.price ? +data?.price : undefined,
           created_by: currentUser?.id,
+          part_ids: partIds,
         })}
       >
         <FormControl>
@@ -73,7 +75,7 @@ const CreateServicePage = (props) => {
             errorobj={errors}
             isReady={!loadingSchedulesData}
             options={schedulesData?.schedules}
-            onChange={(event, value) => setInputValue(value.id)}
+            onChange={(event, value) => setScheduleId(value.id)}
             getOptionLabel={(option: any) => {
               return `Customer: ${option.customer.user.name}, Email: ${
                 option.customer.user.email
@@ -122,7 +124,20 @@ const CreateServicePage = (props) => {
           errorobj={errors}
           isReady={!partsDataLoading}
           options={partsData?.parts}
-          // onChange={(event, value) => setInputValue(value.id)}
+          onChange={(_event, values) => {
+            const ids = values.map((p) => {
+              let result = null
+              Object.entries(p).forEach(([key, value]) => {
+                if (key === 'id') {
+                  result = value
+                }
+              })
+
+              return result
+            })
+            console.log('ids', ids)
+            setPartIds(ids)
+          }}
           getOptionLabel={(option: any) => {
             return `${option.name} - ${option.part_number}`
           }}

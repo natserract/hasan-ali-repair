@@ -29,14 +29,12 @@ describe('partUseds', () => {
   scenario('creates a partUsed', async (scenario: StandardScenario) => {
     const result = await createPartUsed({
       input: {
-        used_qty: 666128,
         part_id: scenario.partUsed.two.part_id,
         mechanic_id: scenario.partUsed.two.mechanic_id,
         service_id: scenario.partUsed.two.service_id,
       },
     })
 
-    expect(result.used_qty).toEqual(666128)
     expect(result.part_id).toEqual(scenario.partUsed.two.part_id)
     expect(result.mechanic_id).toEqual(scenario.partUsed.two.mechanic_id)
     expect(result.service_id).toEqual(scenario.partUsed.two.service_id)
@@ -46,10 +44,10 @@ describe('partUseds', () => {
     const original = await partUsed({ id: scenario.partUsed.one.id })
     const result = await updatePartUsed({
       id: original.id,
-      input: { used_qty: 5006748 },
+      input: { part_id: scenario.partUsed.two.part_id },
     })
 
-    expect(result.used_qty).toEqual(5006748)
+    expect(result.part_id).toEqual(scenario.partUsed.two.part_id)
   })
 
   scenario('deletes a partUsed', async (scenario: StandardScenario) => {

@@ -3,6 +3,7 @@ import type { ResolverArgs } from '@redwoodjs/graphql-server'
 import { ITEMS_PER_PAGE } from 'src/constants/config'
 
 import { db } from 'src/lib/db'
+import { sendEmail } from 'src/lib/mail'
 
 import { InputList } from 'src/types/share'
 
@@ -50,7 +51,20 @@ interface UpdateScheduleArgs extends Prisma.ScheduleWhereUniqueInput {
   input: Prisma.ScheduleUpdateInput
 }
 
-export const updateSchedule = ({ id, input }: UpdateScheduleArgs) => {
+export const updateSchedule = async ({ id, input }: UpdateScheduleArgs) => {
+  if (input?.status === 'approved' || input?.status === 'unapproved') {
+    await sendEmail({
+      to: 'benjaminstwo@gmail.com',
+      subject: 'Test Email',
+      text:
+        'This is a manually triggered test email.\n\n' +
+        'It was sent from a RedwoodJS application.',
+      html:
+        'This is a manually triggered test email.<br><br>' +
+        'It was sent from a RedwoodJS application.',
+    })
+  }
+
   return db.schedule.update({
     data: input,
     where: { id },

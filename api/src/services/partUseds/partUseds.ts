@@ -2,8 +2,6 @@ import type { Prisma } from '@prisma/client'
 import type { ResolverArgs } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'
-import { part } from '../parts/parts'
-import { updateService } from '../services/services'
 
 export const partUseds = () => {
   return db.partUsed.findMany()
@@ -25,21 +23,6 @@ export const createPartUsed = async ({ input }: CreatePartUsedArgs) => {
       ...input,
     },
   })
-
-  async function updatePriceOnService() {
-    const getPart = await part({
-      id: input.part_id,
-    })
-
-    await updateService({
-      id: input.service_id,
-      input: {
-        price: getPart.price.toNumber() * input.used_qty,
-      },
-    })
-  }
-
-  await updatePriceOnService()
 
   return partsUsed
 }

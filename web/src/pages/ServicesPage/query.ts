@@ -30,7 +30,6 @@ export const SERVICESPAGE_SERVICES_QUERY = gql`
 
         service {
           partsUsed {
-            used_qty
             parts {
               id
               name

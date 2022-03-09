@@ -5,6 +5,7 @@ import { ITEMS_PER_PAGE } from 'src/constants/config'
 import { db } from 'src/lib/db'
 
 import { InputList } from 'src/types/share'
+import { createPartUsed } from '../partUseds/partUseds'
 import { updateSchedule } from '../schedules/schedules'
 
 type ServicesArgs = InputList
@@ -36,10 +37,14 @@ export const service = ({ id }: Prisma.ServiceWhereUniqueInput) => {
 }
 
 interface CreateServiceArgs {
-  input: Prisma.ServiceUncheckedCreateInput
+  input: Prisma.ServiceUncheckedCreateInput & {
+    part_ids?: number[]
+  }
 }
 
 export const createService = async ({ input }: CreateServiceArgs) => {
+  console.log('create service input', input)
+
   const service = await db.service.create({
     data: {
       mechanic: {
@@ -64,6 +69,22 @@ export const createService = async ({ input }: CreateServiceArgs) => {
       status: 'on review',
     },
   })
+
+  // If has part used,
+  if (input?.part_ids && Array.from(input?.part_ids).length) {
+    const createPartsUsed = Array.from(input?.part_ids).map(async (item) => {
+      await createPartUsed({
+        input: {
+          service_id: service.id,
+          mechanic_id: service.mechanic_id,
+          part_id: item,
+        },
+      })
+    })
+
+    const response = await Promise.all(createPartsUsed)
+    console.log('response', response)
+  }
 
   return service
 }
