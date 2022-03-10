@@ -47,6 +47,7 @@ const SchedulesPage = (props) => {
             id,
             input: {
               status: value,
+              // send_email: true,
             },
           },
         })
@@ -88,7 +89,7 @@ const SchedulesPage = (props) => {
         name: 'booking_date',
         label: 'Booking Date',
         options: {
-          filter: false,
+          filter: true,
           customBodyRender: (data) => {
             return parseDate(new Date(data))
           },
@@ -161,6 +162,11 @@ const SchedulesPage = (props) => {
             deleteMutation={DELETESCHEDULE_MUTATION}
             resourceName={props.resourceName}
             onFetch={(data) => setListData(data)}
+            deleteDisabled={isPublicAccess}
+            orderBy={{
+              key: 'booking_date',
+              sort: 'desc',
+            }}
             options={{
               ...(isPublicAccess && {
                 selectToolbarPlacement: 'none',
@@ -172,11 +178,6 @@ const SchedulesPage = (props) => {
 
               // If status not pending, customer can't edit
               return status !== 'pending' && isPublicAccess
-            }}
-            deleteDisabled={isPublicAccess}
-            orderBy={{
-              key: 'booking_date',
-              sort: 'desc',
             }}
             input={{
               ...(isPublicAccess &&

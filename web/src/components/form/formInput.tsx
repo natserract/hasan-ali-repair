@@ -1,5 +1,5 @@
 import React from 'react'
-import { Controller, Control } from 'react-hook-form'
+import { Controller, Control, ValidationRule } from 'react-hook-form'
 import TextField from '@material-ui/core/TextField'
 
 interface FormInputProps {
@@ -12,6 +12,7 @@ interface FormInputProps {
   errormessage?: string
   disabled?: boolean
   defaultValue?: string
+  pattern?: ValidationRule<RegExp>
 }
 
 const FormInput: React.FC<FormInputProps> = (props): JSX.Element => {
@@ -25,6 +26,7 @@ const FormInput: React.FC<FormInputProps> = (props): JSX.Element => {
     disabled,
     errormessage,
     defaultValue,
+    pattern: patternProps,
   } = props
 
   let isError = false
@@ -35,7 +37,7 @@ const FormInput: React.FC<FormInputProps> = (props): JSX.Element => {
   return (
     <Controller
       name={name}
-      rules={{ required }}
+      rules={{ required, pattern: patternProps }}
       control={control}
       render={({ field: { onChange, ref } }) => (
         <TextField
@@ -43,6 +45,12 @@ const FormInput: React.FC<FormInputProps> = (props): JSX.Element => {
           label={label}
           error={isError}
           helperText={required ? errormessage : null}
+          FormHelperTextProps={{
+            style: {
+              marginTop: 5,
+              marginLeft: 0,
+            },
+          }}
           fullWidth
           variant="outlined"
           disabled={disabled}

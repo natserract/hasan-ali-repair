@@ -48,11 +48,16 @@ export const createSchedule = ({ input }: CreateScheduleArgs) => {
 }
 
 interface UpdateScheduleArgs extends Prisma.ScheduleWhereUniqueInput {
-  input: Prisma.ScheduleUpdateInput
+  input: Prisma.ScheduleUpdateInput & {
+    send_email?: boolean
+  }
 }
 
-export const updateSchedule = async ({ id, input }: UpdateScheduleArgs) => {
-  if (input?.status === 'approved' || input?.status === 'unapproved') {
+export const updateSchedule = async ({
+  id,
+  input: { send_email, ...input },
+}: UpdateScheduleArgs) => {
+  if (send_email) {
     await sendEmail({
       to: 'benjaminstwo@gmail.com',
       subject: 'Test Email',

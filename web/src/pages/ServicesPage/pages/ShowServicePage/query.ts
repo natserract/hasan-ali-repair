@@ -2,34 +2,36 @@ export const SHOWSERVICE_QUERY = gql`
   query ShowServiceQuery($id: Int!) {
     service(id: $id) {
       id
-      customer {
-        user {
-          name
-        }
-      }
-      schedule {
-        id
-        time_from
-        time_to
-      }
+      price
       mechanic {
-        id
         name
         person_id
       }
-      vehicle {
-        name
-        serialNum
+      schedule {
+        booking_date
+        message
+        status
+
+        customer {
+          user {
+            name
+          }
+        }
+
+        vehicle {
+          name
+          serialNum
+        }
       }
-      status
+
       partsUsed {
-        id
         parts {
           name
           part_number
         }
       }
-      message
+
+      created_at
     }
   }
 `

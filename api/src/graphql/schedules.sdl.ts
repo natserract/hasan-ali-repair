@@ -43,6 +43,9 @@ export const schema = gql`
     message: String
     created_at: DateTime
     updated_at: DateTime
+
+    # Check
+    send_email: Boolean
   }
 
   type Mutation {

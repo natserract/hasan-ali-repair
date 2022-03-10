@@ -6,7 +6,11 @@ import FormAutoComplete from 'src/components/form/formAutoComplete'
 import { CREATESERVICE_MUTATION } from './mutation'
 import Create from 'src/components/common/create'
 import FormControl from '@material-ui/core/FormControl'
+import Button from '@material-ui/core/Button'
+import Grid from '@material-ui/core/Grid'
+import FormHelperText from '@material-ui/core/FormHelperText'
 import MenuItem from '@material-ui/core/MenuItem'
+import Tooltip from '@material-ui/core/Tooltip'
 import {
   MECHANICS_QUERY,
   CREATESERVICE_SCHEDULES_QUERY,
@@ -14,7 +18,10 @@ import {
 } from './query'
 import { useAuthState } from 'src/libs/auth/hooks'
 import { parseDate } from 'src/utils/date'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
+import { arrayTransformProperty } from 'src/utils/array'
+import { rupiahToNumber, toRupiah } from 'src/utils/currency'
+import { copyText } from 'src/utils/string'
 
 const CreateServicePage = (props) => {
   const form = useForm()
@@ -45,6 +52,22 @@ const CreateServicePage = (props) => {
 
   const [scheduleId, setScheduleId] = useState(NaN)
   const [partIds, setPartIds] = useState([])
+  const [totalPrice, setTotalPrice] = useState(NaN)
+  const [openTooltip, setTooltipOpen] = useState(false)
+
+  const handleTooltipOpen = () => {
+    setTooltipOpen(true)
+
+    if (totalPrice) {
+      copyText(toRupiah(totalPrice))
+    }
+  }
+
+  const handleTooltipClose = () => {
+    setTimeout(() => {
+      setTooltipOpen(false)
+    }, 700)
+  }
 
   return (
     <>
@@ -55,12 +78,11 @@ const CreateServicePage = (props) => {
         form={form}
         createMutation={CREATESERVICE_MUTATION}
         resourceName={props.resourceName}
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         input={(data) => ({
           mechanic_id: data.mechanic_id,
           schedule_id: scheduleId,
           status: data?.status,
-          price: data?.price ? +data?.price : undefined,
+          price: data?.price ? rupiahToNumber(data?.price) : undefined,
           created_by: currentUser?.id,
           part_ids: partIds,
         })}
@@ -85,6 +107,7 @@ const CreateServicePage = (props) => {
             }}
           />
         </FormControl>
+
         <FormControl>
           <FormSelect
             label="Select Mechanic"
@@ -106,6 +129,66 @@ const CreateServicePage = (props) => {
             )}
           </FormSelect>
         </FormControl>
+
+        <FormControl>
+          <FormAutoComplete
+            multiple
+            label="Select Parts Used"
+            name="part_id"
+            control={control}
+            errorobj={errors}
+            isReady={!partsDataLoading}
+            options={partsData?.parts}
+            onChange={(_event, values) => {
+              const ids = arrayTransformProperty(values, 'id')
+              const prices = arrayTransformProperty(values, 'price')
+              const price =
+                prices.length && prices.reduce((acc, curr) => acc + curr)
+
+              setPartIds(ids)
+              setTotalPrice(price)
+            }}
+            getOptionLabel={(option: any) => {
+              return `${option.name} - ${option.part_number}`
+            }}
+          />
+
+          <Grid
+            container
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="center"
+            style={{
+              margin: '10px 0',
+            }}
+          >
+            <FormHelperText>
+              <span style={{ marginRight: 10 }}>
+                Total calculate price:{' '}
+                {isNaN(totalPrice) ? '0,00' : toRupiah(totalPrice, 'currency')}
+              </span>
+            </FormHelperText>
+            <Tooltip
+              title="Text Copied"
+              disableHoverListener
+              onClose={handleTooltipClose}
+              open={openTooltip}
+            >
+              <span>
+                <Button
+                  size="small"
+                  variant="outlined"
+                  style={{ textTransform: 'capitalize', fontSize: 11 }}
+                  onClick={handleTooltipOpen}
+                  disabled={isNaN(totalPrice) || !partIds.length}
+                >
+                  Copy Price
+                </Button>
+              </span>
+            </Tooltip>
+          </Grid>
+        </FormControl>
+
         <FormControl>
           <FormInput
             control={control}
@@ -114,34 +197,6 @@ const CreateServicePage = (props) => {
             errorobj={errors}
           />
         </FormControl>
-
-        <FormAutoComplete
-          required
-          multiple
-          label="Select Parts Used"
-          name="part_id"
-          control={control}
-          errorobj={errors}
-          isReady={!partsDataLoading}
-          options={partsData?.parts}
-          onChange={(_event, values) => {
-            const ids = values.map((p) => {
-              let result = null
-              Object.entries(p).forEach(([key, value]) => {
-                if (key === 'id') {
-                  result = value
-                }
-              })
-
-              return result
-            })
-            console.log('ids', ids)
-            setPartIds(ids)
-          }}
-          getOptionLabel={(option: any) => {
-            return `${option.name} - ${option.part_number}`
-          }}
-        />
       </Create>
     </>
   )

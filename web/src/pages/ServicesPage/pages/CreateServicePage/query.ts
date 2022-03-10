@@ -36,6 +36,7 @@ export const CREATESERVICE_PARTSQUERY = gql`
       name
       part_number
       qty
+      price
     }
   }
 `

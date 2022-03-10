@@ -105,6 +105,11 @@ const RegisterPage = () => {
                     className="rw-input"
                     errorClassName="rw-input rw-input-error"
                     validation={{
+                      pattern: {
+                        value: /^[\w.+\-]+@gmail\.com$/,
+                        message:
+                          'Email must be valid! Please use gmail account.',
+                      },
                       required: {
                         value: true,
                         message: 'Email is required',

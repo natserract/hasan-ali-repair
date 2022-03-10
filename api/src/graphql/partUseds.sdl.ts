@@ -10,7 +10,7 @@ export const schema = gql`
   }
 
   type Query {
-    partUseds: [PartUsed!]! @requireAuth
+    partUseds: [PartUsed!]! @skipAuth
     partUsed(id: Int!): PartUsed @requireAuth
   }
 

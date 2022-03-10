@@ -134,7 +134,7 @@ const ServicesPage = (props) => {
         name: 'schedule.booking_date',
         label: 'Booking Date',
         options: {
-          filter: false,
+          filter: true,
           customBodyRender: (data) => {
             return parseDate(new Date(data))
           },

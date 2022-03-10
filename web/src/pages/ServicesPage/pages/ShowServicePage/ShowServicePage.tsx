@@ -7,9 +7,8 @@ import { useParams } from 'src/libs/gql-router/hooks'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import DoneIcon from '@material-ui/icons/Done'
 import { parseDate } from 'src/utils/date'
+import { toRupiah } from 'src/utils/currency'
 
 const ShowServicePage = () => {
   const params = useParams()
@@ -39,41 +38,25 @@ const ShowServicePage = () => {
               Customer Name
             </Typography>
             <InputLabel color="secondary">
-              {service?.customer?.user?.name}
+              {service?.schedule?.customer?.user?.name}
             </InputLabel>
           </div>
 
           <div className="formGroupItem">
             <Typography variant="h6" component="h4">
-              Bookings
+              Booking Date
             </Typography>
             <InputLabel color="secondary">
-              <List dense disablePadding>
-                {service?.schedule.length
-                  ? service?.schedule.map((item) => (
-                      <ListItem
-                        divider
-                        style={{
-                          paddingTop: 0,
-                          paddingBottom: 0,
-                        }}
-                        key={item?.id}
-                      >
-                        <ListItemIcon style={{ minWidth: 30 }}>
-                          <DoneIcon />
-                        </ListItemIcon>
-                        <ListItemText
-                          primary={`Time from`}
-                          secondary={`${parseDate(new Date(item?.time_from))}`}
-                        />
-                        <ListItemText
-                          primary={`Time to`}
-                          secondary={`${parseDate(new Date(item?.time_to))}`}
-                        />
-                      </ListItem>
-                    ))
-                  : 'Not Yet'}
-              </List>
+              {parseDate(service?.schedule?.booking_date)}
+            </InputLabel>
+          </div>
+
+          <div className="formGroupItem">
+            <Typography variant="h6" component="h4">
+              Vehicle Check Date
+            </Typography>
+            <InputLabel color="secondary">
+              {parseDate(service?.created_at)}
             </InputLabel>
           </div>
 
@@ -82,7 +65,25 @@ const ShowServicePage = () => {
               Status
             </Typography>
             <InputLabel color="secondary" style={{ fontWeight: 'bold' }}>
-              {service?.status}
+              {service?.schedule?.status}
+            </InputLabel>
+          </div>
+
+          <div className="formGroupItem">
+            <Typography variant="h6" component="h4">
+              Vehicle
+            </Typography>
+            <InputLabel color="secondary">
+              {service?.schedule?.vehicle?.name}
+            </InputLabel>
+          </div>
+
+          <div className="formGroupItem">
+            <Typography variant="h6" component="h4">
+              Vehicle Serial Num
+            </Typography>
+            <InputLabel color="secondary">
+              {service?.schedule?.vehicle?.serialNum}
             </InputLabel>
           </div>
 
@@ -104,26 +105,11 @@ const ShowServicePage = () => {
 
           <div className="formGroupItem">
             <Typography variant="h6" component="h4">
-              Vehicle
-            </Typography>
-            <InputLabel color="secondary">{service?.vehicle?.name}</InputLabel>
-          </div>
-
-          <div className="formGroupItem">
-            <Typography variant="h6" component="h4">
-              Vehicle Serial Num
-            </Typography>
-            <InputLabel color="secondary">
-              {service?.vehicle?.serialNum}
-            </InputLabel>
-          </div>
-
-          <div className="formGroupItem">
-            <Typography variant="h6" component="h4">
               Parts Used
             </Typography>
+
             <InputLabel color="secondary">
-              <List dense disablePadding>
+              <List dense>
                 {service?.partsUsed.length
                   ? service?.partsUsed.map((item) => (
                       <ListItem
@@ -134,9 +120,6 @@ const ShowServicePage = () => {
                         }}
                         key={item?.id}
                       >
-                        <ListItemIcon style={{ minWidth: 30 }}>
-                          <DoneIcon />
-                        </ListItemIcon>
                         <ListItemText
                           primary={`Part Name`}
                           secondary={item?.parts?.name}
@@ -154,9 +137,20 @@ const ShowServicePage = () => {
 
           <div className="formGroupItem">
             <Typography variant="h6" component="h4">
+              Total Price
+            </Typography>
+            <InputLabel color="secondary" style={{ fontWeight: 'bold' }}>
+              {service?.price
+                ? toRupiah(service?.price, 'currency')
+                : 'Not Yet'}
+            </InputLabel>
+          </div>
+
+          <div className="formGroupItem">
+            <Typography variant="h6" component="h4">
               Message
             </Typography>
-            <InputLabel color="secondary">{service?.message}</InputLabel>
+            <InputLabel color="secondary">{service?.message ?? '-'}</InputLabel>
           </div>
         </div>
       </Widget>

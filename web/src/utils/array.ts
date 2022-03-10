@@ -34,3 +34,18 @@ export function filterArray<T>(array: Array<T>, filters: Filters) {
     })
   })
 }
+
+export function arrayTransformProperty<T>(items: Array<T>, prop: string) {
+  const array = items.map((p) => {
+    let result = null
+    Object.entries(p).forEach(([key, value]) => {
+      if (key === prop) {
+        result = value
+      }
+    })
+
+    return result
+  })
+
+  return array
+}
