@@ -9,8 +9,15 @@ export const schema = gql`
     service: Service!
   }
 
+  input PartUsedsInput {
+    sort: String
+    filter: String
+    start: Int
+    limit: Int
+  }
+
   type Query {
-    partUseds: [PartUsed!]! @skipAuth
+    partUseds(input: PartUsedsInput): [PartUsed!]! @skipAuth
     partUsed(id: Int!): PartUsed @requireAuth
   }
 

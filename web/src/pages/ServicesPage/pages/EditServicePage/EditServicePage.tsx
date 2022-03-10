@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { MetaTags } from '@redwoodjs/web'
-import { SERVICEQUERY, VEHICLES_QUERY, MECHANICS_QUERY } from './query'
+import {
+  EDITSERVICE_SHOWSERVICEQUERY,
+  MECHANICS_QUERY,
+  EDITSERVICE_PARTSQUERY,
+} from './query'
 import { EDITSERVICES_MUTATION } from './mutation'
 import { useQuery } from '@redwoodjs/web'
 import { useParams } from 'src/libs/gql-router'
@@ -10,8 +14,16 @@ import FormSelect from 'src/components/form/formSelect'
 import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
 import Edit from 'src/components/common/edit'
-import TextField from '@material-ui/core/TextField'
 import { useAuthState } from 'src/libs/auth/hooks'
+import FormAutoComplete from 'src/components/form/formAutoComplete'
+import { parseDate } from 'src/utils/date'
+import Tooltip from '@material-ui/core/Tooltip'
+import FormHelperText from '@material-ui/core/FormHelperText'
+import Grid from '@material-ui/core/Grid'
+import Button from '@material-ui/core/Button'
+import { toRupiah } from 'src/utils/currency'
+import { arrayTransformProperty } from 'src/utils/array'
+import { copyText } from 'src/utils/string'
 
 const EditServicePage = (props) => {
   const params = useParams()
@@ -26,7 +38,7 @@ const EditServicePage = (props) => {
   } = form
 
   const { data: serviceData, loading: loadingServiceData } = useQuery(
-    SERVICEQUERY,
+    EDITSERVICE_SHOWSERVICEQUERY,
     {
       variables: {
         id: +params?.id,
@@ -35,21 +47,55 @@ const EditServicePage = (props) => {
   )
   const service = serviceData?.service
 
-  const { data: vehiclesData, loading: vehiclesLoading } = useQuery(
-    VEHICLES_QUERY,
-    {
-      variables: {
-        input: {
-          filter: JSON.stringify({
-            created_by: service?.customer?.user?.id || undefined,
-          }),
-        },
-      },
-    }
-  )
   const { data: mechanicsData, loading: mechanicsLoading } =
     useQuery(MECHANICS_QUERY)
+  const { data: partsData, loading: partsDataLoading } = useQuery(
+    EDITSERVICE_PARTSQUERY
+  )
 
+  const [scheduleId, setScheduleId] = useState(NaN)
+  const [parts, setParts] = useState([])
+  const [partIds, setPartIds] = useState([])
+  const [totalPrice, setTotalPrice] = useState(NaN)
+  const [openTooltip, setTooltipOpen] = useState(false)
+
+  const updatePartsUsed = useCallback((items: any[]) => {
+    const partsUsed = Array.from(items)
+
+    if (partsUsed.length) {
+      const newParts = arrayTransformProperty(partsUsed, 'parts')
+      const ids = arrayTransformProperty(newParts, 'id')
+      const prices = arrayTransformProperty(newParts, 'price')
+      const price = prices.length && prices.reduce((acc, curr) => acc + curr)
+
+      setParts(newParts)
+      setPartIds(ids)
+      setTotalPrice(price)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (service) {
+      const { partsUsed, schedule } = service
+      updatePartsUsed(partsUsed)
+
+      setScheduleId(schedule?.id)
+    }
+  }, [service, updatePartsUsed])
+
+  const handleTooltipOpen = () => {
+    setTooltipOpen(true)
+
+    if (totalPrice) {
+      copyText(toRupiah(totalPrice))
+    }
+  }
+
+  const handleTooltipClose = () => {
+    setTimeout(() => {
+      setTooltipOpen(false)
+    }, 700)
+  }
   if (!service) return <React.Fragment />
 
   return (
@@ -60,49 +106,33 @@ const EditServicePage = (props) => {
         form={form}
         editMutation={EDITSERVICES_MUTATION}
         id={+params?.id}
-        input={({ price, ...data }) => ({
-          price: +price,
-          ...data,
+        input={(data) => ({
+          mechanic_id: data.mechanic_id,
+          schedule_id: scheduleId,
+          status: data?.status,
+          price: !isNaN(totalPrice) && totalPrice ? totalPrice : undefined,
+          created_by: currentUser?.id,
+          part_ids: partIds,
         })}
         resourceName={props.resourceName}
-        showQuery={SERVICEQUERY}
-        isLoading={loadingServiceData || vehiclesLoading || mechanicsLoading}
+        showQuery={EDITSERVICE_SHOWSERVICEQUERY}
+        isLoading={loadingServiceData || mechanicsLoading}
       >
-        <FormControl>
-          <TextField
-            label="Name"
-            fullWidth={true}
-            variant="outlined"
-            disabled
+        <FormControl disabled>
+          <FormInput
+            control={control}
+            name="schedule_id"
+            label="Schedule "
+            errorobj={errors}
             required
-            defaultValue={service?.customer?.user?.name}
-            InputLabelProps={{
-              className: 'required-label',
-              required: true,
-            }}
+            disabled
+            defaultValue={parseDate(service?.schedule?.booking_date)}
           />
         </FormControl>
+
         <FormControl>
           <FormSelect
-            label="Select Vehicle"
-            name="vehicle_id"
-            control={control}
-            errorobj={errors}
-            defaultValue={service?.vehicle_id}
-            required
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            {vehiclesData?.vehicles.map((vehicle) => (
-              <MenuItem key={vehicle.id} value={vehicle.id}>
-                {vehicle.name} - {vehicle.serialNum}
-              </MenuItem>
-            ))}
-          </FormSelect>
-        </FormControl>
-        <FormControl>
-          <FormSelect
+            useKey
             label="Select Mechanic"
             name="mechanic_id"
             control={control}
@@ -123,39 +153,84 @@ const EditServicePage = (props) => {
             )}
           </FormSelect>
         </FormControl>
+
         <FormControl>
-          <FormSelect
-            label="Service Status"
-            name="status"
+          <FormAutoComplete
+            multiple
+            label="Select Parts Used"
+            name="part_id"
             control={control}
             errorobj={errors}
-            defaultValue={service?.status}
-            required
+            isReady={!partsDataLoading}
+            options={partsData?.parts}
+            value={parts}
+            filterSelectedOptions
+            getOptionSelected={(option, value) => {
+              return option.id === value.id
+            }}
+            onChange={(_event, values) => {
+              setParts(values)
+              const ids = arrayTransformProperty(values, 'id')
+              const prices = arrayTransformProperty(values, 'price')
+              const price =
+                prices.length && prices.reduce((acc, curr) => acc + curr)
+
+              setPartIds(ids)
+              setTotalPrice(price)
+
+              if (!ids.length) {
+                setTotalPrice(NaN)
+              }
+            }}
+            getOptionLabel={(option: any) => {
+              return `${option.name} - ${option.part_number}`
+            }}
+          />
+
+          <Grid
+            container
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="center"
+            style={{
+              margin: '10px 0',
+            }}
           >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value="pending">Pending</MenuItem>
-            <MenuItem value="complete">Complete</MenuItem>
-          </FormSelect>
+            <FormHelperText>
+              <span style={{ marginRight: 10 }}>
+                Total calculate price:{' '}
+                {isNaN(totalPrice) ? '0,00' : toRupiah(totalPrice, 'currency')}
+              </span>
+            </FormHelperText>
+            <Tooltip
+              title="Text Copied"
+              disableHoverListener
+              onClose={handleTooltipClose}
+              open={openTooltip}
+            >
+              <span>
+                <Button
+                  size="small"
+                  variant="outlined"
+                  style={{ textTransform: 'capitalize', fontSize: 11 }}
+                  onClick={handleTooltipOpen}
+                  disabled={isNaN(totalPrice) || !parts.length}
+                >
+                  Copy Price
+                </Button>
+              </span>
+            </Tooltip>
+          </Grid>
         </FormControl>
+
         <FormControl>
           <FormInput
             control={control}
             name="price"
             label="Price"
             errorobj={errors}
-            defaultValue={service?.price}
-            required
-          />
-        </FormControl>
-        <FormControl>
-          <FormInput
-            control={control}
-            name="message"
-            label="Message"
-            defaultValue={service?.message}
-            errorobj={errors}
+            value={isNaN(totalPrice) ? '' : totalPrice}
+            readOnly
           />
         </FormControl>
       </Edit>

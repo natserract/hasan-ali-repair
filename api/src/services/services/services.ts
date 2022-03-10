@@ -5,7 +5,12 @@ import { ITEMS_PER_PAGE } from 'src/constants/config'
 import { db } from 'src/lib/db'
 
 import { InputList } from 'src/types/share'
-import { createPartUsed } from '../partUseds/partUseds'
+import {
+  createPartUsed,
+  deletePartUsed,
+  partUseds,
+  updatePartUsed,
+} from '../partUseds/partUseds'
 import { updateSchedule } from '../schedules/schedules'
 
 type ServicesArgs = InputList
@@ -43,7 +48,7 @@ interface CreateServiceArgs {
 }
 
 export const createService = async ({ input }: CreateServiceArgs) => {
-  console.log('create service input', input)
+  const isHasPartUsed = input?.part_ids && Array.from(input?.part_ids).length
 
   const service = await db.service.create({
     data: {
@@ -70,9 +75,10 @@ export const createService = async ({ input }: CreateServiceArgs) => {
     },
   })
 
-  // If has part used,
-  if (input?.part_ids && Array.from(input?.part_ids).length) {
-    const createPartsUsed = Array.from(input?.part_ids).map(async (item) => {
+  // Create part used,
+  if (isHasPartUsed) {
+    const partIds = Array.from(input?.part_ids)
+    const createPartsUsed = partIds.map(async (item) => {
       await createPartUsed({
         input: {
           service_id: service.id,
@@ -82,27 +88,94 @@ export const createService = async ({ input }: CreateServiceArgs) => {
       })
     })
 
-    const response = await Promise.all(createPartsUsed)
-    console.log('response', response)
+    await Promise.all(createPartsUsed)
   }
 
   return service
 }
 
 interface UpdateServiceArgs extends Prisma.ServiceWhereUniqueInput {
-  input: Prisma.ServiceUpdateInput
+  input: Prisma.ServiceUpdateInput & {
+    part_ids?: number[]
+  }
 }
 
-export const updateService = ({ id, input }: UpdateServiceArgs) => {
-  const sessionId = context?.currentUser?.id
+export const updateService = async ({
+  id,
+  input: { part_ids, ...input },
+}: UpdateServiceArgs) => {
+  console.log('update service input', input, part_ids)
 
-  return db.service.update({
+  const sessionId = context?.currentUser?.id
+  const isHasPartUsed = part_ids && Array.from(part_ids).length
+
+  const service = await db.service.update({
     data: {
       ...input,
       updated_by: input?.updated_by ?? sessionId,
     },
     where: { id },
   })
+
+  if (isHasPartUsed) {
+    const partIds = Array.from(part_ids)
+    const partUsedsDb = await db.partUsed.findMany({
+      where: {
+        service_id: service.id,
+      },
+      select: {
+        id: true,
+        part_id: true,
+      },
+    })
+
+    const removedPartUsed = partUsedsDb.filter(
+      (v) => !partIds.includes(v.part_id)
+    )
+    if (removedPartUsed.length) {
+      await Promise.all(
+        removedPartUsed.map(async (part) => {
+          await deletePartUsed({
+            id: part.id,
+          })
+        })
+      )
+    }
+
+    const newPartUsed = partIds.filter((p) => {
+      const items = partUsedsDb.map((v) => v.part_id)
+
+      return !items.includes(p)
+    })
+    await Promise.all(
+      newPartUsed.map(async (part) => {
+        await createPartUsed({
+          input: {
+            service_id: service.id,
+            mechanic_id: service.mechanic_id,
+            part_id: part,
+          },
+        })
+      })
+    )
+
+    console.log('partIds input', partIds)
+    console.log('partsUsed', partUsedsDb)
+    console.log('removedPartUsed', removedPartUsed)
+    console.log('newPartUsed', newPartUsed)
+
+    // const updatePart = partIds.map(async (item) => {
+    //   await updatePartUsed({
+    //     input: {
+    //       service_id: service.id,
+    //       mechanic_id: service.mechanic_id,
+    //       part_id: item,
+    //     },
+    //   })
+    // })
+  }
+
+  return service
 }
 
 export const deleteService = ({ id }: Prisma.ServiceWhereUniqueInput) => {

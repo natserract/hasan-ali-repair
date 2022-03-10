@@ -25,6 +25,10 @@ type FormAutoCompleteProps = {
     details?: AutocompleteChangeDetails<any>
   ) => void
   multiple?: boolean
+  defaultValue?: any
+  value?: any
+  getOptionSelected?: (option: any, value: any) => boolean
+  filterSelectedOptions?: boolean
 }
 
 const FormAutoComplete: React.FC<FormAutoCompleteProps> = (props) => {
@@ -42,6 +46,11 @@ const FormAutoComplete: React.FC<FormAutoCompleteProps> = (props) => {
     isReady: isReadyProps,
     onChange: onChangeProps,
     multiple,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    defaultValue,
+    value,
+    getOptionSelected,
+    filterSelectedOptions,
   } = props
 
   let isError = false
@@ -66,10 +75,14 @@ const FormAutoComplete: React.FC<FormAutoCompleteProps> = (props) => {
 
               return onChange(event)
             }}
+            // defaultValue={defaultValue}
+            value={value}
             options={options}
             groupBy={groupBy}
             disabled={disabled}
             getOptionLabel={getOptionLabel}
+            getOptionSelected={getOptionSelected}
+            filterSelectedOptions={filterSelectedOptions}
             renderInput={(params) => (
               <TextField
                 {...params}

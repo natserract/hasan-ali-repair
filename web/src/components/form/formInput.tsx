@@ -13,6 +13,9 @@ interface FormInputProps {
   disabled?: boolean
   defaultValue?: string
   pattern?: ValidationRule<RegExp>
+  value?: any
+  onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
+  readOnly?: boolean
 }
 
 const FormInput: React.FC<FormInputProps> = (props): JSX.Element => {
@@ -27,6 +30,9 @@ const FormInput: React.FC<FormInputProps> = (props): JSX.Element => {
     errormessage,
     defaultValue,
     pattern: patternProps,
+    value,
+    onChange: onChangeProps,
+    readOnly,
   } = props
 
   let isError = false
@@ -44,6 +50,7 @@ const FormInput: React.FC<FormInputProps> = (props): JSX.Element => {
           type={type}
           label={label}
           error={isError}
+          value={value}
           helperText={required ? errormessage : null}
           FormHelperTextProps={{
             style: {
@@ -59,7 +66,16 @@ const FormInput: React.FC<FormInputProps> = (props): JSX.Element => {
             className: required ? 'required-label' : '',
             required: required || false,
           }}
-          onChange={onChange}
+          InputProps={{
+            readOnly,
+          }}
+          onChange={(event) => {
+            if (onChangeProps && typeof onChangeProps === 'function') {
+              onChangeProps(event)
+            }
+
+            return onChange(event)
+          }}
           ref={ref}
         />
       )}

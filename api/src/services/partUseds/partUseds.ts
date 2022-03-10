@@ -2,9 +2,20 @@ import type { Prisma } from '@prisma/client'
 import type { ResolverArgs } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'
+import { InputList } from 'src/types/share'
 
-export const partUseds = () => {
-  return db.partUsed.findMany()
+type PartUsedsArgs = InputList
+
+export const partUseds = ({ input }: PartUsedsArgs) => {
+  const $where = (input?.filter && JSON.parse(input?.filter)) || undefined
+
+  return db.partUsed.findMany({
+    where: {
+      ...($where && {
+        ...$where,
+      }),
+    },
+  })
 }
 
 export const partUsed = ({ id }: Prisma.PartUsedWhereUniqueInput) => {

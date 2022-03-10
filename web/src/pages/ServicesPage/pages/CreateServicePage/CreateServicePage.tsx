@@ -20,7 +20,7 @@ import { useAuthState } from 'src/libs/auth/hooks'
 import { parseDate } from 'src/utils/date'
 import { useState } from 'react'
 import { arrayTransformProperty } from 'src/utils/array'
-import { rupiahToNumber, toRupiah } from 'src/utils/currency'
+import { toRupiah } from 'src/utils/currency'
 import { copyText } from 'src/utils/string'
 
 const CreateServicePage = (props) => {
@@ -82,7 +82,7 @@ const CreateServicePage = (props) => {
           mechanic_id: data.mechanic_id,
           schedule_id: scheduleId,
           status: data?.status,
-          price: data?.price ? rupiahToNumber(data?.price) : undefined,
+          price: !isNaN(totalPrice) && totalPrice ? totalPrice : undefined,
           created_by: currentUser?.id,
           part_ids: partIds,
         })}
@@ -147,6 +147,10 @@ const CreateServicePage = (props) => {
 
               setPartIds(ids)
               setTotalPrice(price)
+
+              if (!ids.length) {
+                setTotalPrice(NaN)
+              }
             }}
             getOptionLabel={(option: any) => {
               return `${option.name} - ${option.part_number}`
@@ -195,6 +199,8 @@ const CreateServicePage = (props) => {
             name="price"
             label="Price"
             errorobj={errors}
+            value={isNaN(totalPrice) ? '' : totalPrice}
+            readOnly
           />
         </FormControl>
       </Create>

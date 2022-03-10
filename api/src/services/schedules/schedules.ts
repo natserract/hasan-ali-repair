@@ -57,6 +57,11 @@ export const updateSchedule = async ({
   id,
   input: { send_email, ...input },
 }: UpdateScheduleArgs) => {
+  const schedule = db.schedule.update({
+    data: input,
+    where: { id },
+  })
+
   if (send_email) {
     await sendEmail({
       to: 'benjaminstwo@gmail.com',
@@ -70,10 +75,7 @@ export const updateSchedule = async ({
     })
   }
 
-  return db.schedule.update({
-    data: input,
-    where: { id },
-  })
+  return schedule
 }
 
 export const deleteSchedule = ({ id }: Prisma.ScheduleWhereUniqueInput) => {

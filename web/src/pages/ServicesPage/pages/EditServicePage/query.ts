@@ -1,32 +1,41 @@
-export const SERVICEQUERY = gql`
-  query ServiceQuery($id: Int!) {
+export const EDITSERVICE_SHOWSERVICEQUERY = gql`
+  query EditServiceShowServiceQuery($id: Int!) {
     service(id: $id) {
-      customer {
-        id
-        user {
-          id
-          name
-        }
-      }
-      vehicle_id
-      mechanic_id
+      id
+      price
       mechanic {
         id
         name
+        person_id
       }
-      status
-      price
-      message
-    }
-  }
-`
+      schedule {
+        id
+        booking_date
+        message
+        status
 
-export const VEHICLES_QUERY = gql`
-  query VehiclesQuery($input: VehiclesInput) {
-    vehicles(input: $input) {
-      id
-      name
-      serialNum
+        customer {
+          user {
+            name
+          }
+        }
+
+        vehicle {
+          name
+          serialNum
+        }
+      }
+
+      partsUsed {
+        parts {
+          id
+          name
+          part_number
+          price
+        }
+      }
+
+      created_at
     }
   }
 `
@@ -37,6 +46,18 @@ export const MECHANICS_QUERY = gql`
       id
       is_active
       name
+    }
+  }
+`
+
+export const EDITSERVICE_PARTSQUERY = gql`
+  query EditServicePartsQuery {
+    parts {
+      id
+      name
+      part_number
+      qty
+      price
     }
   }
 `
