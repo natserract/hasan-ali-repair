@@ -28,6 +28,9 @@ import EditServicePage from './pages/ServicesPage/pages/EditServicePage/EditServ
 import ShowSchedulePage from './pages/SchedulesPage/pages/ShowSchedulePage/ShowSchedulePage'
 import CreateSchedulePage from './pages/SchedulesPage/pages/CreateSchedulePage/CreateSchedulePage'
 import EditSchedulePage from './pages/SchedulesPage/pages/EditSchedulePage/EditSchedulePage'
+import EditVehiclePage from './pages/VehiclesPage/pages/EditVehiclePage/EditVehiclePage'
+import ShowVehiclePage from './pages/VehiclesPage/pages/ShowVehiclePage/ShowVehiclePage'
+import CreateVehiclePage from './pages/VehiclesPage/pages/CreateVehiclePage/CreateVehiclePage'
 
 const adminAccess = [
   'dashboard',
@@ -83,6 +86,9 @@ const resources: IResourceItem[] = [
   {
     name: 'vehicles',
     list: VehiclesPage,
+    create: CreateVehiclePage,
+    edit: EditVehiclePage,
+    show: ShowVehiclePage,
     icon: <MotorcycleIcon />,
   },
   {
