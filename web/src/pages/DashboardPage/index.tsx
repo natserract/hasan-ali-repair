@@ -13,51 +13,32 @@ import {
 } from 'recharts'
 import useTheme from '@material-ui/styles/useTheme'
 import { Grid, Typography } from '@material-ui/core'
+import Card from '@material-ui/core/Card'
+import CardActions from '@material-ui/core/CardActions'
+import CardContent from '@material-ui/core/CardContent'
+import Button from '@material-ui/core/Button'
 import Widget from 'src/components/widget'
 import { MetaTags } from '@redwoodjs/web'
+import { ArrowRightAlt as ArrowRightAltIcon } from '@material-ui/icons'
 
 const lineChartData = [
   {
-    name: 'Page A',
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
+    month: 'Page A',
+    price: 4000,
+    count: 2400,
   },
   {
-    name: 'Page B',
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
+    month: 'Page B',
+    price: 3000,
+    count: 1398,
   },
   {
-    name: 'Page C',
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
+    month: 'Page C',
+    price: 2000,
+    count: 9800,
   },
   {
-    name: 'Page D',
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: 'Page E',
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: 'Page F',
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: 'Page G',
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
+    month: 'Page D',
   },
 ]
 
@@ -68,17 +49,207 @@ const DashboardPage = () => {
   return (
     <React.Fragment>
       <MetaTags title="Dashboard" description="Dashboard page" />
-      <Typography
-        component="h1"
-        variant="h2"
-        color="textPrimary"
-        // eslint-disable-next-line react/no-children-prop
-        children="Latest Reports"
-        gutterBottom
-      />
 
-      <Grid style={{ marginTop: 15 }} item xs={12} md={8}>
-        <Widget
+      <Grid container spacing={3}>
+        <Grid item md={3} xs={12}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" color="textPrimary" gutterBottom>
+                Pending Bookings
+                <Typography
+                  component="i"
+                  variant="subtitle2"
+                  color="textSecondary"
+                  style={{
+                    fontSize: 13,
+                    paddingLeft: 5,
+                  }}
+                >
+                  (All's)
+                </Typography>
+              </Typography>
+              <Typography
+                variant="h1"
+                color="textPrimary"
+                style={{ marginTop: 10 }}
+              >
+                5
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button
+                color="primary"
+                size="small"
+                endIcon={<ArrowRightAltIcon />}
+              >
+                See Bookings
+              </Button>
+            </CardActions>
+          </Card>
+        </Grid>
+
+        <Grid item md={3} xs={12}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" color="textPrimary" gutterBottom>
+                Parts In
+                <Typography
+                  component="i"
+                  variant="subtitle2"
+                  color="textSecondary"
+                  style={{
+                    fontSize: 13,
+                    paddingLeft: 5,
+                  }}
+                >
+                  (Weekly)
+                </Typography>
+              </Typography>
+              <Typography
+                variant="h1"
+                color="textPrimary"
+                style={{ marginTop: 10 }}
+              >
+                8
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button
+                color="primary"
+                size="small"
+                endIcon={<ArrowRightAltIcon />}
+              >
+                See Parts
+              </Button>
+            </CardActions>
+          </Card>
+        </Grid>
+
+        <Grid item md={3} xs={12}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" color="textPrimary" gutterBottom>
+                Registered Users
+                <Typography
+                  component="i"
+                  variant="subtitle2"
+                  color="textSecondary"
+                  style={{
+                    fontSize: 13,
+                    paddingLeft: 5,
+                  }}
+                >
+                  (Weekly)
+                </Typography>
+              </Typography>
+              <Typography
+                variant="h1"
+                color="textPrimary"
+                style={{ marginTop: 10 }}
+              >
+                10
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button
+                color="primary"
+                size="small"
+                endIcon={<ArrowRightAltIcon />}
+              >
+                See Users
+              </Button>
+            </CardActions>
+          </Card>
+        </Grid>
+
+        <Grid item md={3} xs={12}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" color="textPrimary" gutterBottom>
+                Services
+                <Typography
+                  component="i"
+                  variant="subtitle2"
+                  color="textSecondary"
+                  style={{
+                    fontSize: 13,
+                    paddingLeft: 5,
+                  }}
+                >
+                  (Today)
+                </Typography>
+              </Typography>
+              <Typography
+                variant="h1"
+                color="textPrimary"
+                style={{ marginTop: 10 }}
+              >
+                15
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button
+                color="primary"
+                size="small"
+                endIcon={<ArrowRightAltIcon />}
+              >
+                See Services
+              </Button>
+            </CardActions>
+          </Card>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Card>
+            <CardContent>
+              <Typography
+                variant="h3"
+                color="textPrimary"
+                style={{
+                  padding: 15,
+                  marginBottom: 15,
+                }}
+                gutterBottom
+              >
+                30 Days Orders History
+              </Typography>
+
+              <ResponsiveContainer width="100%" height={350}>
+                <LineChart
+                  width={500}
+                  height={300}
+                  data={lineChartData}
+                  margin={{
+                    top: 5,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="month" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Line
+                    type="monotone"
+                    dataKey="price"
+                    stroke={theme.palette.primary.main}
+                    activeDot={{ r: 8 }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="count"
+                    stroke={theme.palette.secondary.main}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        {/* <Grid style={{ marginTop: 15 }} item xs={12} md={8}> */}
+        {/* <Widget
           title="Based on Months"
           noBodyPadding
           disablePrevButton
@@ -114,7 +285,8 @@ const DashboardPage = () => {
               />
             </LineChart>
           </ResponsiveContainer>
-        </Widget>
+        </Widget> */}
+        {/* </Grid> */}
       </Grid>
     </React.Fragment>
   )
