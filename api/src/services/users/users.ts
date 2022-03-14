@@ -7,7 +7,11 @@ import { useHashedPassword } from 'src/utils/encrypt'
 import { createCustomer } from '../customers/customers'
 
 export const users = () => {
-  return db.user.findMany()
+  return db.user.findMany({
+    orderBy: {
+      created_at: 'desc',
+    },
+  })
 }
 
 export const user = ({ id }: Prisma.UserWhereUniqueInput) => {

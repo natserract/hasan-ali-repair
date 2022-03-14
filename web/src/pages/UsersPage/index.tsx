@@ -5,7 +5,7 @@ import { USERSPAGE_USERS_QUERY } from './query'
 import { parseDate } from 'src/utils/date'
 import { USERSPAGE_DELETEUSERMUTATION } from './mutation'
 import List from 'src/components/common/list'
-import { Grid } from '@material-ui/core'
+import Grid from '@material-ui/core/Grid'
 
 const UsersPage = (props) => {
   const _classes = useStyles()
