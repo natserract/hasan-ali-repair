@@ -34,6 +34,10 @@ import CreateVehiclePage from './pages/VehiclesPage/pages/CreateVehiclePage/Crea
 import CreatePartPage from './pages/PartsPage/pages/CreatePartPage/CreatePartPage'
 import EditPartPage from './pages/PartsPage/pages/EditPartPage/EditPartPage'
 import ShowPartPage from './pages/PartsPage/pages/ShowPartPage/ShowPartPage'
+import FaqPage from './pages/FaqPage/FaqPage'
+import EditMechanicPage from './pages/MechanicsPage/pages/EditMechanicPage/EditMechanicPage'
+import ShowMechanicPage from './pages/MechanicsPage/pages/ShowMechanicPage/ShowMechanicPage'
+import CreateMechanicPage from './pages/MechanicsPage/pages/CreateMechanicPage/CreateMechanicPage'
 
 const adminAccess = [
   'dashboard',
@@ -105,12 +109,20 @@ const resources: IResourceItem[] = [
   {
     name: 'mechanics',
     list: MechanicsPage,
+    edit: EditMechanicPage,
+    show: ShowMechanicPage,
+    create: CreateMechanicPage,
     icon: <EmojiPeopleIcon />,
   },
   {
     name: 'profiles',
     route: '/app/profile',
     pure: ProfilePage,
+  },
+  {
+    name: 'faq',
+    route: '/app/faq',
+    pure: FaqPage,
   },
 ]
 export { resources, adminAccess as adminTypes, clientAccess as clientTypes }

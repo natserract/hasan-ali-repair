@@ -84,7 +84,7 @@ model Schedule {
 
 model Mechanic {
   id        Int     @id @default(autoincrement())
-  person_id Int     @unique
+  person_id Int     @unique @db.MediumInt() // 16 digit for ktp
   name      String
   is_active Boolean @default(false)
   address   String?

@@ -38,22 +38,23 @@ const defaultLinks = [
   { id: 6, type: 'title', label: 'HELP' },
   {
     id: 7,
-    label: 'Library',
-    link: 'https://flatlogic.com/templates',
-    icon: <LibraryIcon />,
-  },
-  {
-    id: 8,
-    label: 'Support',
-    link: 'https://flatlogic.com/forum',
-    icon: <SupportIcon />,
-  },
-  {
-    id: 9,
     label: 'FAQ',
     link: 'https://flatlogic.com/forum',
     icon: <FAQIcon />,
   },
+  // { id: 6, type: 'title', label: 'HELP' },
+  // {
+  //   id: 7,
+  //   label: 'Library',
+  //   link: 'https://flatlogic.com/templates',
+  //   icon: <LibraryIcon />,
+  // },
+  // {
+  //   id: 8,
+  //   label: 'Support',
+  //   link: 'https://flatlogic.com/forum',
+  //   icon: <SupportIcon />,
+  // },
 ]
 
 const Sidebar = () => {
