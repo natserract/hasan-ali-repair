@@ -88,7 +88,7 @@ const CreatePartPage = (props) => {
           <NumberFormat
             control={control}
             name="price"
-            label="Price"
+            label="Price (per pcs)"
             errorobj={errors}
             customInput={FormInput}
             thousandSeparator
