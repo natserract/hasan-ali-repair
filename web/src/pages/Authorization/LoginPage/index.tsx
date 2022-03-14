@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from 'react'
-import useStyles from './styles'
 import { useAuth } from '@redwoodjs/auth'
 import { MetaTags } from '@redwoodjs/web'
 import {
@@ -14,8 +13,7 @@ import { toast, Toaster } from '@redwoodjs/web/toast'
 import { Link } from 'react-router-dom'
 
 const LoginPage = () => {
-  const classes = useStyles()
-  const { logIn, reauthenticate } = useAuth()
+  const { logIn } = useAuth()
 
   const usernameRef = useRef<HTMLInputElement>()
   useEffect(() => {
