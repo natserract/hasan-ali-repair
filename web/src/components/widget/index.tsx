@@ -9,12 +9,14 @@ import {
 import {
   MoreVert as MoreIcon,
   ArrowBack as ArrowBackIcon,
+  PrintSharp as PrintSharpIcon,
 } from '@material-ui/icons'
 import classnames from 'classnames'
+import { useReactToPrint } from 'react-to-print'
 
 // styles
 import useStyles from './styles'
-import { useNavigate } from 'src/libs/gql-router'
+import { useLocation, useNavigate } from 'src/libs/gql-router'
 
 type WidgetProps = {
   title: string
@@ -50,10 +52,17 @@ export default function Widget({
   const classes = useStyles()
 
   const navigate = useNavigate()
+  const location = useLocation()
 
-  // local
+  const componentRef = useRef()
   const moreButtonRef = useRef(null)
+
+  const isViewPage = location.pathname.includes('view')
   const [isMoreMenuOpen, setMoreMenuOpen] = useState(null)
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  })
 
   return (
     <div
@@ -63,6 +72,7 @@ export default function Widget({
       style={style && { ...style }}
     >
       <Paper
+        ref={componentRef}
         className={classes.paper}
         classes={{
           root: classnames(classes.widgetRoot, {
@@ -90,6 +100,7 @@ export default function Widget({
                   {title}
                 </Typography>
               </div>
+
               {!disableWidgetMenu && (
                 <IconButton
                   color="primary"
@@ -100,6 +111,17 @@ export default function Widget({
                   ref={moreButtonRef}
                 >
                   <MoreIcon />
+                </IconButton>
+              )}
+
+              {isViewPage && (
+                <IconButton
+                  color="primary"
+                  classes={{ root: classes.printButton }}
+                  aria-owns="print-menu"
+                  onClick={handlePrint}
+                >
+                  <PrintSharpIcon />
                 </IconButton>
               )}
             </React.Fragment>

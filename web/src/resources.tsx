@@ -49,6 +49,7 @@ const adminAccess = [
   'register',
   'profiles',
   'schedules',
+  'faq',
 ]
 const clientAccess = [
   'dashboard',
@@ -57,6 +58,7 @@ const clientAccess = [
   'profiles',
   'schedules',
   'vehicles',
+  'faq',
 ]
 
 const resources: IResourceItem[] = [

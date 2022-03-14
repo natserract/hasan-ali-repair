@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Drawer, IconButton, List } from '@material-ui/core'
 import {
-  QuestionAnswer as SupportIcon,
-  LibraryBooks as LibraryIcon,
   HelpOutline as FAQIcon,
   ArrowBack as ArrowBackIcon,
   List as ListIcon,
@@ -39,22 +37,9 @@ const defaultLinks = [
   {
     id: 7,
     label: 'FAQ',
-    link: 'https://flatlogic.com/forum',
+    link: '/app/faq',
     icon: <FAQIcon />,
   },
-  // { id: 6, type: 'title', label: 'HELP' },
-  // {
-  //   id: 7,
-  //   label: 'Library',
-  //   link: 'https://flatlogic.com/templates',
-  //   icon: <LibraryIcon />,
-  // },
-  // {
-  //   id: 8,
-  //   label: 'Support',
-  //   link: 'https://flatlogic.com/forum',
-  //   icon: <SupportIcon />,
-  // },
 ]
 
 const Sidebar = () => {

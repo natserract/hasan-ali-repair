@@ -71,6 +71,17 @@ const styles = makeStyles((theme: typeof Theme) =>
         color: 'rgba(255, 255, 255, 0.35)',
       },
     },
+    printButton: {
+      marginRight: theme.spacing(1),
+      padding: 0,
+      width: 40,
+      height: 40,
+      color: theme.palette.text.primary,
+      '&:hover': {
+        backgroundColor: theme.palette.primary.main,
+        color: 'rgba(255, 255, 255, 1)',
+      },
+    },
     noWidgetShadow: {
       boxShadow: 'none',
     },
