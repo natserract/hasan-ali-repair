@@ -1,6 +1,5 @@
 import { MetaTags } from '@redwoodjs/web'
 import FormControl from '@material-ui/core/FormControl'
-import FormHelperText from '@material-ui/core/FormHelperText'
 import useStyles from './styles'
 import { useForm } from 'react-hook-form'
 import FormInput from 'src/components/form/formInput'

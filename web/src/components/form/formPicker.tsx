@@ -47,7 +47,7 @@ const FormPicker: React.FC<FormPickerProps> = (props): JSX.Element => {
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardDatePicker
             disableToolbar
-            variant="inline"
+            variant="dialog"
             format="MM/dd/yyyy"
             margin="normal"
             id="date-picker-inline"

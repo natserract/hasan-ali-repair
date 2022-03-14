@@ -1,69 +1,77 @@
 import { MetaTags, useQuery } from '@redwoodjs/web'
+import { SHOWPART_QUERY } from './query'
+import { useParams } from 'src/libs/gql-router/hooks'
 import Widget from 'src/components/widget'
 import Typography from '@material-ui/core/Typography'
 import InputLabel from '@material-ui/core/InputLabel'
-import { SHOWVEHICLEQUERY } from './query'
-import { useParams } from 'src/libs/gql-router/hooks'
 import { parseDate } from 'src/utils/date'
+import { toRupiah } from 'src/utils/currency'
 
-const ShowVehiclePage = () => {
+const ShowPartPage = () => {
   const params = useParams()
 
-  const { data: vehicleData, loading: loadingVehicleData } = useQuery(
-    SHOWVEHICLEQUERY,
+  const { data: partData, loading: loadingPartData } = useQuery(
+    SHOWPART_QUERY,
     {
       variables: {
         id: +params?.id,
       },
     }
   )
-  const vehicle = vehicleData?.vehicle
+  const part = partData?.part
 
   return (
     <>
-      <MetaTags title="View Vehicle" description="View Vehicle page" />
+      <MetaTags title="Show Part" description="Show Part page" />
 
       <Widget
-        isLoading={loadingVehicleData}
+        isLoading={loadingPartData}
         title="View Vehicle"
         disableWidgetMenu
       >
         <div className="formGroup">
           <div className="formGroupItem">
             <Typography variant="h6" component="h4">
-              Name
+              Part Name
             </Typography>
-            <InputLabel color="secondary">{vehicle?.name}</InputLabel>
+            <InputLabel color="secondary">{part?.name}</InputLabel>
           </div>
 
           <div className="formGroupItem">
             <Typography variant="h6" component="h4">
-              Serial Number
+              Part Number
             </Typography>
-            <InputLabel color="secondary">{vehicle?.serialNum}</InputLabel>
+            <InputLabel color="secondary">{part?.part_number}</InputLabel>
           </div>
 
           <div className="formGroupItem">
             <Typography variant="h6" component="h4">
-              Created At
+              In Date
             </Typography>
             <InputLabel color="secondary">
-              {parseDate(vehicle?.created_at)}
+              {parseDate(part?.in_date)}
             </InputLabel>
           </div>
 
           <div className="formGroupItem">
             <Typography variant="h6" component="h4">
-              Year
+              Price
             </Typography>
-            <InputLabel color="secondary">{vehicle?.year}</InputLabel>
+            <InputLabel color="secondary">{toRupiah(part?.price)}</InputLabel>
           </div>
 
           <div className="formGroupItem">
             <Typography variant="h6" component="h4">
-              Details
+              Qty
             </Typography>
-            <InputLabel color="secondary">{vehicle?.details}</InputLabel>
+            <InputLabel color="secondary">{part?.qty}</InputLabel>
+          </div>
+
+          <div className="formGroupItem">
+            <Typography variant="h6" component="h4">
+              Description
+            </Typography>
+            <InputLabel color="secondary">{part?.description}</InputLabel>
           </div>
         </div>
       </Widget>
@@ -71,4 +79,4 @@ const ShowVehiclePage = () => {
   )
 }
 
-export default ShowVehiclePage
+export default ShowPartPage

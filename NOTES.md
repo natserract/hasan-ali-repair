@@ -23,3 +23,8 @@ https://github.com/3nvy/rw-jwt-auth-example/tree/master/api/src
     client: []
   }}
 />
+
+
+# SEND EMAIL
+- BOOKING STATUS
+- FORGOT PASSWORD (CONFIRM EMAIL)

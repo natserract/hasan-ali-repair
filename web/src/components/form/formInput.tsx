@@ -1,6 +1,11 @@
 import React from 'react'
-import { Controller, Control, ValidationRule } from 'react-hook-form'
-import TextField from '@material-ui/core/TextField'
+import {
+  Controller,
+  Control,
+  ValidationRule,
+  RegisterOptions,
+} from 'react-hook-form'
+import TextField, { TextFieldProps } from '@material-ui/core/TextField'
 
 interface FormInputProps {
   name: string
@@ -16,9 +21,15 @@ interface FormInputProps {
   value?: any
   onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
   readOnly?: boolean
+  rules?: Omit<
+    RegisterOptions<any, any>,
+    'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'
+  >
 }
 
-const FormInput: React.FC<FormInputProps> = (props): JSX.Element => {
+const FormInput: React.FC<FormInputProps & Partial<TextFieldProps>> = (
+  props
+): JSX.Element => {
   const {
     name,
     label,
@@ -33,6 +44,7 @@ const FormInput: React.FC<FormInputProps> = (props): JSX.Element => {
     value,
     onChange: onChangeProps,
     readOnly,
+    rules,
   } = props
 
   let isError = false
@@ -43,7 +55,11 @@ const FormInput: React.FC<FormInputProps> = (props): JSX.Element => {
   return (
     <Controller
       name={name}
-      rules={{ required, pattern: patternProps }}
+      rules={{
+        required,
+        pattern: patternProps,
+        ...rules,
+      }}
       control={control}
       render={({ field: { onChange, ref } }) => (
         <TextField
@@ -77,9 +93,9 @@ const FormInput: React.FC<FormInputProps> = (props): JSX.Element => {
             return onChange(event)
           }}
           ref={ref}
+          {...props}
         />
       )}
-      {...props}
     />
   )
 }
