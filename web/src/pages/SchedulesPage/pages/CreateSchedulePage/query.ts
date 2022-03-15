@@ -31,3 +31,15 @@ export const CUSTOMER_QUERY = gql`
     }
   }
 `
+
+export const SCHEDULE_CURRENTSESSION = gql`
+  query ScheduleCurrentSession {
+    currentSessions {
+      schedules {
+        booking_date
+        status
+      }
+      isMaximum
+    }
+  }
+`

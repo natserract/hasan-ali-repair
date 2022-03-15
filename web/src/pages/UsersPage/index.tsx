@@ -6,6 +6,7 @@ import { parseDate } from 'src/utils/date'
 import { USERSPAGE_DELETEUSERMUTATION } from './mutation'
 import List from 'src/components/common/list'
 import Grid from '@material-ui/core/Grid'
+import Button from '@material-ui/core/Button'
 
 const UsersPage = (props) => {
   const _classes = useStyles()
@@ -31,6 +32,15 @@ const UsersPage = (props) => {
         label: 'Role',
         options: {
           filter: true,
+          customBodyRender: (role) => (
+            <Button
+              variant="text"
+              color={`${role == 'customer' ? 'primary' : 'secondary'}`}
+              size="small"
+            >
+              {role}
+            </Button>
+          ),
         },
       },
       {

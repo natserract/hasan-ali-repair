@@ -2,7 +2,11 @@ import { MetaTags, useQuery } from '@redwoodjs/web'
 import FormPicker from 'src/components/form/formPicker'
 import { useForm } from 'react-hook-form'
 import Create from 'src/components/common/create'
-import { VEHICLES_QUERY, CUSTOMERS_QUERY } from './query'
+import {
+  VEHICLES_QUERY,
+  CUSTOMERS_QUERY,
+  SCHEDULE_CURRENTSESSION,
+} from './query'
 import { useAuthState } from 'src/libs/auth/hooks'
 import { CREATESCHEDULE_MUTATION } from './mutation'
 import FormInput from 'src/components/form/formInput'
@@ -12,6 +16,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import { useAccess } from 'src/libs/gql-router'
 import { useState } from 'react'
 import TextField from '@material-ui/core/TextField'
+import { parseDate } from 'src/utils/date'
 
 const vehicleEmptyMessage = `Vehicle's not yet selected or empty's`
 
@@ -62,6 +67,11 @@ const CreateSchedulePage = (props) => {
     }
   )
 
+  const { data: sessionSchedule, loading: loadingSessionSchedule } = useQuery(
+    SCHEDULE_CURRENTSESSION
+  )
+  const schedule = sessionSchedule?.currentSessions
+
   const handleDateChange = (date) => {
     setSelectedDate(date)
   }
@@ -74,7 +84,9 @@ const CreateSchedulePage = (props) => {
       <MetaTags title="Create Schedule" description="Create Schedule page" />
 
       <Create
-        isLoading={vehiclesLoading || customersLoading}
+        isLoading={
+          vehiclesLoading || customersLoading || loadingSessionSchedule
+        }
         form={form}
         createMutation={CREATESCHEDULE_MUTATION}
         resourceName={props.resourceName}
@@ -89,6 +101,16 @@ const CreateSchedulePage = (props) => {
         <FormControl>
           <FormPicker
             minDate={new Date()}
+            shouldDisabledDate={(date) => {
+              const uiDate = parseDate(date)
+              const sessionDates = schedule?.schedules.map((v) =>
+                parseDate(v.booking_date)
+              )
+              const isMaximum =
+                sessionDates.includes(uiDate) && schedule?.isMaximum
+
+              return isMaximum
+            }}
             control={control}
             label="Booking Date"
             name="booking_date"

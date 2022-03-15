@@ -143,7 +143,7 @@ const Header = () => {
         </Typography>
         <div className={classes.grow} />
 
-        <div
+        {/* <div
           className={classNames(classes.search, {
             [classes.searchFocused]: isSearchOpen,
           })}
@@ -163,8 +163,8 @@ const Header = () => {
               input: classes.inputInput,
             }}
           />
-        </div>
-        <IconButton
+        </div> */}
+        {/* <IconButton
           color="inherit"
           aria-haspopup="true"
           aria-controls="mail-menu"
@@ -197,7 +197,7 @@ const Header = () => {
           >
             <MailIcon classes={{ root: classes.headerIcon }} />
           </Badge>
-        </IconButton>
+        </IconButton> */}
         <IconButton
           aria-haspopup="true"
           color="inherit"

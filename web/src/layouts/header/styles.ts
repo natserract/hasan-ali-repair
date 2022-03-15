@@ -28,7 +28,7 @@ const styles = makeStyles((theme: typeof Theme) =>
     },
     toolbar: {
       paddingLeft: theme.spacing(4),
-      paddingRight: theme.spacing(2),
+      paddingRight: theme.spacing(3),
     },
     hide: {
       display: 'none',
@@ -137,11 +137,11 @@ const styles = makeStyles((theme: typeof Theme) =>
       padding: theme.spacing(2),
     },
     profileMenuItem: {
-      color: theme.palette.text.hint,
+      color: theme.palette.text.primary,
     },
     profileMenuIcon: {
       marginRight: theme.spacing(2),
-      color: theme.palette.text.hint,
+      color: theme.palette.text.primary,
       '&:hover': {
         color: theme.palette.primary.main,
       },
