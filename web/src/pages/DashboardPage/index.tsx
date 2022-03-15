@@ -1,4 +1,5 @@
-import React from 'react'
+/* eslint-disable react/no-unescaped-entities */
+import React, { useEffect, useState } from 'react'
 import Theme from 'src/themes'
 import useStyles from './styles'
 import {
@@ -17,34 +18,37 @@ import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import Button from '@material-ui/core/Button'
-import Widget from 'src/components/widget'
-import { MetaTags } from '@redwoodjs/web'
+import { MetaTags, useQuery } from '@redwoodjs/web'
 import { ArrowRightAlt as ArrowRightAltIcon } from '@material-ui/icons'
-
-const lineChartData = [
-  {
-    month: 'Page A',
-    price: 4000,
-    count: 2400,
-  },
-  {
-    month: 'Page B',
-    price: 3000,
-    count: 1398,
-  },
-  {
-    month: 'Page C',
-    price: 2000,
-    count: 9800,
-  },
-  {
-    month: 'Page D',
-  },
-]
+import { DASHBOARDREPORTS_QUERY } from './query'
+import { dates } from 'src/constant/data'
 
 const DashboardPage = () => {
   const _classes = useStyles()
   const theme = useTheme() as typeof Theme
+
+  const { data: reportsData } = useQuery(DASHBOARDREPORTS_QUERY)
+  const reports = reportsData?.dashboardReports
+
+  const [lineChartData, setLineChartData] = useState([])
+
+  useEffect(() => {
+    const servicesDaily = reports?.serviceDaily
+
+    if (servicesDaily) {
+      const objs = dates().map((day) => {
+        const activeDay = servicesDaily.find((v) => +v.day == day)
+
+        return {
+          day,
+          price: activeDay?.price || 0,
+          count: activeDay?.count || 0,
+        }
+      })
+      setLineChartData(objs)
+      console.log('objs', objs)
+    }
+  }, [reports])
 
   return (
     <React.Fragment>
@@ -73,7 +77,7 @@ const DashboardPage = () => {
                 color="textPrimary"
                 style={{ marginTop: 10 }}
               >
-                5
+                {reports?.totalPendingBookings || 0}
               </Typography>
             </CardContent>
             <CardActions>
@@ -110,7 +114,7 @@ const DashboardPage = () => {
                 color="textPrimary"
                 style={{ marginTop: 10 }}
               >
-                8
+                {reports?.totalPartsIn || 0}
               </Typography>
             </CardContent>
             <CardActions>
@@ -147,7 +151,7 @@ const DashboardPage = () => {
                 color="textPrimary"
                 style={{ marginTop: 10 }}
               >
-                10
+                {reports?.totalNewRegisteredUsers || 0}
               </Typography>
             </CardContent>
             <CardActions>
@@ -184,7 +188,7 @@ const DashboardPage = () => {
                 color="textPrimary"
                 style={{ marginTop: 10 }}
               >
-                15
+                {reports?.totalServicesToday || 0}
               </Typography>
             </CardContent>
             <CardActions>
@@ -227,7 +231,7 @@ const DashboardPage = () => {
                   }}
                 >
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="month" />
+                  <XAxis dataKey="day" />
                   <YAxis />
                   <Tooltip />
                   <Legend />

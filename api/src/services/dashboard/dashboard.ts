@@ -44,18 +44,25 @@ export const dashboardReports = async () => {
   })
 
   // Based on months
-  const servicesOnMonth = await db.$queryRaw`
+  const serviceMonthly = await db.$queryRaw`
     SELECT DATE_FORMAT(created_at,'%m') as month, sum(price) as price,
     COUNT(*) as count from services
     GROUP BY month;
   `
+  const serviceDaily = await db.$queryRaw`
+    SELECT DATE_FORMAT(created_at,'%d') as day, sum(price) as price,
+    COUNT(*) as count from services
+    GROUP BY day;
+  `
 
-  console.log('servicesOnMonth', servicesOnMonth)
+  console.log('serviceMonthly', serviceMonthly)
 
   return {
     totalPendingBookings: totalPendingBookings.length,
     totalPartsIn: totalPartsIn.length,
     totalNewRegisteredUsers: totalNewRegisteredUsers.length,
     totalServicesToday: totalServicesToday.length,
+    serviceMonthly,
+    serviceDaily,
   }
 }
