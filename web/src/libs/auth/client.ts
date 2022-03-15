@@ -3,7 +3,6 @@ import jwt from 'jsonwebtoken'
 import { API_URL } from 'src/constant/endpoint'
 import { storageKey } from './config'
 import { CurrentUser } from './hooks'
-import { browserHistory } from '../gql-router/utils/history'
 
 const AuthClient = {
   type: 'custom',
@@ -53,6 +52,19 @@ const AuthClient = {
         window.location.replace('/')
         localStorage.removeItem(storageKey)
       })
+  },
+  forgotPassword: ({ email, new_password }): Promise<any> => {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(`${API_URL}/update`, {
+          email,
+          new_password,
+        })
+        .then(({ data }) => {
+          return resolve(data)
+        })
+        .catch(reject)
+    })
   },
   getToken: () => {
     const item = localStorage.getItem(storageKey)

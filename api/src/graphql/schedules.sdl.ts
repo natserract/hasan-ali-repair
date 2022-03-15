@@ -20,8 +20,14 @@ export const schema = gql`
     limit: Int
   }
 
+  type CurrentSessions {
+    schedules: [Schedule!]!
+    isMaximum: Boolean!
+  }
+
   type Query {
     schedules(input: ScheduleInput): [Schedule!]! @skipAuth
+    currentSessions: CurrentSessions! @skipAuth
     schedule(id: Int!): Schedule @requireAuth
   }
 

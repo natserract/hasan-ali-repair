@@ -6,6 +6,9 @@ import { db } from 'src/lib/db'
 import { sendEmail } from 'src/lib/mail'
 
 import { InputList } from 'src/types/share'
+import startOfToday from 'date-fns/startOfToday'
+import endOfToday from 'date-fns/endOfToday'
+import { MAXIMUM_BOOK_DAY } from 'src/config/business'
 
 type ScheduleArgs = InputList
 
@@ -82,6 +85,30 @@ export const deleteSchedule = ({ id }: Prisma.ScheduleWhereUniqueInput) => {
   return db.schedule.delete({
     where: { id },
   })
+}
+
+// Service for current active schedule today
+// @client can see this activity
+export const currentSessions = async () => {
+  const schedules = await db.schedule.findMany({
+    where: {
+      booking_date: {
+        gte: startOfToday(),
+        lte: endOfToday(),
+      },
+      status: {
+        // on progress mean, schedule has been approved by admin and client
+        // and on progress to repair
+        equals: 'on progress',
+      },
+    },
+  })
+  const isMaximum = schedules.length === MAXIMUM_BOOK_DAY
+
+  return {
+    schedules,
+    isMaximum,
+  }
 }
 
 export const Schedule = {

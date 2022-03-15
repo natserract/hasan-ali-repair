@@ -13,3 +13,11 @@ export const SCHEDULES_QUERY = gql`
     }
   }
 `
+
+export const SCHEDULES_CURRENTSESSION_QUERY = gql`
+  query SchedulesCurrentSession {
+    currentSessions {
+      isMaximum
+    }
+  }
+`

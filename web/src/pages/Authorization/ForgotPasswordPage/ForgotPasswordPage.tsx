@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react'
-import { useAuth } from '@redwoodjs/auth'
+import { useEffect, useRef, useState } from 'react'
+// import { useAuth } from '@redwoodjs/auth'
 import { MetaTags } from '@redwoodjs/web'
 import { toast, Toaster } from '@redwoodjs/web/toast'
 import {
@@ -9,30 +9,48 @@ import {
   EmailField,
   Submit,
   FieldError,
+  useForm,
 } from '@redwoodjs/forms'
 import { Link } from 'react-router-dom'
+import { AuthClient } from 'src/libs/auth/client'
+import { useNavigate } from 'src/libs/gql-router'
+import { toastPromise } from 'src/utils/info'
 
 const ForgotPasswordPage = () => {
-  const { forgotPassword } = useAuth()
+  const navigate = useNavigate()
+  const formMethods = useForm()
 
   const emailRef = useRef<HTMLInputElement>()
   useEffect(() => {
     emailRef.current?.focus()
   }, [])
 
-  const onSubmit = async (data) => {
-    const response = await forgotPassword(data.username)
+  const [isDisabled, setIsDisabled] = useState(false)
 
-    if (response.error) {
-      toast.error(response.error)
-    } else {
-      // The function `forgotPassword.handler` in api/src/functions/auth.js has
-      // been invoked, let the user know how to get the link to reset their
-      // password (sent in email, perhaps?)
-      toast.success(
-        'A link to reset your password was sent to ' + response.email
-      )
-      // navigate(routes.login())
+  const onSubmit = async (data) => {
+    setIsDisabled(true)
+
+    try {
+      const response = await AuthClient.forgotPassword({
+        email: data.email,
+        new_password: data.new_password,
+      })
+
+      if (response.error) {
+        toast.error(response.error)
+      } else {
+        toastPromise(
+          'Reset password success. Please login again.',
+          'success',
+          1000
+        ).finally(() => {
+          navigate.push('/login')
+        })
+      }
+    } catch (error) {
+      toast.error(error.message)
+    } finally {
+      setIsDisabled(false)
     }
   }
 
@@ -52,7 +70,11 @@ const ForgotPasswordPage = () => {
 
             <div className="rw-segment-main">
               <div className="rw-form-wrapper">
-                <Form onSubmit={onSubmit} className="rw-form-wrapper">
+                <Form
+                  formMethods={formMethods}
+                  onSubmit={onSubmit}
+                  className="rw-form-wrapper"
+                >
                   <div className="text-left">
                     <Label
                       name="Email"
@@ -108,6 +130,26 @@ const ForgotPasswordPage = () => {
                       validation={{
                         required: true,
                       }}
+                      onChange={(_event) => {
+                        const values = formMethods.getValues()
+                        const password = values.new_password
+                        const confirmPassword = values.confirm_new_password
+
+                        if (confirmPassword !== password) {
+                          formMethods.setError(
+                            'confirm_new_password',
+                            {
+                              message:
+                                'Confirm password must same with new password!',
+                            },
+                            {
+                              shouldFocus: true,
+                            }
+                          )
+                        } else {
+                          formMethods.clearErrors('confirm_new_password')
+                        }
+                      }}
                       required
                     />
                     <FieldError
@@ -117,7 +159,12 @@ const ForgotPasswordPage = () => {
                   </div>
 
                   <div className="rw-button-group">
-                    <Submit className="rw-button rw-button-blue">Submit</Submit>
+                    <Submit
+                      disabled={isDisabled}
+                      className="rw-button rw-button-blue"
+                    >
+                      Submit
+                    </Submit>
                   </div>
                 </Form>
               </div>

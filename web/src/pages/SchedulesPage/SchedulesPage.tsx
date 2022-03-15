@@ -1,8 +1,8 @@
 import React, { useMemo, useState, useCallback } from 'react'
-import { MetaTags, useMutation } from '@redwoodjs/web'
+import { MetaTags, useMutation, useQuery } from '@redwoodjs/web'
 import List from 'src/components/common/list'
 import { Grid } from '@material-ui/core'
-import { SCHEDULES_QUERY } from './query'
+import { SCHEDULES_QUERY, SCHEDULES_CURRENTSESSION_QUERY } from './query'
 import { parseDate } from 'src/utils/date'
 import {
   DELETESCHEDULE_MUTATION,
@@ -17,6 +17,8 @@ import FormSelect from 'src/components/form/formSelect'
 import { ScheduleStatus } from 'src/types/share'
 import { useAccess } from 'src/libs/gql-router'
 import { useAuthState } from 'src/libs/auth/hooks'
+import Paper from '@material-ui/core/Paper'
+import Typography from '@material-ui/core/Typography'
 
 const SchedulesPage = (props) => {
   const form = useForm()
@@ -28,6 +30,10 @@ const SchedulesPage = (props) => {
   const { currentUser } = useAuthState()
   const { currentRole } = useAccess()
   const isPublicAccess = currentRole === 'customer'
+
+  const { data: scheduleSessionData, loading: loadingScheduleSession } =
+    useQuery(SCHEDULES_CURRENTSESSION_QUERY)
+  const scheduleSession = scheduleSessionData?.currentSessions
 
   const [updateBookingsFunc] = useMutation(BOOKINGSAPPOINTMENT_MUTATION, {
     refetchQueries: [SCHEDULES_QUERY],
@@ -148,20 +154,43 @@ const SchedulesPage = (props) => {
     [control, errors, isPublicAccess, handleChange]
   )
 
+  const renderInfo = useCallback(() => {
+    if (!scheduleSession?.isMaximum) return <React.Fragment />
+
+    return (
+      <Paper
+        style={{
+          padding: 20,
+          marginBottom: 20,
+        }}
+        elevation={1}
+        variant="outlined"
+      >
+        <Typography color="error">
+          We're sorry, but it is currently not possible to make booking, because
+          quota limit! Please take to another date.
+        </Typography>
+      </Paper>
+    )
+  }, [scheduleSession])
+
   return (
     <>
       <MetaTags title="Bookings" description="Bookings page" />
 
       <Grid container spacing={4}>
         <Grid item xs={12}>
+          {renderInfo()}
+
           <List
-            isLoading={changed}
+            isLoading={changed || loadingScheduleSession}
             title="Bookings"
             columns={columns}
             listQuery={SCHEDULES_QUERY}
             deleteMutation={DELETESCHEDULE_MUTATION}
             resourceName={props.resourceName}
             onFetch={(data) => setListData(data)}
+            createDisabled={scheduleSession?.isMaximum}
             deleteDisabled={isPublicAccess}
             orderBy={{
               key: 'booking_date',
@@ -177,7 +206,7 @@ const SchedulesPage = (props) => {
               const status = listData[rowIdx]?.status as ScheduleStatus
 
               // If status not pending, customer can't edit
-              return status !== 'pending' && isPublicAccess
+              return isPublicAccess && status === 'pending'
             }}
             input={{
               ...(isPublicAccess &&
