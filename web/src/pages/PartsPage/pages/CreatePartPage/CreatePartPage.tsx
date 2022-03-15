@@ -32,8 +32,15 @@ const CreatePartPage = (props) => {
         form={form}
         createMutation={CREATEPART_MUTATION}
         resourceName={props.resourceName}
-        input={({ price: _price, part_number, qty, ...data }) => ({
+        input={({
+          in_date: _in_date,
+          price: _price,
+          part_number,
+          qty,
+          ...data
+        }) => ({
           ...data,
+          in_date: selectedDate,
           price,
           part_number: +part_number,
           qty: +qty,

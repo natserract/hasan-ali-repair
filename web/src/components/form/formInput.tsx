@@ -56,7 +56,7 @@ const FormInput: React.FC<FormInputProps & Partial<TextFieldProps>> = (
     <Controller
       name={name}
       rules={{
-        required,
+        // required,
         pattern: patternProps,
         ...rules,
       }}
@@ -78,6 +78,7 @@ const FormInput: React.FC<FormInputProps & Partial<TextFieldProps>> = (
           variant="outlined"
           disabled={disabled}
           defaultValue={defaultValue}
+          required={required}
           InputLabelProps={{
             className: required ? 'required-label' : '',
             required: required || false,

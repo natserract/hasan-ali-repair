@@ -78,8 +78,9 @@ const CreateSchedulePage = (props) => {
         form={form}
         createMutation={CREATESCHEDULE_MUTATION}
         resourceName={props.resourceName}
-        input={(data) => ({
+        input={({ booking_date: _booking_date, ...data }) => ({
           ...data,
+          booking_date: selectedDate,
           ...(!isAdmin && {
             customer_id: customersData?.customers[0]?.id,
           }),
@@ -87,13 +88,13 @@ const CreateSchedulePage = (props) => {
       >
         <FormControl>
           <FormPicker
+            minDate={new Date()}
             control={control}
             label="Booking Date"
             name="booking_date"
             errorobj={errors}
             value={selectedDate}
             onChange={handleDateChange}
-            required
           />
         </FormControl>
 

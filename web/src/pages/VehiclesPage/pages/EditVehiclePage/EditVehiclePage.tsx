@@ -41,7 +41,7 @@ const EditVehiclePage = (props) => {
         id={+params?.id}
         input={({ year, ...data }) => ({
           ...data,
-          year: +year,
+          year: year ? +year : undefined,
           updated_by: currentUser?.id,
         })}
         resourceName={props.resourceName}

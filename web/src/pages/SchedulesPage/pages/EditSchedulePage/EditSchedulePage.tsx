@@ -105,8 +105,9 @@ const EditSchedulePage = (props) => {
         form={form}
         editMutation={EDITSCHEDULE_MUTATION}
         id={+params?.id}
-        input={(data) => ({
+        input={({ booking_date: _booking_date, ...data }) => ({
           ...data,
+          booking_date: selectedDate,
         })}
         resourceName={props.resourceName}
         showQuery={EDITSCHEDULE_SHOWSCHEDULE_QUERY}
@@ -114,6 +115,7 @@ const EditSchedulePage = (props) => {
       >
         <FormControl>
           <FormPicker
+            minDate={new Date()}
             control={control}
             label="Booking Date"
             name="booking_date"

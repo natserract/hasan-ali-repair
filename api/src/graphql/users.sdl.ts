@@ -3,8 +3,8 @@ export const schema = gql`
     id: Int!
     uuid: String
     name: String!
+    password: String!
     email: String!
-    password: String
     hashedPassword: String!
     salt: String!
     refreshToken: String
@@ -13,7 +13,8 @@ export const schema = gql`
     updated_at: DateTime
     phone_number: String
     address: String
-    Customer: [Customer]!
+    customer: [Customer]!
+    vehicle: [Vehicle]!
   }
 
   type Query {
@@ -22,10 +23,12 @@ export const schema = gql`
   }
 
   input CreateUserInput {
+    uuid: String
     name: String!
-    email: String!
     password: String!
+    email: String!
     hashedPassword: String!
+    salt: String!
     refreshToken: String
     user_type: String!
     created_at: DateTime
@@ -37,8 +40,8 @@ export const schema = gql`
   input UpdateUserInput {
     uuid: String
     name: String
-    email: String
     password: String
+    email: String
     hashedPassword: String
     salt: String
     refreshToken: String

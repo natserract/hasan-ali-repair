@@ -1,6 +1,5 @@
 import type { Prisma } from '@prisma/client'
-import type { ResolverArgs } from '@redwoodjs/graphql-server'
-import { ValidationError } from '@redwoodjs/graphql-server'
+import { ResolverArgs, ValidationError } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'
 import { useHashedPassword } from 'src/utils/encrypt'
@@ -75,13 +74,15 @@ interface UpdateUserArgs extends Prisma.UserWhereUniqueInput {
 
 export const updateUser = ({ id, input }: UpdateUserArgs) => {
   const password = input?.password as string
-  const encryptedPassword = useHashedPassword(password)
+  const encryptedPassword = password ? useHashedPassword(password) : undefined
 
   return db.user.update({
     data: {
       ...input,
-      hashedPassword: encryptedPassword.hashPassword,
-      salt: encryptedPassword.salt,
+      ...(encryptedPassword && {
+        hashedPassword: encryptedPassword.hashPassword,
+        salt: encryptedPassword.salt,
+      }),
     },
     where: { id },
   })
@@ -94,6 +95,8 @@ export const deleteUser = ({ id }: Prisma.UserWhereUniqueInput) => {
 }
 
 export const User = {
-  Customer: (_obj, { root }: ResolverArgs<ReturnType<typeof user>>) =>
-    db.user.findUnique({ where: { id: root.id } }).Customer(),
+  customer: (_obj, { root }: ResolverArgs<ReturnType<typeof user>>) =>
+    db.user.findUnique({ where: { id: root.id } }).customer(),
+  vehicle: (_obj, { root }: ResolverArgs<ReturnType<typeof user>>) =>
+    db.user.findUnique({ where: { id: root.id } }).vehicle(),
 }

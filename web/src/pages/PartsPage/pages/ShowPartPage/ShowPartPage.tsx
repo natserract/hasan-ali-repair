@@ -24,11 +24,7 @@ const ShowPartPage = () => {
     <>
       <MetaTags title="Show Part" description="Show Part page" />
 
-      <Widget
-        isLoading={loadingPartData}
-        title="View Vehicle"
-        disableWidgetMenu
-      >
+      <Widget isLoading={loadingPartData} title="View Part" disableWidgetMenu>
         <div className="formGroup">
           <div className="formGroupItem">
             <Typography variant="h6" component="h4">

@@ -52,9 +52,16 @@ const EditPartPage = (props) => {
         form={form}
         editMutation={EDITPART_MUTATION}
         id={+params?.id}
-        input={({ price: _price, part_number, qty, ...data }) => ({
+        input={({
+          price: _price,
+          in_date: _in_date,
+          part_number,
+          qty,
+          ...data
+        }) => ({
           ...data,
           price,
+          in_date: selectedDate,
           part_number: part_number ? +part_number : undefined,
           qty: qty ? +qty : undefined,
         })}

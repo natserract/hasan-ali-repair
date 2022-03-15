@@ -124,7 +124,6 @@ const EditServicePage = (props) => {
             name="schedule_id"
             label="Schedule "
             errorobj={errors}
-            required
             disabled
             defaultValue={parseDate(service?.schedule?.booking_date)}
           />

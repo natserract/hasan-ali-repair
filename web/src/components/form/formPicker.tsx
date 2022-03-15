@@ -5,6 +5,7 @@ import DateFnsUtils from '@date-io/date-fns'
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
+  KeyboardDatePickerProps,
 } from '@material-ui/pickers'
 
 interface FormPickerProps {
@@ -17,9 +18,12 @@ interface FormPickerProps {
   errormessage?: string
   disabled?: boolean
   onChange?: (date: Date, value?: string) => void
+  shouldDisabledDate?: (day: Date) => boolean
 }
 
-const FormPicker: React.FC<FormPickerProps> = (props): JSX.Element => {
+const FormPicker: React.FC<
+  FormPickerProps & Partial<KeyboardDatePickerProps>
+> = (props): JSX.Element => {
   const {
     name,
     label,
@@ -31,6 +35,7 @@ const FormPicker: React.FC<FormPickerProps> = (props): JSX.Element => {
     disabled,
     onChange: onChangeProps,
     errormessage,
+    shouldDisabledDate,
   } = props
 
   let isError = false
@@ -41,19 +46,23 @@ const FormPicker: React.FC<FormPickerProps> = (props): JSX.Element => {
   return (
     <Controller
       name={name}
-      rules={{ required }}
       control={control}
       render={({ field: { onChange } }) => (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardDatePicker
+            clearable
             disableToolbar
             variant="dialog"
-            format="MM/dd/yyyy"
+            format="yyyy/MM/dd"
+            inputVariant="outlined"
             margin="normal"
             id="date-picker-inline"
             label={label}
             error={isError}
-            fullWidth={true}
+            fullWidth
+            required={required}
+            // See: https://material-ui-pickers.dev/api/DateTimePicker
+            shouldDisableDate={shouldDisabledDate}
             helperText={required ? errormessage : null}
             value={value}
             onChange={(event) => {
@@ -66,10 +75,10 @@ const FormPicker: React.FC<FormPickerProps> = (props): JSX.Element => {
             KeyboardButtonProps={{
               'aria-label': 'change date',
             }}
+            {...props}
           />
         </MuiPickersUtilsProvider>
       )}
-      {...props}
     />
   )
 }
