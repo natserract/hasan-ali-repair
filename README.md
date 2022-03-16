@@ -11,8 +11,8 @@ Hasan Ali Repair is a digital solution to help customers make it easier and more
 1. [MVP](#mvp-minimum-viable-product)
 2. [Validation and Rules](#validation-and-rules)
 3. [Stacks Used](#stacks-used)
-4. [System requirements]()
-5. [Setup]()
+4. [System requirements](#system-requirements)
+5. [Setup](#setup)
 6. [Third party]()
 7. [Future Works]()
 8. [FAQs]()
@@ -56,3 +56,24 @@ Here's a several technologies what we used in this project:
 - [Storybook](https://storybook.js.org/)
 - [Webpack](https://webpack.js.org/)
 - [Material UI 4](https://v4.mui.com)
+
+## System requirements
+For running the project locally the following requirements should be met.
+- NodeJS 14+
+- MySQL
+- Apache Server
+- Yarn should be globally installed.
+
+## Setup
+
+We use Yarn as our package manager. To get the dependencies installed, just do this in the root directory:
+
+```terminal
+yarn install
+```
+
+### Fire it up
+
+```terminal
+yarn rw dev
+```
