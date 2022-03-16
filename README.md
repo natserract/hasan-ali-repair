@@ -1,34 +1,43 @@
-# Redwood
+# Hasan Ali Vehicle Repair
 
-> **NOTICE:** RedwoodJS is very close to a stable version 1.0. In the last two years,
-> the project has matured significantly and is already used in production by a number
-> of startups. We intend to have a 1.0 release candidate before the end of 2021 and
-> to release a truly production-ready 1.0 in early 2022.
+Booking appointments application systems for motorcycle and car repair shops.
 
-## Getting Started
-- [Tutorial](https://redwoodjs.com/tutorial/welcome-to-redwood): getting started and complete overview guide.
-- [Docs](https://redwoodjs.com/docs/introduction): using the Redwood Router, handling assets and files, list of command-line tools, and more.
-- [Redwood Community](https://community.redwoodjs.com): get help, share tips and tricks, and collaborate on everything about RedwoodJS.
+**NOTES:** semi automatic booking system
 
-### Setup
+## Goal of This App.
+Hasan Ali Repair is a digital solution to help customers make it easier and more efficient to service their vehicles. To place an order, customers just need to choose the available schedule and time through the application, then come for a vehicle check then if all agree, then the vehicle is ready for service. When finished, the customer will receive a confirmation by the system and email, without having to wait in line. All modules and features are systematically designed to make it easier for the store and customers.
 
-We use Yarn as our package manager. To get the dependencies installed, just do this in the root directory:
+## Table of Contents ##
+1. [MVP]()
+2. [Validation and Rules]()
+3. [FAQs]()
+4. [System requirements]()
+5. [Setup]()
+6. [Third party]()
+7. [Future Works]()
+8. [References]()
 
-```terminal
-yarn install
-```
+## MVP (Minimum Viable Product)
+> A minimum viable product or MVP is a product with a basic set of features that are considered unique enough to attract the attention of users
 
-### Fire it up
+![Screen Shot 2022-03-16 at 4 58 42 PM](https://user-images.githubusercontent.com/31182611/158553734-824f1618-8a19-4979-b6a2-d59bc621473a.png)
 
-```terminal
-yarn redwood dev
-```
+System must be able to:
+- Customers can create their own accounts and can login into their accounts
+- Allow a customer to book a service for a particular time and date
+- Allow a customer to book with multiple vehicles
+- Update a booking, for example if the customer wants to change a booking time (if the status is pending)
+- Display a list of bookings for a given date, approved services, and vehicles
 
-Your browser should open automatically to `http://localhost:8910` to see the web app. Lambda functions run on `http://localhost:8911` and are also proxied to `http://localhost:8910/.redwood/functions/*`.
-
-### Third party
-- sendinblue: (https://www.sendinblue.com/)[https://www.sendinblue.com/]. Email server, free plans
-- https://redwoodjs.com/cookbook/sending-emails#setup
-
-<!-- scheduledAt -->
-<!-- https://myaccount.google.com/lesssecureapps -->
+## Validation and Rules
+- Maximum customer booking in a day is **20** services
+- The email registered by the customer must be a `gmail` . account
+- Mechanic must include NIK/KTP/person id for identity security
+- If the status is still pending, the customer can still update the booking. Such as rescheduling, changing vehicles, etc
+- If today's schedule is full, the customer cannot register/make a booking schedule
+- On the `bookings` page, if the status is other than **pending, approved, unapproved** then (as admin) the status cannot be updated, because bookings are only for handling pending, approved, and unapproved statuses
+- Users are allowed to update their profile, except for the email address
+- (As admin) on the **users page**, can't delete the data itself in the table
+- (As admin) when the currently logged in user updates the profile, the user is required to log out
+- Customers cannot book the day before today
+- Services will be made only for bookings whose status is approved 
