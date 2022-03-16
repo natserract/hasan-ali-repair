@@ -14,7 +14,6 @@ import { extractError } from 'src/utils/errors'
 import { useForm } from 'react-hook-form'
 import FormControl from '@material-ui/core/FormControl'
 import FormSelect from 'src/components/form/formSelect'
-import { ScheduleStatus } from 'src/types/share'
 import { useAccess } from 'src/libs/gql-router'
 import { useAuthState } from 'src/libs/auth/hooks'
 import Paper from '@material-ui/core/Paper'
@@ -109,6 +108,14 @@ const SchedulesPage = (props) => {
           customBodyRender: (data, rowData) => {
             const index = rowData.rowIndex
             const dataId = rowData.tableData[index][0]
+            const rowInnerData = listData[index]
+
+            // Assume if schedule has been processed as been complete, review
+            // Make sure, not possible to change status anymore (schedules page)
+            //
+            // If want to change, please in services page
+            const canChangesStatus = ['pending', 'approved', 'unapproved']
+            const isCanChange = canChangesStatus.includes(rowInnerData.status)
 
             return (
               <FormControl>
@@ -118,7 +125,7 @@ const SchedulesPage = (props) => {
                   name="status"
                   onChange={(event) => handleChange(event, dataId)}
                   value={data}
-                  disabled={isPublicAccess}
+                  disabled={isPublicAccess || isCanChange}
                 >
                   <MenuItem value="">
                     <em>None</em>
@@ -151,7 +158,7 @@ const SchedulesPage = (props) => {
         },
       },
     ],
-    [control, errors, isPublicAccess, handleChange]
+    [listData, control, errors, isPublicAccess, handleChange]
   )
 
   const renderInfo = useCallback(() => {
@@ -203,10 +210,10 @@ const SchedulesPage = (props) => {
             }}
             editDisabled={(data) => {
               const rowIdx = data.rowIndex
-              const status = listData[rowIdx]?.status as ScheduleStatus
+              const status = data.tableData[rowIdx][4]
 
               // If status not pending, customer can't edit
-              return isPublicAccess && status === 'pending'
+              return isPublicAccess && status !== 'pending'
             }}
             input={{
               ...(isPublicAccess &&

@@ -17,6 +17,7 @@ import { useAccess } from 'src/libs/gql-router'
 import { useState } from 'react'
 import TextField from '@material-ui/core/TextField'
 import { parseDate } from 'src/utils/date'
+import FormHelperText from '@material-ui/core/FormHelperText'
 
 const vehicleEmptyMessage = `Vehicle's not yet selected or empty's`
 
@@ -223,7 +224,11 @@ const CreateSchedulePage = (props) => {
             name="message"
             label="Message"
             errorobj={errors}
+            required
           />
+          <FormHelperText>
+            Please fill in completely your vehicle's problems
+          </FormHelperText>
         </FormControl>
       </Create>
     </>

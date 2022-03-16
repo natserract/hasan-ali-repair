@@ -12,6 +12,7 @@ export const dashboardReports = async () => {
       },
     },
   })
+  console.log('totalPendingBookings', totalPendingBookings.length)
 
   // Based on week
   const totalPartsIn = await db.part.findMany({

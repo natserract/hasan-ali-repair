@@ -9,6 +9,8 @@ import { InputList } from 'src/types/share'
 import startOfToday from 'date-fns/startOfToday'
 import endOfToday from 'date-fns/endOfToday'
 import { MAXIMUM_BOOK_DAY } from 'src/config/business'
+import { parseDate } from 'src/utils/date'
+import { mailTemplate } from 'src/templates/common/mail-template'
 
 type ScheduleArgs = InputList
 
@@ -45,38 +47,107 @@ interface CreateScheduleArgs {
 }
 
 export const createSchedule = ({ input }: CreateScheduleArgs) => {
+  // TODO:
+  // Is user only can create schedule max 1
+  // in current date?
   return db.schedule.create({
     data: input,
   })
 }
 
 interface UpdateScheduleArgs extends Prisma.ScheduleWhereUniqueInput {
-  input: Prisma.ScheduleUpdateInput & {
-    send_email?: boolean
-  }
+  input: Prisma.ScheduleUpdateInput
 }
 
-export const updateSchedule = async ({
-  id,
-  input: { send_email, ...input },
-}: UpdateScheduleArgs) => {
-  const schedule = db.schedule.update({
+export const updateSchedule = async ({ id, input }: UpdateScheduleArgs) => {
+  const schedule = await db.schedule.update({
     data: input,
     where: { id },
   })
 
-  if (send_email) {
+  async function sendUserEmail() {
+    const customer = await db.customer.findUnique({
+      where: {
+        id: schedule.customer_id,
+      },
+    })
+    const user = await db.user.findFirst({
+      where: {
+        id: customer.user_id,
+      },
+    })
+
+    const { status } = schedule
+    const date = parseDate(schedule.booking_date)
+
+    const mailContent = {
+      approved: `
+        <p>
+          Your scheduled at ${date} has been <b>${status}</b>. Please go to Bengkel Hasan Ali office to vehicle check, in accordance with your schedule date.
+        </p>
+      `,
+      unapproved: `
+        <p>
+          Sorry, your scheduled at ${date} has been <b>${status}</b>. Please book/find another date.
+        </p>
+      `,
+      on_review: `
+        <p>
+          Your scheduled at ${date} has been updated to <b>${status}</b>. Please go to Bengkel Hasan Ali office to see all's details (e.g. price) <i> (max 3 days start from your scheduled date)</i>.
+        </p>
+      `,
+      on_progress: `
+        <p>
+          Your scheduled at ${date} has been updated to <b>${status}</b>. Please wait for several days and we confirm you if service completed.
+        </p>
+      `,
+      complete: `
+        <p>
+          Hore.., your scheduled at ${date} has been <b>${status}</b>. Please go to Bengkel Hasan Ali office to take your vehicle. Thanks for orders!
+        </p>
+      `,
+    }
+
+    let mailSendTemplate = ''
+
+    switch (status) {
+      case 'approved': {
+        mailSendTemplate = mailContent.approved
+        break
+      }
+      case 'unapproved':
+      case 'cancelled': {
+        mailSendTemplate = mailContent.unapproved
+        break
+      }
+      case 'on review': {
+        mailSendTemplate = mailContent.on_review
+        break
+      }
+      case 'on progress': {
+        mailSendTemplate = mailContent.on_progress
+        break
+      }
+      case 'complete': {
+        mailSendTemplate = mailContent.complete
+        break
+      }
+      default: {
+        mailSendTemplate = `
+          <p>
+          Your scheduled at ${date} has been updated to <b>${status}</b>.
+        </p>
+        `
+      }
+    }
+
     await sendEmail({
-      to: 'benjaminstwo@gmail.com',
-      subject: 'Test Email',
-      text:
-        'This is a manually triggered test email.\n\n' +
-        'It was sent from a RedwoodJS application.',
-      html:
-        'This is a manually triggered test email.<br><br>' +
-        'It was sent from a RedwoodJS application.',
+      to: user.email,
+      subject: 'Bengkel Hasan Ali Status Report',
+      html: mailTemplate(user.name, mailSendTemplate),
     })
   }
+  await sendUserEmail()
 
   return schedule
 }

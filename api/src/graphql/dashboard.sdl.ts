@@ -1,13 +1,13 @@
 export const schema = gql`
   type ServiceMonthly {
     month: String!
-    price: Int!
+    price: Int
     count: Int!
   }
 
   type ServiceDaily {
     day: String!
-    price: Int!
+    price: Int
     count: Int!
   }
 
