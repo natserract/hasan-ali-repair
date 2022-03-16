@@ -52,7 +52,7 @@ CREATE TABLE `schedule` (
 -- CreateTable
 CREATE TABLE `mechanic` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `person_id` INTEGER NOT NULL,
+    `person_id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
     `is_active` BOOLEAN NOT NULL DEFAULT false,
     `address` VARCHAR(191) NULL,
@@ -136,4 +136,4 @@ ALTER TABLE `parts_used` ADD CONSTRAINT `parts_used_service_id_fkey` FOREIGN KEY
 ALTER TABLE `parts_used` ADD CONSTRAINT `parts_used_part_id_fkey` FOREIGN KEY (`part_id`) REFERENCES `parts`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `customer` ADD CONSTRAINT `customer_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `customer` ADD CONSTRAINT `customer_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

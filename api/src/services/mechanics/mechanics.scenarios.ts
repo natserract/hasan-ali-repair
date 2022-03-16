@@ -2,8 +2,8 @@ import type { Prisma } from '@prisma/client'
 
 export const standard = defineScenario<Prisma.MechanicCreateArgs>({
   mechanic: {
-    one: { data: { person_id: 7973394, name: 'String' } },
-    two: { data: { person_id: 9968387, name: 'String' } },
+    one: { data: { person_id: 'String5919763', name: 'String' } },
+    two: { data: { person_id: 'String6963354', name: 'String' } },
   },
 })
 

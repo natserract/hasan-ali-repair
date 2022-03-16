@@ -7,9 +7,12 @@ import { USERSPAGE_DELETEUSERMUTATION } from './mutation'
 import List from 'src/components/common/list'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
+import { useAuthState } from 'src/libs/auth/hooks'
 
 const UsersPage = (props) => {
   const _classes = useStyles()
+
+  const { currentUser } = useAuthState()
 
   const columns = useMemo(
     () => [
@@ -77,6 +80,10 @@ const UsersPage = (props) => {
             listQuery={USERSPAGE_USERS_QUERY}
             deleteMutation={USERSPAGE_DELETEUSERMUTATION}
             resourceName={props.resourceName}
+            deleteDisabled={(data) => {
+              const rowData = data.rowData
+              return Array.from(rowData).includes(currentUser?.email)
+            }}
           />
         </Grid>
       </Grid>

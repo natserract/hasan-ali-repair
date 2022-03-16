@@ -42,7 +42,7 @@ const additionalRoutes = [
 
 const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
-    <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
+    <RedwoodProvider titleTemplate="%PageTitle | Bengkel Hasan Ali">
       <AuthProvider client={AuthClient} type="custom">
         <RedwoodApolloProvider graphQLClientConfig={AuthMiddleware()}>
           <AppProvider>

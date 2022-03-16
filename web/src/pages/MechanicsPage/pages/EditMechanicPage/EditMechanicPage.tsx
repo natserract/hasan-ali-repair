@@ -40,9 +40,8 @@ const EditMechanicPage = (props) => {
         form={form}
         editMutation={EDITMECHANIC_MUTATION}
         id={+params?.id}
-        input={({ person_id, is_active, ...data }) => ({
+        input={({ is_active, ...data }) => ({
           ...data,
-          person_id: person_id ? +person_id : undefined,
           is_active: is_active == 1,
         })}
         resourceName={props.resourceName}
@@ -64,8 +63,11 @@ const EditMechanicPage = (props) => {
             control={control}
             name="person_id"
             label="Person ID (KTP)"
-            type="number"
             errorobj={errors}
+            inputProps={{
+              minLength: 16,
+              maxLength: 16,
+            }}
             defaultValue={mechanic?.person_id}
           />
         </FormControl>

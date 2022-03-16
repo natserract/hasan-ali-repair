@@ -1,6 +1,9 @@
 import { db } from 'src/lib/db'
 import { useHashedPassword } from 'src/utils/encrypt'
 import { AuthenticationError } from '@redwoodjs/graphql-server'
+import { createCustomer } from 'src/services/customers/customers'
+import { readFileSync } from 'src/utils/file'
+import { sendEmail } from 'src/lib/mail'
 
 export const handler = async (event) => {
   // Get user from request body
@@ -37,6 +40,28 @@ export const handler = async (event) => {
         phone_number,
       },
     })
+    const isCustomer = newUser.user_type !== 'admin'
+
+    if (isCustomer) {
+      // Customer table
+      await createCustomer({
+        input: {
+          user: {
+            connect: {
+              id: newUser.id,
+            },
+          },
+        },
+      })
+
+      // Send email to customer
+      const fileContents = readFileSync('/signup/signup.template.html')
+      await sendEmail({
+        to: newUser.email,
+        subject: 'Thank you for signing up',
+        html: fileContents,
+      })
+    }
 
     return {
       statusCode: 200,

@@ -1,7 +1,7 @@
 export const schema = gql`
   type Mechanic {
     id: Int!
-    person_id: Int!
+    person_id: String!
     name: String!
     is_active: Boolean!
     address: String
@@ -17,7 +17,7 @@ export const schema = gql`
   }
 
   input CreateMechanicInput {
-    person_id: Int!
+    person_id: String!
     name: String!
     is_active: Boolean!
     address: String
@@ -26,7 +26,7 @@ export const schema = gql`
   }
 
   input UpdateMechanicInput {
-    person_id: Int
+    person_id: String
     name: String
     is_active: Boolean
     address: String

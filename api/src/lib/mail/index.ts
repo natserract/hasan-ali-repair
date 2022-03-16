@@ -3,8 +3,8 @@ import * as nodemailer from 'nodemailer'
 interface Options {
   to: string | string[]
   subject: string
-  text: string
-  html: string
+  text?: string
+  html?: string
 }
 
 /**
@@ -32,8 +32,12 @@ export async function sendEmail({ to, subject, text, html }: Options) {
     from: `"Bengkel Hasan Ali" <${process.env.SENDINBLUE_EMAIL}>`,
     to: Array.isArray(to) ? to : [to], // list of receivers
     subject, // Subject line
-    text, // plain text body
-    html, // html body
+    ...(text && {
+      text, // plain text body
+    }),
+    ...(html && {
+      html, // html body
+    }),
   })
 
   return info

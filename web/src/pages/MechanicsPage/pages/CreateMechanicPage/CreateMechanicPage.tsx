@@ -22,9 +22,8 @@ const CreateMechanicPage = (props) => {
         form={form}
         createMutation={CREATEMECHANIC_MUTATION}
         resourceName={props.resourceName}
-        input={({ person_id, is_active, ...data }) => ({
+        input={({ is_active, ...data }) => ({
           ...data,
-          person_id: +person_id,
           is_active: is_active == 1,
         })}
       >
@@ -43,7 +42,10 @@ const CreateMechanicPage = (props) => {
             control={control}
             name="person_id"
             label="Person ID (KTP)"
-            type="number"
+            inputProps={{
+              minLength: 16,
+              maxLength: 16,
+            }}
             errorobj={errors}
             required
           />

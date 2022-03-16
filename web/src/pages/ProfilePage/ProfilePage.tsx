@@ -2,7 +2,7 @@ import { MetaTags, useQuery } from '@redwoodjs/web'
 import Widget from 'src/components/widget'
 import useStyles from './styles'
 import Button from 'src/components/button'
-import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined'
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined'
 import { useAuthState } from 'src/libs/auth/hooks'
 import { useNavigate } from 'src/libs/gql-router'
 import Typography from '@material-ui/core/Typography'
@@ -67,7 +67,7 @@ const ProfilePage = () => {
             <Button
               variant="contained"
               color="primary"
-              startIcon={<SaveOutlinedIcon />}
+              startIcon={<EditOutlinedIcon />}
               type="submit"
               onClick={() =>
                 navigate.push(`/app/profile/edit/${stringToSlug(user.name)}`)

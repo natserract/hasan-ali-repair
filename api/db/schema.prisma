@@ -84,7 +84,7 @@ model Schedule {
 
 model Mechanic {
   id        Int     @id @default(autoincrement())
-  person_id Int     @unique @db.MediumInt() // 16 digit for ktp
+  person_id String  @unique // 16 digit for ktp
   name      String
   is_active Boolean @default(false)
   address   String?
@@ -175,7 +175,7 @@ model Customer {
   id Int @id @default(autoincrement())
 
   user_id Int
-  user    User @relation(fields: [user_id], references: [id])
+  user    User @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   schedule Schedule[]
 

@@ -3,7 +3,9 @@ import { ResolverArgs, ValidationError } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'
 import { useHashedPassword } from 'src/utils/encrypt'
+import { readFileSync } from 'src/utils/file'
 import { createCustomer } from '../customers/customers'
+import { sendEmail } from 'src/lib/mail'
 
 export const users = () => {
   return db.user.findMany({
@@ -60,8 +62,10 @@ export const createUser = async ({ input }: CreateUserArgs) => {
   const userCreate = await db.user.create({
     data: userInput,
   })
+  const isCustomer = input.user_type !== 'admin'
 
-  if (input.user_type !== 'admin') {
+  if (isCustomer) {
+    // Customer table
     await createCustomer({
       input: {
         user: {
@@ -70,6 +74,14 @@ export const createUser = async ({ input }: CreateUserArgs) => {
           },
         },
       },
+    })
+
+    // Send email to customer
+    const fileContents = readFileSync('/signup/signup.template.html')
+    await sendEmail({
+      to: input.email,
+      subject: 'Thank you for signing up',
+      html: fileContents,
     })
   }
 
