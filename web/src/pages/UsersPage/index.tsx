@@ -14,6 +14,14 @@ const UsersPage = (props) => {
   const columns = useMemo(
     () => [
       {
+        name: 'id',
+        label: 'Id',
+        options: {
+          display: false,
+          filter: false,
+        },
+      },
+      {
         name: 'name',
         label: 'Name',
         options: {

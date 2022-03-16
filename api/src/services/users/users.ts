@@ -19,6 +19,14 @@ export const user = ({ id }: Prisma.UserWhereUniqueInput) => {
   })
 }
 
+export const currentUser = ({ email }: { email: string }) => {
+  return db.user.findUnique({
+    where: {
+      email,
+    },
+  })
+}
+
 interface CreateUserArgs {
   input: Prisma.UserCreateInput
 }

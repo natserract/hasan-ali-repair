@@ -56,7 +56,7 @@ const AuthClient = {
   forgotPassword: ({ email, new_password }): Promise<any> => {
     return new Promise((resolve, reject) => {
       axios
-        .post(`${API_URL}/update`, {
+        .post(`${API_URL}/forgot`, {
           email,
           new_password,
         })

@@ -38,6 +38,7 @@ import FaqPage from './pages/FaqPage/FaqPage'
 import EditMechanicPage from './pages/MechanicsPage/pages/EditMechanicPage/EditMechanicPage'
 import ShowMechanicPage from './pages/MechanicsPage/pages/ShowMechanicPage/ShowMechanicPage'
 import CreateMechanicPage from './pages/MechanicsPage/pages/CreateMechanicPage/CreateMechanicPage'
+import EditProfilePage from './pages/ProfilePage/pages/EditProfilePage/EditProfilePage'
 
 const adminAccess = [
   'dashboard',
@@ -47,7 +48,7 @@ const adminAccess = [
   'parts',
   'mechanics',
   'register',
-  'profiles',
+  'profile',
   'schedules',
   'faq',
 ]
@@ -55,7 +56,7 @@ const clientAccess = [
   'dashboard',
   'register',
   'services',
-  'profiles',
+  'profile',
   'schedules',
   'vehicles',
   'faq',
@@ -117,9 +118,10 @@ const resources: IResourceItem[] = [
     icon: <EmojiPeopleIcon />,
   },
   {
-    name: 'profiles',
-    route: '/app/profile',
-    pure: ProfilePage,
+    name: 'profile',
+    edit: EditProfilePage,
+    list: ProfilePage,
+    isOuter: true,
   },
   {
     name: 'faq',

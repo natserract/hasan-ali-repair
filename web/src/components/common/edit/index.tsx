@@ -24,6 +24,7 @@ type EditProps = {
   title?: string
   isLoading?: boolean
   isCurrentUserUpdated?: boolean
+  redirectTo?: string
 }
 
 const Edit: React.FC<EditProps> = ({
@@ -37,6 +38,7 @@ const Edit: React.FC<EditProps> = ({
   title,
   isCurrentUserUpdated,
   children,
+  redirectTo,
 }) => {
   const classes = useStyles()
   const navigate = useNavigate()
@@ -74,8 +76,7 @@ const Edit: React.FC<EditProps> = ({
           'success'
         ).finally(() => {
           setLoadingEditData(false)
-
-          navigate.push(`/app/${resourcePluralize}`)
+          navigate.push(`${redirectTo ?? '/app/' + resourcePluralize}`)
         })
       } else {
         // If current user has update,
