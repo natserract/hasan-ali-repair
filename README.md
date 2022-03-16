@@ -8,14 +8,14 @@ Booking appointments application systems for motorcycle and car repair shops.
 Hasan Ali Repair is a digital solution to help customers make it easier and more efficient to service their vehicles. To place an order, customers just need to choose the available schedule and time through the application, then come for a vehicle check then if all agree, then the vehicle is ready for service. When finished, the customer will receive a confirmation by the system and email, without having to wait in line. All modules and features are systematically designed to make it easier for the store and customers.
 
 ## Table of Contents ##
-1. [MVP]()
-2. [Validation and Rules]()
-3. [FAQs]()
-4. [Stacks Used]()
-5. [System requirements]()
-6. [Setup]()
-7. [Third party]()
-8. [Future Works]()
+1. [MVP](#mvp-minimum-viable-product)
+2. [Validation and Rules](#validation-and-rules)
+3. [Stacks Used](#stacks-used)
+4. [System requirements]()
+5. [Setup]()
+6. [Third party]()
+7. [Future Works]()
+8. [FAQs]()
 9. [References]()
 
 ## MVP (Minimum Viable Product)
@@ -43,3 +43,16 @@ System must be able to:
 - Customers cannot book the day before today
 - Services will be made only for bookings whose status is approved
 - User's session period is 1 day
+
+## Stacks Used
+
+Here's a several technologies what we used in this project:
+- [React](https://reactjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [GraphQL](https://graphql.org/) ([GraphQL Helix](https://github.com/contrawork/graphql-helix) + [Envelop](https://www.envelop.dev) + [Apollo Client](https://www.apollographql.com/docs/react))
+- [Prisma](https://www.prisma.io/)
+- [RedwoodJS](https://redwoodjs.com/)
+- [Jest](https://jestjs.io/)
+- [Storybook](https://storybook.js.org/)
+- [Webpack](https://webpack.js.org/)
+- [Material UI 4](https://v4.mui.com)
