@@ -11,11 +11,12 @@ Hasan Ali Repair is a digital solution to help customers make it easier and more
 1. [MVP]()
 2. [Validation and Rules]()
 3. [FAQs]()
-4. [System requirements]()
-5. [Setup]()
-6. [Third party]()
-7. [Future Works]()
-8. [References]()
+4. [Stacks Used]()
+5. [System requirements]()
+6. [Setup]()
+7. [Third party]()
+8. [Future Works]()
+9. [References]()
 
 ## MVP (Minimum Viable Product)
 > A minimum viable product or MVP is a product with a basic set of features that are considered unique enough to attract the attention of users
@@ -40,4 +41,5 @@ System must be able to:
 - (As admin) on the **users page**, can't delete the data itself in the table
 - (As admin) when the currently logged in user updates the profile, the user is required to log out
 - Customers cannot book the day before today
-- Services will be made only for bookings whose status is approved 
+- Services will be made only for bookings whose status is approved
+- User's session period is 1 day
