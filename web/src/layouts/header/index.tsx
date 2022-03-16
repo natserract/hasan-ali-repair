@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState } from 'react'
@@ -26,6 +27,7 @@ import { Badge, Typography } from 'src/layouts/wrappers'
 import Notification from 'src/components/notification'
 import UserAvatar from 'src/components/user-avatar'
 import { useAuth } from '@redwoodjs/auth'
+import { HEADER_CURRENTUSER_QUERY } from './query'
 
 import {
   useLayoutState,
@@ -36,6 +38,8 @@ import { APP } from 'src/constant/app'
 import { useAuthState } from 'src/libs/auth/hooks'
 import { useNavigate } from 'src/libs/gql-router'
 import { Link } from 'react-router-dom'
+import { useQuery } from '@redwoodjs/web'
+import { CurrentUser } from 'src/types/share'
 
 const messages = [
   {
@@ -98,6 +102,13 @@ const Header = () => {
   const { currentUser } = useAuthState()
   const layoutState = useLayoutState()
   const layoutDispatch = useLayoutDispatch()
+
+  const { data: currentUserData } = useQuery(HEADER_CURRENTUSER_QUERY, {
+    variables: {
+      email: currentUser?.email,
+    },
+  })
+  const user = currentUserData?.currentUser as CurrentUser
 
   const [mailMenu, setMailMenu] = useState(null)
   const [isMailsUnread, setIsMailsUnread] = useState(true)
@@ -207,7 +218,7 @@ const Header = () => {
         >
           <AccountIcon classes={{ root: classes.headerIcon }} />
           <Typography variant="body2">
-            Hi, <b>{currentUser?.name}</b>
+            Hi, <b>{user?.name}</b>
           </Typography>
         </IconButton>
         <Menu

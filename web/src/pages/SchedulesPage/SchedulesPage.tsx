@@ -213,7 +213,12 @@ const SchedulesPage = (props) => {
                 currentUser &&
                 currentUser.id && {
                   // eslint-disable-next-line prettier/prettier
-                  filter: `{\"status\":{\"in\":[\"pending\",\"approved\",\"unapproved\"]},\"customer\":{\"user_id\":{\"equals\":${currentUser.id}}}}`
+                  // Filter by status and user
+                  // filter: `{\"status\":{\"in\":[\"pending\",\"approved\",\"unapproved\"]},\"customer\":{\"user_id\":{\"equals\":${currentUser.id}}}}`
+                  //
+                  // Filter only by user, user can see all
+                  // bookings history with any status
+                  filter: `{\"customer\":{\"user_id\":{\"equals\":${currentUser.id}}}}`,
                 }),
             }}
           />

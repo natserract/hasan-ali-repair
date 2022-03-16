@@ -23,7 +23,7 @@ const FaqPage = () => {
 
   return (
     <>
-      <MetaTags title="Faq" description="Faq page" />
+      <MetaTags title="FAQ" description="FAQ page" />
 
       <Grid container spacing={4}>
         <Grid item xs={12}>
