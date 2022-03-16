@@ -108,14 +108,13 @@ const SchedulesPage = (props) => {
           customBodyRender: (data, rowData) => {
             const index = rowData.rowIndex
             const dataId = rowData.tableData[index][0]
-            const rowInnerData = listData[index]
 
             // Assume if schedule has been processed as been complete, review
             // Make sure, not possible to change status anymore (schedules page)
             //
             // If want to change, please in services page
             const canChangesStatus = ['pending', 'approved', 'unapproved']
-            const isCanChange = canChangesStatus.includes(rowInnerData.status)
+            const isCanChange = canChangesStatus.includes(data)
 
             return (
               <FormControl>
@@ -125,7 +124,7 @@ const SchedulesPage = (props) => {
                   name="status"
                   onChange={(event) => handleChange(event, dataId)}
                   value={data}
-                  disabled={isPublicAccess || isCanChange}
+                  disabled={isPublicAccess || !isCanChange}
                 >
                   <MenuItem value="">
                     <em>None</em>

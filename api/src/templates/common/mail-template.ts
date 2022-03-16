@@ -147,7 +147,7 @@ export const mailTemplate = (to:string, content: string) => `
 
     <section class="email-body">
         <div class="container">
-          <p>Hi, ${to}</p>
+          <p style="padding-bottom: 20px;">Hi, ${to}</p>
            ${content}
         </div>
     </section>

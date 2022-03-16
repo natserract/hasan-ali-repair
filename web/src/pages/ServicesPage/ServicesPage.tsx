@@ -164,6 +164,11 @@ const ServicesPage = (props) => {
             editDisabled={isPublicAccess}
             deleteDisabled={isPublicAccess}
             resourceName={props.resourceName}
+            options={{
+              ...(isPublicAccess && {
+                selectToolbarPlacement: 'none',
+              }),
+            }}
             input={{
               filter: JSON.stringify({
                 schedule: {

@@ -16,6 +16,7 @@ import { useAuthState } from 'src/libs/auth/hooks'
 import { useAccess, useParams } from 'src/libs/gql-router'
 import { useForm } from 'react-hook-form'
 import TextField from '@material-ui/core/TextField'
+import FormHelperText from '@material-ui/core/FormHelperText'
 
 const vehicleEmptyMessage = `Vehicle's not yet selected or empty's`
 
@@ -242,6 +243,9 @@ const EditSchedulePage = (props) => {
             errorobj={errors}
             defaultValue={schedule?.message}
           />
+          <FormHelperText>
+            Please fill in completely your vehicle's problems
+          </FormHelperText>
         </FormControl>
       </Edit>
     </>
