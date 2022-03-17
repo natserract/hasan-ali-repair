@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Grid, IconButton, Tooltip } from '@material-ui/core'
 import Widget from 'src/components/widget'
@@ -17,6 +18,7 @@ import { extractError } from 'src/utils/errors'
 import { toCamelCase } from 'src/utils/string'
 import pluralize from 'pluralize'
 import orderBy from 'lodash.orderby'
+import FullScreenLoading from 'src/components/loading/fullscreen'
 
 type ActionDisabled = {
   createDisabled: boolean
@@ -403,20 +405,26 @@ const List: React.FC<ListProps> = ({
     }
   }, [refetch, refetchOnMount])
 
+  const loading = isLoading || queryLoading || loadingData
+
   return (
-    <Widget
-      isLoading={isLoading || queryLoading || loadingData}
-      header={<React.Fragment />}
-      noBodyPadding
-      noHeaderPadding
-    >
-      <DataTable
-        title={title ?? resourceTitle}
-        data={data}
-        columns={tableColumns}
-        options={options}
-      />
-    </Widget>
+    <>
+      {loading && <FullScreenLoading />}
+
+      <Widget
+        isLoading={loading}
+        header={<React.Fragment />}
+        noBodyPadding
+        noHeaderPadding
+      >
+        <DataTable
+          title={title ?? resourceTitle}
+          data={data}
+          columns={tableColumns}
+          options={options}
+        />
+      </Widget>
+    </>
   )
 }
 

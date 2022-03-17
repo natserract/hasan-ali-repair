@@ -12,7 +12,6 @@ import { GqlRouter } from 'src/libs/gql-router/contexts'
 import { adminTypes, clientTypes, resources } from './resources'
 import { ContextProvider as AppProvider } from 'src/store'
 import Layout from 'src/layouts/layout'
-
 import './scaffold.css'
 import './index.css'
 import LoginPage from './pages/Authorization/LoginPage'

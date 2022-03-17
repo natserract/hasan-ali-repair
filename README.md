@@ -93,6 +93,7 @@ yarn rw dev
 - [ ] Realtime update
 - [ ] Push notifications
 - [X] Contacts Page
+- [ ] Progressive Web Apps (PWAs)
 
 
 ## Notes

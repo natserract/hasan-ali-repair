@@ -12,6 +12,7 @@ import Widget from 'src/components/widget'
 import { extractError } from 'src/utils/errors'
 import { toastPromise } from 'src/utils/info'
 import pluralize from 'pluralize'
+import FullScreenLoading from 'src/components/loading/fullscreen'
 
 type CreateProps = {
   resourceName: string
@@ -67,27 +68,33 @@ const Create: React.FC<CreateProps> = ({
     }
   }
 
-  return (
-    <Widget
-      isLoading={isLoading || loadingCreateData}
-      title={title ?? `Create ${resourceTitle}`}
-      disableWidgetMenu
-    >
-      <form onSubmit={handleSubmit(onSubmit)} className={classes.formRoot}>
-        {children}
+  const loading = isLoading || loadingCreateData
 
-        <div className={classes.formActions}>
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={<SaveOutlinedIcon />}
-            type="submit"
-          >
-            Save
-          </Button>
-        </div>
-      </form>
-    </Widget>
+  return (
+    <>
+      {loading && <FullScreenLoading />}
+
+      <Widget
+        isLoading={loading}
+        title={title ?? `Create ${resourceTitle}`}
+        disableWidgetMenu
+      >
+        <form onSubmit={handleSubmit(onSubmit)} className={classes.formRoot}>
+          {children}
+
+          <div className={classes.formActions}>
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={<SaveOutlinedIcon />}
+              type="submit"
+            >
+              Save
+            </Button>
+          </div>
+        </form>
+      </Widget>
+    </>
   )
 }
 

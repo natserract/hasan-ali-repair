@@ -13,6 +13,7 @@ import { extractError } from 'src/utils/errors'
 import { toastPromise } from 'src/utils/info'
 import pluralize from 'pluralize'
 import { useAuth } from '@redwoodjs/auth'
+import FullScreenLoading from 'src/components/loading/fullscreen'
 
 type EditProps = {
   resourceName: string
@@ -89,27 +90,32 @@ const Edit: React.FC<EditProps> = ({
     }
   }
 
-  return (
-    <Widget
-      isLoading={isLoading || loadingEditData}
-      title={title ?? `Edit ${toCamelCase(resourceName)}`}
-      disableWidgetMenu
-    >
-      <form onSubmit={handleSubmit(onSubmit)} className={classes.formRoot}>
-        {children}
+  const loading = isLoading || loadingEditData
 
-        <div className={classes.formActions}>
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={<SaveOutlinedIcon />}
-            type="submit"
-          >
-            Save
-          </Button>
-        </div>
-      </form>
-    </Widget>
+  return (
+    <>
+      {loading && <FullScreenLoading />}
+      <Widget
+        isLoading={loading}
+        title={title ?? `Edit ${toCamelCase(resourceName)}`}
+        disableWidgetMenu
+      >
+        <form onSubmit={handleSubmit(onSubmit)} className={classes.formRoot}>
+          {children}
+
+          <div className={classes.formActions}>
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={<SaveOutlinedIcon />}
+              type="submit"
+            >
+              Save
+            </Button>
+          </div>
+        </form>
+      </Widget>
+    </>
   )
 }
 
