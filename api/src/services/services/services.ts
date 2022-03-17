@@ -5,12 +5,7 @@ import { ITEMS_PER_PAGE } from 'src/constants/config'
 import { db } from 'src/lib/db'
 
 import { InputList } from 'src/types/share'
-import {
-  createPartUsed,
-  deletePartUsed,
-  partUseds,
-  updatePartUsed,
-} from '../partUseds/partUseds'
+import { createPartUsed, deletePartUsed } from '../partUseds/partUseds'
 import { updateSchedule } from '../schedules/schedules'
 
 type ServicesArgs = InputList
@@ -67,6 +62,39 @@ export const createService = async ({ input }: CreateServiceArgs) => {
     },
   })
 
+  // Create part used,
+  const partsUsedIds = [] as number[]
+
+  if (isHasPartUsed) {
+    const partIds = Array.from(input?.part_ids)
+    const createPartsUsed = partIds.map(async (item) => {
+      const responses = await createPartUsed({
+        input: {
+          mechanic: {
+            connect: {
+              id: service.mechanic_id,
+            },
+          },
+          parts: {
+            connect: {
+              id: item,
+            },
+          },
+          service: {
+            connect: {
+              id: service.id,
+            },
+          },
+        },
+      })
+
+      partsUsedIds.push(responses.part_id)
+      return responses
+    })
+
+    await Promise.all(createPartsUsed)
+  }
+
   // Every service create, set to >= `on progress`
   await updateSchedule({
     id: service.schedule_id,
@@ -74,22 +102,6 @@ export const createService = async ({ input }: CreateServiceArgs) => {
       status: 'on review',
     },
   })
-
-  // Create part used,
-  if (isHasPartUsed) {
-    const partIds = Array.from(input?.part_ids)
-    const createPartsUsed = partIds.map(async (item) => {
-      await createPartUsed({
-        input: {
-          service_id: service.id,
-          mechanic_id: service.mechanic_id,
-          part_id: item,
-        },
-      })
-    })
-
-    await Promise.all(createPartsUsed)
-  }
 
   return service
 }
@@ -151,28 +163,25 @@ export const updateService = async ({
       newPartUsed.map(async (part) => {
         await createPartUsed({
           input: {
-            service_id: service.id,
-            mechanic_id: service.mechanic_id,
-            part_id: part,
+            mechanic: {
+              connect: {
+                id: service.mechanic_id,
+              },
+            },
+            parts: {
+              connect: {
+                id: part,
+              },
+            },
+            service: {
+              connect: {
+                id: service.id,
+              },
+            },
           },
         })
       })
     )
-
-    console.log('partIds input', partIds)
-    console.log('partsUsed', partUsedsDb)
-    console.log('removedPartUsed', removedPartUsed)
-    console.log('newPartUsed', newPartUsed)
-
-    // const updatePart = partIds.map(async (item) => {
-    //   await updatePartUsed({
-    //     input: {
-    //       service_id: service.id,
-    //       mechanic_id: service.mechanic_id,
-    //       part_id: item,
-    //     },
-    //   })
-    // })
   }
 
   return service

@@ -34,7 +34,7 @@ export const schema = gql`
   }
 
   type Mutation {
-    createPartUsed(input: CreatePartUsedInput!): PartUsed! @requireAuth
+    createPartUsed(input: CreatePartUsedInput!): PartUsed! @skipAuth
     updatePartUsed(id: Int!, input: UpdatePartUsedInput!): PartUsed!
       @requireAuth
     deletePartUsed(id: Int!): PartUsed! @requireAuth

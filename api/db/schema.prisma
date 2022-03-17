@@ -148,11 +148,8 @@ model PartUsed {
   // CREATE TRIGGER subtract_quantity
   // AFTER INSERT ON parts_used FOR EACH ROW
   // BEGIN
-  //     IF parts.qty > 0 THEN
-  //         UPDATE parts
-  //         used SET parts.qty = parts.qty - 1
-  //         WHERE parts.id = NEW.part_id;
-  //     END IF;
+  //     UPDATE parts SET parts.qty = parts.qty - 1
+  //      WHERE parts.id = NEW.part_id AND parts.qty > 0;
   // END;
   // //
   // DELIMITER ;

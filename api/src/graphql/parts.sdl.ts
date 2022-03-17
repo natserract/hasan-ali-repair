@@ -7,7 +7,7 @@ export const schema = gql`
     qty: Int!
     price: Float!
     description: String
-    PartsUsed: [PartUsed]!
+    partsUsed: [PartUsed]!
   }
 
   type Query {
@@ -18,7 +18,7 @@ export const schema = gql`
   input CreatePartInput {
     name: String!
     part_number: Int!
-    in_date: DateTime!
+    in_date: DateTime
     qty: Int!
     price: Float!
     description: String

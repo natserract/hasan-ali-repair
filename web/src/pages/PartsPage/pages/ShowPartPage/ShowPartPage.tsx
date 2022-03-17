@@ -53,7 +53,9 @@ const ShowPartPage = () => {
             <Typography variant="h6" component="h4">
               Price
             </Typography>
-            <InputLabel color="secondary">{toRupiah(part?.price)}</InputLabel>
+            <InputLabel color="secondary">
+              {toRupiah(part?.price, 'currency')}
+            </InputLabel>
           </div>
 
           <div className="formGroupItem">

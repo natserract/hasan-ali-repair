@@ -41,6 +41,6 @@ export const deletePart = ({ id }: Prisma.PartWhereUniqueInput) => {
 }
 
 export const Part = {
-  PartsUsed: (_obj, { root }: ResolverArgs<ReturnType<typeof part>>) =>
-    db.part.findUnique({ where: { id: root.id } }).PartsUsed(),
+  partsUsed: (_obj, { root }: ResolverArgs<ReturnType<typeof part>>) =>
+    db.part.findUnique({ where: { id: root.id } }).partsUsed(),
 }

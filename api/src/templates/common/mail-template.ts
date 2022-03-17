@@ -52,6 +52,14 @@ export const mailTemplate = (to:string, content: string) => `
         padding-right: 110px;
       }
 
+      ul {
+        padding-left: 30px;
+      }
+
+      ul li{
+        margin-bottom: 10px;
+      }
+
       .hd-brand a {
         font-size: 36px;
         font-weight: 500;
@@ -63,6 +71,22 @@ export const mailTemplate = (to:string, content: string) => `
 
       .hd-brand a:hover {
         opacity: 1 !important;
+      }
+
+      table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
+
+      tr:nth-child(even) {
+        background-color: #dddddd;
       }
 
       .email-body {
@@ -78,10 +102,8 @@ export const mailTemplate = (to:string, content: string) => `
       }
 
       .email-footer {
-        position: absolute;
-        bottom: 0;
         width: 100%;
-        height: 130px;
+        height: 80px;
         font-size: 20px;
         color: #202020;
       }

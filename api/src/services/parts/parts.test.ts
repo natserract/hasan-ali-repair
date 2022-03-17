@@ -24,16 +24,16 @@ describe('parts', () => {
     const result = await createPart({
       input: {
         name: 'String',
-        part_number: 8658861,
-        qty: 1222593,
-        price: 6335118.829663778,
+        part_number: 7270890,
+        qty: 9589053,
+        price: 4587530.66077622,
       },
     })
 
     expect(result.name).toEqual('String')
-    expect(result.part_number).toEqual(8658861)
-    expect(result.qty).toEqual(1222593)
-    expect(result.price).toEqual(6335118.829663778)
+    expect(result.part_number).toEqual(7270890)
+    expect(result.qty).toEqual(9589053)
+    expect(result.price).toEqual(4587530.66077622)
   })
 
   scenario('updates a part', async (scenario: StandardScenario) => {

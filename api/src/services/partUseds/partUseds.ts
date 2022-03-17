@@ -25,17 +25,13 @@ export const partUsed = ({ id }: Prisma.PartUsedWhereUniqueInput) => {
 }
 
 interface CreatePartUsedArgs {
-  input: Prisma.PartUsedUncheckedCreateInput
+  input: Prisma.PartUsedCreateInput
 }
 
-export const createPartUsed = async ({ input }: CreatePartUsedArgs) => {
-  const partsUsed = db.partUsed.create({
-    data: {
-      ...input,
-    },
+export const createPartUsed = ({ input }: CreatePartUsedArgs) => {
+  return db.partUsed.create({
+    data: input,
   })
-
-  return partsUsed
 }
 
 interface UpdatePartUsedArgs extends Prisma.PartUsedWhereUniqueInput {

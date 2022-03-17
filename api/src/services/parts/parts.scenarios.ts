@@ -5,17 +5,17 @@ export const standard = defineScenario<Prisma.PartCreateArgs>({
     one: {
       data: {
         name: 'String',
-        part_number: 3769712,
-        qty: 2600588,
-        price: 1984133.9300671157,
+        part_number: 5254962,
+        qty: 8387198,
+        price: 6432958.996946938,
       },
     },
     two: {
       data: {
         name: 'String',
-        part_number: 9554567,
-        qty: 5630358,
-        price: 9744147.092750372,
+        part_number: 2096715,
+        qty: 492369,
+        price: 5440854.04902707,
       },
     },
   },
