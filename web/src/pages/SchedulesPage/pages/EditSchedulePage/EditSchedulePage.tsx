@@ -124,6 +124,9 @@ const EditSchedulePage = (props) => {
             value={selectedDate}
             onChange={handleDateChange}
           />
+          <FormHelperText>
+            Important: better pick date 3 days before take service
+          </FormHelperText>
         </FormControl>
 
         {/* Only admin can select customer */}

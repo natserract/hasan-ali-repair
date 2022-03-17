@@ -36,6 +36,7 @@ const FormPicker: React.FC<
     onChange: onChangeProps,
     errormessage,
     shouldDisabledDate,
+    ...restProps
   } = props
 
   let isError = false
@@ -75,7 +76,7 @@ const FormPicker: React.FC<
             KeyboardButtonProps={{
               'aria-label': 'change date',
             }}
-            {...props}
+            {...restProps}
           />
         </MuiPickersUtilsProvider>
       )}

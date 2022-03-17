@@ -64,6 +64,7 @@ export const updateSchedule = async ({ id, input }: UpdateScheduleArgs) => {
     data: input,
     where: { id },
   })
+  const { status } = schedule
 
   async function sendUserEmail() {
     const customer = await db.customer.findUnique({
@@ -77,7 +78,6 @@ export const updateSchedule = async ({ id, input }: UpdateScheduleArgs) => {
       },
     })
 
-    const { status } = schedule
     const date = parseDate(schedule.booking_date)
 
     const mailContent = {
@@ -147,7 +147,11 @@ export const updateSchedule = async ({ id, input }: UpdateScheduleArgs) => {
       html: mailTemplate(user.name, mailSendTemplate),
     })
   }
-  await sendUserEmail()
+
+  // Start from > pending
+  if (status !== 'pending') {
+    await sendUserEmail()
+  }
 
   return schedule
 }

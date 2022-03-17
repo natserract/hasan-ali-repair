@@ -45,6 +45,7 @@ const FormInput: React.FC<FormInputProps & Partial<TextFieldProps>> = (
     onChange: onChangeProps,
     readOnly,
     rules,
+    ...restProps
   } = props
 
   let isError = false
@@ -94,7 +95,7 @@ const FormInput: React.FC<FormInputProps & Partial<TextFieldProps>> = (
             return onChange(event)
           }}
           ref={ref}
-          {...props}
+          {...restProps}
         />
       )}
     />

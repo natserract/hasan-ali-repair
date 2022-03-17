@@ -42,13 +42,12 @@ const CreateSchedulePage = (props) => {
     VEHICLES_QUERY,
     {
       variables: {
-        input: {
-          filter: JSON.stringify({
-            // If admin based on selected customer
-            // Else if admin, based on login currentUser?.id
-            user_id: customerId || currentUser?.id || undefined,
-          }),
-        },
+        filter: JSON.stringify({
+          // start_date: selectedDate,
+          // If admin based on selected customer
+          // Else if admin, based on login currentUser?.id
+          user_id: customerId || currentUser?.id || undefined,
+        }),
       },
     }
   )
@@ -77,8 +76,10 @@ const CreateSchedulePage = (props) => {
     setSelectedDate(date)
   }
 
+  console.log('vehiclesData', vehiclesData)
+
   const isVehiclesReady =
-    vehiclesData && vehiclesData.vehicles && vehiclesData.vehicles.length
+    vehiclesData && vehiclesData?.vehicles && vehiclesData?.vehicles.length
 
   return (
     <>
@@ -119,6 +120,9 @@ const CreateSchedulePage = (props) => {
             value={selectedDate}
             onChange={handleDateChange}
           />
+          <FormHelperText>
+            Important: better pick date 3 days before take service
+          </FormHelperText>
         </FormControl>
 
         {/* Only admin can select customer */}
@@ -138,7 +142,6 @@ const CreateSchedulePage = (props) => {
                     (v: { id: number }) => v.id === value
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   ) as any
-                  console.log('selected user id', item?.user_id)
                   setCustomerId(item?.user_id)
                 }
               }}
@@ -171,11 +174,32 @@ const CreateSchedulePage = (props) => {
                 <em>None</em>
               </MenuItem>
               {vehiclesData &&
-                vehiclesData?.vehicles.map((vehicle) => (
-                  <MenuItem key={vehicle.id} value={vehicle.id}>
-                    {vehicle.name} - {vehicle.serialNum}
-                  </MenuItem>
-                ))}
+                vehiclesData?.vehicles.map((vehicle) => {
+                  const isScheduled = vehicle.schedule.some((v) => {
+                    const isVehicleExists = v.vehicle_id == vehicle.id
+                    const isDateExists =
+                      parseDate(v.booking_date) == parseDate(selectedDate)
+
+                    return isVehicleExists && isDateExists
+                  })
+
+                  return (
+                    <MenuItem
+                      disabled={isScheduled}
+                      key={vehicle.id}
+                      value={vehicle.id}
+                    >
+                      {vehicle.name} - {vehicle.serialNum}
+                      <i
+                        style={{
+                          paddingLeft: 5,
+                        }}
+                      >
+                        {isScheduled ? '(vehicle is scheduled)' : ''}
+                      </i>
+                    </MenuItem>
+                  )
+                })}
             </FormSelect>
           ) : (
             <TextField

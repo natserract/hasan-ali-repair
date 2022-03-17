@@ -4,6 +4,11 @@ export const VEHICLES_QUERY = gql`
       id
       name
       serialNum
+
+      schedule {
+        vehicle_id
+        booking_date
+      }
     }
   }
 `

@@ -157,7 +157,7 @@ const SchedulesPage = (props) => {
         },
       },
     ],
-    [listData, control, errors, isPublicAccess, handleChange]
+    [control, errors, isPublicAccess, handleChange]
   )
 
   const renderInfo = useCallback(() => {

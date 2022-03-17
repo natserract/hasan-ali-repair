@@ -43,6 +43,8 @@ System must be able to:
 - Customers cannot book the day before today
 - Services will be made only for bookings whose status is approved
 - User's session period is 1 day
+- Customers allowed to multiple booking in different date, but customers can't book/service same vehicle on the scheduled date.
+- Better (important) customer book date 3 days before take services
 
 ## Stacks Used
 
@@ -51,7 +53,7 @@ Here's a several technologies what we used in this project:
 - [TypeScript](https://www.typescriptlang.org/)
 - [GraphQL](https://graphql.org/) ([GraphQL Helix](https://github.com/contrawork/graphql-helix) + [Envelop](https://www.envelop.dev) + [Apollo Client](https://www.apollographql.com/docs/react))
 - [Prisma](https://www.prisma.io/)
-- [RedwoodJS](https://redwoodjs.com/)
+- [RedwoodJS](https://redwoodjs.com/) *(with custom)*
 - [Jest](https://jestjs.io/)
 - [Storybook](https://storybook.js.org/)
 - [Webpack](https://webpack.js.org/)

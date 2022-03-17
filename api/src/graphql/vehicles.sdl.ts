@@ -21,8 +21,14 @@ export const schema = gql`
     limit: Int
   }
 
+  input VehicleScheduledInput {
+    start_date: DateTime
+    user_id: Int
+  }
+
   type Query {
-    vehicles(input: VehiclesInput): [Vehicle!]! @requireAuth
+    vehicles(input: VehiclesInput): [Vehicle!]! @skipAuth
+    vehiclesScheduled(input: VehicleScheduledInput): [Vehicle!]! @skipAuth
     vehicle(id: Int!): Vehicle @requireAuth
   }
 
