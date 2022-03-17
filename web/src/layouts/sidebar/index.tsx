@@ -4,6 +4,7 @@ import {
   HelpOutline as FAQIcon,
   ArrowBack as ArrowBackIcon,
   List as ListIcon,
+  ContactPhone as ContactPhoneIcon,
 } from '@material-ui/icons'
 import { useTheme } from '@material-ui/styles'
 import { withRouter } from 'react-router-dom'
@@ -36,6 +37,12 @@ const defaultLinks = [
   { id: 6, type: 'title', label: 'HELP' },
   {
     id: 7,
+    label: 'Contact Us',
+    link: '/app/contact-us',
+    icon: <ContactPhoneIcon />,
+  },
+  {
+    id: 8,
     label: 'FAQ',
     link: '/app/faq',
     icon: <FAQIcon />,

@@ -39,6 +39,7 @@ import EditMechanicPage from './pages/MechanicsPage/pages/EditMechanicPage/EditM
 import ShowMechanicPage from './pages/MechanicsPage/pages/ShowMechanicPage/ShowMechanicPage'
 import CreateMechanicPage from './pages/MechanicsPage/pages/CreateMechanicPage/CreateMechanicPage'
 import EditProfilePage from './pages/ProfilePage/pages/EditProfilePage/EditProfilePage'
+import ContactUsPage from './pages/ContactUsPage/ContactUsPage'
 
 const adminAccess = [
   'dashboard',
@@ -51,6 +52,7 @@ const adminAccess = [
   'profile',
   'schedules',
   'faq',
+  'contact-us',
 ]
 const clientAccess = [
   'dashboard',
@@ -60,6 +62,7 @@ const clientAccess = [
   'schedules',
   'vehicles',
   'faq',
+  'contact-us',
 ]
 
 const resources: IResourceItem[] = [
@@ -127,6 +130,11 @@ const resources: IResourceItem[] = [
     name: 'faq',
     route: '/app/faq',
     pure: FaqPage,
+  },
+  {
+    name: 'contact-us',
+    route: '/app/contact-us',
+    pure: ContactUsPage,
   },
 ]
 export { resources, adminAccess as adminTypes, clientAccess as clientTypes }

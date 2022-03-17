@@ -92,7 +92,7 @@ yarn rw dev
 - [ ] Payment note send in email (wip)
 - [ ] Realtime update
 - [ ] Push notifications
-- [ ] Contacts Page (wip)
+- [X] Contacts Page
 
 
 ## Notes
