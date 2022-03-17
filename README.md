@@ -15,8 +15,8 @@ Hasan Ali Repair is a digital solution to help customers make it easier and more
 5. [Setup](#setup)
 6. [Third party](#third-party)
 7. [Future Works](#future-works)
-8. [FAQs]()
-9. [References]()
+8. [Notes](#notes)
+9. [References](#references)
 
 ## MVP (Minimum Viable Product)
 > A minimum viable product or MVP is a product with a basic set of features that are considered unique enough to attract the attention of users
@@ -89,4 +89,17 @@ yarn rw dev
 - [ ] Payment gateway (when booking from on review -> approved)
 - [ ] Upload image (ex. vehicle, user pict, mechanic pict)
 - [ ] Customer form reviews
-- [ ] Payment note send in email
+- [ ] Payment note send in email (wip)
+- [ ] Realtime update
+- [ ] Push notifications
+- [ ] Contacts Page (wip)
+
+
+## Notes
+1. The booking approval process is carried out by the admin within a certain period of time
+2. Full payment or down payment can be made at the beginning of the **on review** process in cash. Fees are can change at any time.
+3. The current version still uses `smtp.gmail.com` for smpt mail server
+
+## References
+- [https://redwoodjs.com/](https://redwoodjs.com/)
+- [https://v4.mui.com/](https://v4.mui.com/)

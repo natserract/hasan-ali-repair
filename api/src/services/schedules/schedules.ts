@@ -8,7 +8,7 @@ import { sendEmail } from 'src/lib/mail'
 import { InputList } from 'src/types/share'
 import startOfToday from 'date-fns/startOfToday'
 import endOfToday from 'date-fns/endOfToday'
-import { MAXIMUM_BOOK_DAY } from 'src/config/business'
+import { MAXIMUM_BOOK_DAY } from 'src/constants/config'
 import { parseDate } from 'src/utils/date'
 import { mailTemplate } from 'src/templates/common/mail-template'
 
