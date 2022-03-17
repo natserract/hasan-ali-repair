@@ -89,7 +89,7 @@ yarn rw dev
 - [ ] Payment gateway (when booking from on review -> approved)
 - [ ] Upload image (ex. vehicle, user pict, mechanic pict)
 - [ ] Customer form reviews
-- [ ] Payment note send in email (wip)
+- [X] Payment note send in email
 - [ ] Realtime update
 - [ ] Push notifications
 - [X] Contacts Page
