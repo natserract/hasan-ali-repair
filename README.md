@@ -13,8 +13,8 @@ Hasan Ali Repair is a digital solution to help customers make it easier and more
 3. [Stacks Used](#stacks-used)
 4. [System requirements](#system-requirements)
 5. [Setup](#setup)
-6. [Third party]()
-7. [Future Works]()
+6. [Third party](#third-party)
+7. [Future Works](#future-works)
 8. [FAQs]()
 9. [References]()
 
@@ -79,3 +79,14 @@ yarn install
 ```terminal
 yarn rw dev
 ```
+
+## Third party
+- Mail transporter [nodemailer](https://www.npmjs.com/package/nodemailer)
+- SendinBlue SDK [sib-api-v3-sdk](https://www.npmjs.com/package/sib-api-v3-sdk)
+
+## Future Works
+
+- [ ] Payment gateway (when booking from on review -> approved)
+- [ ] Upload image (ex. vehicle, user pict, mechanic pict)
+- [ ] Customer form reviews
+- [ ] Payment note send in email
