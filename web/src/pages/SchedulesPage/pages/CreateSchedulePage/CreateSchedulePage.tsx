@@ -76,8 +76,6 @@ const CreateSchedulePage = (props) => {
     setSelectedDate(date)
   }
 
-  console.log('vehiclesData', vehiclesData)
-
   const isVehiclesReady =
     vehiclesData && vehiclesData?.vehicles && vehiclesData?.vehicles.length
 

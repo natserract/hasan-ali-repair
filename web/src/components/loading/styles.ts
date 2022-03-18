@@ -1,6 +1,6 @@
 export default () => ({
   container: {
-    position: 'absolute',
+    position: 'fixed',
     backgroundColor: 'rgba(255, 255, 255, 0.313)',
     width: '100%',
     height: '100%',

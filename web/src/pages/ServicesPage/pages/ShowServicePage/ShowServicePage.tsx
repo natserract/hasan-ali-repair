@@ -25,7 +25,7 @@ const ShowServicePage = () => {
 
   return (
     <>
-      <MetaTags title="ShowService" description="ShowService page" />
+      <MetaTags title="Show Service" description="Show Service page" />
 
       <Widget
         isLoading={loadingServiceQuery}

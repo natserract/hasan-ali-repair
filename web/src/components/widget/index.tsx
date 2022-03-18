@@ -13,6 +13,7 @@ import {
 } from '@material-ui/icons'
 import classnames from 'classnames'
 import { useReactToPrint } from 'react-to-print'
+import FullScreenLoading from 'src/components/loading/fullscreen'
 
 // styles
 import useStyles from './styles'
@@ -64,98 +65,108 @@ export default function Widget({
     content: () => componentRef.current,
   })
 
+  const renderLoading = () => {
+    if (!isLoading) return <React.Fragment />
+
+    return <FullScreenLoading />
+  }
+
   return (
-    <div
-      className={`${classes.widgetWrapper} ${
-        isLoading ? classes.widgetWrapperLoading : ''
-      }`}
-      style={style && { ...style }}
-    >
-      <Paper
-        ref={componentRef}
-        className={classes.paper}
-        classes={{
-          root: classnames(classes.widgetRoot, {
-            [classes.noWidgetShadow]: noWidgetShadow,
-          }),
-        }}
+    <React.Fragment>
+      {renderLoading()}
+
+      <div
+        className={`${classes.widgetWrapper} ${
+          isLoading ? classes.widgetWrapperLoading : ''
+        }`}
+        style={style && { ...style }}
       >
-        <div
-          className={classnames(classes.widgetHeader, {
-            [classes.noPadding]: noHeaderPadding,
-            [headerClass]: headerClass,
-          })}
+        <Paper
+          ref={componentRef}
+          className={classes.paper}
+          classes={{
+            root: classnames(classes.widgetRoot, {
+              [classes.noWidgetShadow]: noWidgetShadow,
+            }),
+          }}
         >
-          {header ? (
-            header
-          ) : (
-            <React.Fragment>
-              <div className={classes.headerTitle}>
-                {!disablePrevButton && (
-                  <IconButton onClick={() => navigate.goBack()}>
-                    <ArrowBackIcon />
+          <div
+            className={classnames(classes.widgetHeader, {
+              [classes.noPadding]: noHeaderPadding,
+              [headerClass]: headerClass,
+            })}
+          >
+            {header ? (
+              header
+            ) : (
+              <React.Fragment>
+                <div className={classes.headerTitle}>
+                  {!disablePrevButton && (
+                    <IconButton onClick={() => navigate.goBack()}>
+                      <ArrowBackIcon />
+                    </IconButton>
+                  )}
+                  <Typography variant="h5" noWrap>
+                    {title}
+                  </Typography>
+                </div>
+
+                {!disableWidgetMenu && (
+                  <IconButton
+                    color="primary"
+                    classes={{ root: classes.moreButton }}
+                    aria-owns="widget-menu"
+                    aria-haspopup="true"
+                    onClick={(e) => setMoreMenuOpen(e.currentTarget)}
+                    ref={moreButtonRef}
+                  >
+                    <MoreIcon />
                   </IconButton>
                 )}
-                <Typography variant="h5" noWrap>
-                  {title}
-                </Typography>
-              </div>
 
-              {!disableWidgetMenu && (
-                <IconButton
-                  color="primary"
-                  classes={{ root: classes.moreButton }}
-                  aria-owns="widget-menu"
-                  aria-haspopup="true"
-                  onClick={(e) => setMoreMenuOpen(e.currentTarget)}
-                  ref={moreButtonRef}
-                >
-                  <MoreIcon />
-                </IconButton>
-              )}
-
-              {isViewPage && (
-                <IconButton
-                  color="primary"
-                  classes={{ root: classes.printButton }}
-                  aria-owns="print-menu"
-                  onClick={handlePrint}
-                >
-                  <PrintSharpIcon />
-                </IconButton>
-              )}
-            </React.Fragment>
-          )}
-        </div>
-        <div
-          className={classnames(classes.widgetBody, {
-            [classes.noPadding]: noBodyPadding,
-            [bodyClass]: bodyClass,
-          })}
+                {isViewPage && (
+                  <IconButton
+                    color="primary"
+                    classes={{ root: classes.printButton }}
+                    aria-owns="print-menu"
+                    onClick={handlePrint}
+                  >
+                    <PrintSharpIcon />
+                  </IconButton>
+                )}
+              </React.Fragment>
+            )}
+          </div>
+          <div
+            className={classnames(classes.widgetBody, {
+              [classes.noPadding]: noBodyPadding,
+              [bodyClass]: bodyClass,
+            })}
+          >
+            {children}
+          </div>
+        </Paper>
+        <Menu
+          id="widget-menu"
+          open={Boolean(isMoreMenuOpen)}
+          anchorEl={isMoreMenuOpen}
+          onClose={() => setMoreMenuOpen(null)}
+          disableAutoFocusItem
         >
-          {children}
-        </div>
-      </Paper>
-      <Menu
-        id="widget-menu"
-        open={Boolean(isMoreMenuOpen)}
-        anchorEl={isMoreMenuOpen}
-        onClose={() => setMoreMenuOpen(null)}
-        disableAutoFocusItem
-      >
-        <MenuItem>
-          <Typography>Edit</Typography>
-        </MenuItem>
-        <MenuItem>
-          <Typography>Copy</Typography>
-        </MenuItem>
-        <MenuItem>
-          <Typography>Delete</Typography>
-        </MenuItem>
-        <MenuItem>
-          <Typography>Print</Typography>
-        </MenuItem>
-      </Menu>
-    </div>
+          <MenuItem>
+            <Typography>Edit</Typography>
+          </MenuItem>
+          <MenuItem>
+            <Typography>Copy</Typography>
+          </MenuItem>
+          <MenuItem>
+            <Typography>Delete</Typography>
+          </MenuItem>
+          <MenuItem>
+            <Typography>Print</Typography>
+          </MenuItem>
+        </Menu>
+      </div>
+    </React.Fragment>
   )
 }

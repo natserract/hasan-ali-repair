@@ -23,7 +23,7 @@ const ShowUserPage = () => {
 
   return (
     <>
-      <MetaTags title="ShowUser" description="ShowUser page" />
+      <MetaTags title="Show User" description="Show User page" />
 
       <Widget isLoading={loadingQueryData} title="View User" disableWidgetMenu>
         <div className="formGroup">

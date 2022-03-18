@@ -18,7 +18,6 @@ import { extractError } from 'src/utils/errors'
 import { toCamelCase } from 'src/utils/string'
 import pluralize from 'pluralize'
 import orderBy from 'lodash.orderby'
-import FullScreenLoading from 'src/components/loading/fullscreen'
 
 type ActionDisabled = {
   createDisabled: boolean
@@ -408,23 +407,19 @@ const List: React.FC<ListProps> = ({
   const loading = isLoading || queryLoading || loadingData
 
   return (
-    <>
-      {loading && <FullScreenLoading />}
-
-      <Widget
-        isLoading={loading}
-        header={<React.Fragment />}
-        noBodyPadding
-        noHeaderPadding
-      >
-        <DataTable
-          title={title ?? resourceTitle}
-          data={data}
-          columns={tableColumns}
-          options={options}
-        />
-      </Widget>
-    </>
+    <Widget
+      isLoading={loading}
+      header={<React.Fragment />}
+      noBodyPadding
+      noHeaderPadding
+    >
+      <DataTable
+        title={title ?? resourceTitle}
+        data={data}
+        columns={tableColumns}
+        options={options}
+      />
+    </Widget>
   )
 }
 

@@ -71,7 +71,7 @@ const CreateServicePage = (props) => {
 
   return (
     <>
-      <MetaTags title="CreateService" description="CreateService page" />
+      <MetaTags title="Create Service" description="Create Service page" />
 
       <Create
         isLoading={mechanicsLoading || loadingSchedulesData}

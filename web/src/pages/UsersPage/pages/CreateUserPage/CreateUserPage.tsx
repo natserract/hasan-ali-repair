@@ -30,7 +30,7 @@ const CreateUserPage = (props) => {
 
   return (
     <>
-      <MetaTags title="Create User" description="CreateUser page" />
+      <MetaTags title="Create User" description="Create User page" />
 
       <Create
         form={form}
