@@ -105,7 +105,7 @@ const Header = () => {
 
   const { data: currentUserData } = useQuery(HEADER_CURRENTUSER_QUERY, {
     variables: {
-      email: currentUser?.email,
+      email: currentUser?.email ?? '',
     },
   })
   const user = currentUserData?.currentUser as CurrentUser

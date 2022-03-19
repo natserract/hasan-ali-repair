@@ -1,44 +1,44 @@
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import Theme from 'src/themes/default'
 
-const drawerWidth = 240;
+const drawerWidth = 250
 
-const styles = makeStyles(
-  (theme: typeof Theme) => createStyles({
+const styles = makeStyles((theme: typeof Theme) =>
+  createStyles({
     menuButton: {
       marginLeft: 12,
       marginRight: 36,
     },
     hide: {
-      display: "none",
+      display: 'none',
     },
     drawer: {
       width: drawerWidth,
       flexShrink: 0,
-      whiteSpace: "nowrap",
+      whiteSpace: 'nowrap',
     },
     drawerOpen: {
       width: drawerWidth,
-      transition: theme.transitions.create("width", {
+      transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen,
       }),
     },
     drawerClose: {
-      transition: theme.transitions.create("width", {
+      transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
-      overflowX: "hidden",
+      overflowX: 'hidden',
       width: theme.spacing(7) + 40,
-      [theme.breakpoints.down("sm")]: {
+      [theme.breakpoints.down('sm')]: {
         width: drawerWidth,
       },
     },
     toolbar: {
       ...theme.mixins.toolbar,
-      [theme.breakpoints.down("sm")]: {
-        display: "none",
+      [theme.breakpoints.down('sm')]: {
+        display: 'none',
       },
     },
     content: {
@@ -51,14 +51,14 @@ const styles = makeStyles(
     mobileBackButton: {
       marginTop: theme.spacing(0.5),
       marginLeft: 18,
-      [theme.breakpoints.only("sm")]: {
+      [theme.breakpoints.only('sm')]: {
         marginTop: theme.spacing(0.625),
       },
-      [theme.breakpoints.up("md")]: {
-        display: "none",
+      [theme.breakpoints.up('md')]: {
+        display: 'none',
       },
     },
   })
-);
+)
 
 export default styles

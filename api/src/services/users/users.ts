@@ -46,7 +46,7 @@ export const createUser = async ({ input }: CreateUserArgs) => {
   }
 
   // Encrypt password
-  const encryptedPassword = useHashedPassword(input.hashedPassword)
+  const encryptedPassword = useHashedPassword(input.password)
 
   const userInput = {
     name: input.name,

@@ -4,8 +4,8 @@ import { Controller, Control } from 'react-hook-form'
 import DateFnsUtils from '@date-io/date-fns'
 import {
   MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-  KeyboardDatePickerProps,
+  DatePicker,
+  DatePickerProps,
 } from '@material-ui/pickers'
 
 interface FormPickerProps {
@@ -21,9 +21,9 @@ interface FormPickerProps {
   shouldDisabledDate?: (day: Date) => boolean
 }
 
-const FormPicker: React.FC<
-  FormPickerProps & Partial<KeyboardDatePickerProps>
-> = (props): JSX.Element => {
+const FormPicker: React.FC<FormPickerProps & Partial<DatePickerProps>> = (
+  props
+): JSX.Element => {
   const {
     name,
     label,
@@ -50,7 +50,7 @@ const FormPicker: React.FC<
       control={control}
       render={({ field: { onChange } }) => (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <KeyboardDatePicker
+          <DatePicker
             clearable
             disableToolbar
             variant="dialog"
@@ -72,9 +72,6 @@ const FormPicker: React.FC<
               }
 
               return onChange(event)
-            }}
-            KeyboardButtonProps={{
-              'aria-label': 'change date',
             }}
             {...restProps}
           />

@@ -18,9 +18,13 @@ export const schema = gql`
     totalServicesToday: Int
     serviceMonthly: [ServiceMonthly!]!
     serviceDaily: [ServiceDaily!]!
+
+    # client
+    totalApprovedBookings: Int
+    totalAllVehicles: Int
   }
 
   type Query {
-    dashboardReports: DashboardReports! @skipAuth
+    dashboardReports(email: String): DashboardReports! @skipAuth
   }
 `

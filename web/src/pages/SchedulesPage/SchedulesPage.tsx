@@ -16,10 +16,23 @@ import FormControl from '@material-ui/core/FormControl'
 import FormSelect from 'src/components/form/formSelect'
 import { useAccess } from 'src/libs/gql-router'
 import { useAuthState } from 'src/libs/auth/hooks'
-import Paper from '@material-ui/core/Paper'
-import Typography from '@material-ui/core/Typography'
+import Notification from 'src/components/notification'
+import { createStyles, makeStyles } from '@material-ui/core/styles'
+import Theme from 'src/themes/default'
+
+const useStyles = makeStyles((theme: typeof Theme) =>
+  createStyles({
+    notification: {
+      background: theme.palette.secondary.main,
+      borderRadius: 0,
+      marginBottom: 20,
+    },
+  })
+)
 
 const SchedulesPage = (props) => {
+  const classes = useStyles()
+
   const form = useForm()
   const {
     formState: { errors },
@@ -39,7 +52,7 @@ const SchedulesPage = (props) => {
   })
 
   const [changed, setChanged] = useState(false)
-  const [listData, setListData] = useState([])
+  const [_listData, setListData] = useState([])
 
   const handleChange = useCallback(
     async (event, id) => {
@@ -164,21 +177,14 @@ const SchedulesPage = (props) => {
     if (!scheduleSession?.isMaximum) return <React.Fragment />
 
     return (
-      <Paper
-        style={{
-          padding: 20,
-          marginBottom: 20,
-        }}
-        elevation={1}
-        variant="outlined"
-      >
-        <Typography color="error">
-          We're sorry, but it is currently not possible to make booking, because
-          quota limit! Please take to another date.
-        </Typography>
-      </Paper>
+      <Notification
+        type="report"
+        message="We're sorry, but it is currently not possible to make booking, because quota limit! Please take to another date."
+        variant="contained"
+        className={classes.notification}
+      />
     )
-  }, [scheduleSession])
+  }, [classes.notification, scheduleSession?.isMaximum])
 
   return (
     <>

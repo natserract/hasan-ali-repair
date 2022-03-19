@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import { MetaTags, useQuery } from '@redwoodjs/web'
 import FormPicker from 'src/components/form/formPicker'
 import { useForm } from 'react-hook-form'
@@ -42,12 +43,18 @@ const CreateSchedulePage = (props) => {
     VEHICLES_QUERY,
     {
       variables: {
-        filter: JSON.stringify({
-          // start_date: selectedDate,
-          // If admin based on selected customer
-          // Else if admin, based on login currentUser?.id
-          user_id: customerId || currentUser?.id || undefined,
-        }),
+        input: {
+          filter: JSON.stringify({
+            // start_date: selectedDate,
+            // If admin based on selected customer
+            // Else if admin, based on login currentUser?.id
+            user_id: {
+              equals: !isNaN(customerId)
+                ? customerId
+                : currentUser?.id || undefined,
+            },
+          }),
+        },
       },
     }
   )

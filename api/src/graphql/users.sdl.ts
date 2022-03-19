@@ -19,7 +19,7 @@ export const schema = gql`
 
   type Query {
     users: [User!]! @skipAuth
-    currentUser(email: String!): User @skipAuth
+    currentUser(email: String): User @skipAuth
     user(id: Int!): User @requireAuth
   }
 
@@ -29,7 +29,7 @@ export const schema = gql`
     password: String!
     email: String!
     hashedPassword: String!
-    salt: String!
+    salt: String
     refreshToken: String
     user_type: String!
     created_at: DateTime
