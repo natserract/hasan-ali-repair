@@ -305,14 +305,14 @@ const Header = () => {
         >
           <div className={classes.profileMenuUser}>
             <Typography variant="h4" weight="medium">
-              {currentUser?.name}
+              {user?.name}
             </Typography>
             <Typography
               className={classes.profileMenuLink}
               component="span"
               color="textSecondary"
             >
-              {currentUser?.email}
+              {user?.email}
             </Typography>
           </div>
           <MenuItem

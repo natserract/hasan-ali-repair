@@ -53,14 +53,16 @@ const ProfilePage = () => {
             <Typography variant="h6" component="h4">
               Address
             </Typography>
-            <InputLabel color="secondary">{user?.address}</InputLabel>
+            <InputLabel color="secondary">{user?.address || '-'}</InputLabel>
           </div>
 
           <div className="formGroupItem">
             <Typography variant="h6" component="h4">
               Phone Number
             </Typography>
-            <InputLabel color="secondary">{user?.phone_number}</InputLabel>
+            <InputLabel color="secondary">
+              {user?.phone_number || '-'}
+            </InputLabel>
           </div>
 
           <div className={classes.formActions}>
