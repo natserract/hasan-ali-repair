@@ -22,6 +22,7 @@ import { useState } from 'react'
 import { arrayTransformProperty } from 'src/utils/array'
 import { toRupiah } from 'src/utils/currency'
 import { copyText } from 'src/utils/string'
+import NumberFormat from 'react-number-format'
 
 const CreateServicePage = (props) => {
   const form = useForm()
@@ -53,13 +54,14 @@ const CreateServicePage = (props) => {
   const [scheduleId, setScheduleId] = useState(NaN)
   const [partIds, setPartIds] = useState([])
   const [totalPrice, setTotalPrice] = useState(NaN)
+  const [price, setPrice] = useState(NaN)
   const [openTooltip, setTooltipOpen] = useState(false)
 
   const handleTooltipOpen = () => {
     setTooltipOpen(true)
 
     if (totalPrice) {
-      copyText(toRupiah(totalPrice))
+      copyText(totalPrice)
     }
   }
 
@@ -82,7 +84,7 @@ const CreateServicePage = (props) => {
           mechanic_id: data.mechanic_id,
           schedule_id: scheduleId,
           status: data?.status,
-          price: !isNaN(totalPrice) && totalPrice ? totalPrice : undefined,
+          price: !isNaN(price) && price ? price : undefined,
           created_by: currentUser?.id,
           part_ids: partIds,
         })}
@@ -194,13 +196,17 @@ const CreateServicePage = (props) => {
         </FormControl>
 
         <FormControl>
-          <FormInput
+          <NumberFormat
             control={control}
             name="price"
-            label="Price"
+            label="Price (per pcs)"
             errorobj={errors}
-            value={isNaN(totalPrice) ? '' : totalPrice}
-            readOnly
+            customInput={FormInput}
+            thousandSeparator
+            prefix={'Rp.'}
+            onValueChange={(value) => {
+              setPrice(value.floatValue)
+            }}
           />
         </FormControl>
       </Create>

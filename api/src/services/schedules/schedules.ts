@@ -242,7 +242,8 @@ export const currentSessions = async () => {
       status: {
         // on progress mean, schedule has been approved by admin and client
         // and on progress to repair
-        notIn: ['pending', 'complete', 'cancelled'],
+        // notIn: ['pending', 'complete', 'cancelled'],
+        equals: 'pending',
       },
     },
   })

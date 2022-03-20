@@ -24,6 +24,7 @@ import Button from '@material-ui/core/Button'
 import { toRupiah } from 'src/utils/currency'
 import { arrayTransformProperty } from 'src/utils/array'
 import { copyText } from 'src/utils/string'
+import NumberFormat from 'react-number-format'
 
 const EditServicePage = (props) => {
   const params = useParams()
@@ -57,6 +58,7 @@ const EditServicePage = (props) => {
   const [parts, setParts] = useState([])
   const [partIds, setPartIds] = useState([])
   const [totalPrice, setTotalPrice] = useState(NaN)
+  const [price, setPrice] = useState(NaN)
   const [openTooltip, setTooltipOpen] = useState(false)
 
   const updatePartsUsed = useCallback((items: any[]) => {
@@ -80,6 +82,7 @@ const EditServicePage = (props) => {
       updatePartsUsed(partsUsed)
 
       setScheduleId(schedule?.id)
+      setPrice(service?.price)
     }
   }, [service, updatePartsUsed])
 
@@ -87,7 +90,7 @@ const EditServicePage = (props) => {
     setTooltipOpen(true)
 
     if (totalPrice) {
-      copyText(toRupiah(totalPrice))
+      copyText(totalPrice)
     }
   }
 
@@ -110,7 +113,7 @@ const EditServicePage = (props) => {
           mechanic_id: data.mechanic_id,
           schedule_id: scheduleId,
           status: data?.status,
-          price: !isNaN(totalPrice) && totalPrice ? totalPrice : undefined,
+          price: !isNaN(price) && price ? price : undefined,
           created_by: currentUser?.id,
           part_ids: partIds,
         })}
@@ -223,13 +226,18 @@ const EditServicePage = (props) => {
         </FormControl>
 
         <FormControl>
-          <FormInput
+          <NumberFormat
             control={control}
             name="price"
-            label="Price"
+            label="Price (per pcs)"
             errorobj={errors}
-            value={isNaN(totalPrice) ? '' : totalPrice}
-            readOnly
+            customInput={FormInput}
+            thousandSeparator
+            prefix={'Rp.'}
+            value={price}
+            onValueChange={(value) => {
+              setPrice(value.floatValue)
+            }}
           />
         </FormControl>
       </Edit>
